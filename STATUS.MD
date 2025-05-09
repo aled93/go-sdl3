@@ -38,7 +38,7 @@
   - [ ] platform
   - [ ] power
   - [ ] process
-  - [ ] properties
+  - [x] properties
   - [x] rect
   - [ ] render
   - [ ] scancode
