@@ -230,7 +230,7 @@ const (
 * \since This macro is available since SDL 3.2.0.
  */
 func DEFINE_PIXELFOURCC(A, B, C, D byte) uint32 {
-	return uint32(A)<<0 | uint32(B)<<8 | uint32(C)<<16 | uint32(D)<<24
+	return FOURCC(A, B, C, D)
 }
 
 /**
