@@ -1,5 +1,5 @@
 - [ ] Modules
-  - [ ] stdinc
+  - [x] stdinc // most functions and consts already present in go std packages
   - [ ] assert
   - [ ] asyncio
   - [ ] atomic
