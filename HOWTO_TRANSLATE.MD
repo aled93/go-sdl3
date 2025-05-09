@@ -4,7 +4,10 @@
 
 # Functions
 
-- Add line comment `//go:sdl3extern` to generate loading code for this function
+- Add line comment `//go:sdl3extern` to generate loading code for this function. If new name differs not only in case then provide original name in parenthesis without `SDL_` prefix:
+
+        //go:sdl3extern(qsort_r)
+        func QSortR func(...)
 
 ## Example
 C:
