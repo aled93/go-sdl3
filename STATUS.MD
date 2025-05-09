@@ -5,7 +5,7 @@
   - [ ] atomic
   - [ ] audio
   - [ ] bits
-  - [ ] blendmode
+  - [x] blendmode
   - [ ] camera
   - [ ] clipboard
   - [ ] cpuinfo
@@ -44,7 +44,7 @@
   - [ ] scancode
   - [ ] sensor
   - [ ] storage
-  - [ ] surface
+  - [x] surface
   - [x] system
   - [ ] thread
   - [ ] time
