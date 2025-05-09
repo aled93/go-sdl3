@@ -1,0 +1,57 @@
+- [ ] Modules
+  - [ ] stdinc
+  - [ ] assert
+  - [ ] asyncio
+  - [ ] atomic
+  - [ ] audio
+  - [ ] bits
+  - [ ] blendmode
+  - [ ] camera
+  - [ ] clipboard
+  - [ ] cpuinfo
+  - [ ] dialog
+  - [ ] endian
+  - [ ] error
+  - [ ] events
+  - [ ] filesystem
+  - [ ] gamepad
+  - [ ] gpu
+  - [ ] guid
+  - [ ] haptic
+  - [ ] hidapi
+  - [ ] hints
+  - [ ] init
+  - [ ] iostream
+  - [ ] joystick
+  - [ ] keyboard
+  - [ ] keycode
+  - [ ] loadso
+  - [ ] locale
+  - [ ] log
+  - [ ] messagebox
+  - [ ] metal
+  - [ ] misc
+  - [ ] mouse
+  - [ ] mutex
+  - [ ] pen
+  - [ ] pixels
+  - [ ] platform
+  - [ ] power
+  - [ ] process
+  - [ ] properties
+  - [x] rect
+  - [ ] render
+  - [ ] scancode
+  - [ ] sensor
+  - [ ] storage
+  - [ ] surface
+  - [x] system
+  - [ ] thread
+  - [ ] time
+  - [ ] timer
+  - [ ] tray
+  - [ ] touch
+  - [ ] version
+  - [x] video
+  - [ ] oldnames
+- [ ] Documentation (doxygen -> godoc)
