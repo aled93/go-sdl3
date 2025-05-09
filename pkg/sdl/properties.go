@@ -154,7 +154,7 @@ var LockProperties func(props PropertiesID) bool
 * \sa SDL_LockProperties
  */
 //go:sdl3extern
-var UnlockProperties func(props PropertiesID) void
+var UnlockProperties func(props PropertiesID)
 
 /**
 * A callback used to free resources when a property is deleted.
