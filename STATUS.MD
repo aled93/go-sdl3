@@ -21,7 +21,7 @@
   - [ ] hidapi
   - [ ] hints
   - [ ] init
-  - [ ] iostream
+  - [x] iostream
   - [ ] joystick
   - [ ] keyboard
   - [ ] keycode
