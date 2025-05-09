@@ -3170,7 +3170,7 @@ var GL_LoadLibrary func(path *byte) bool
 * \sa SDL_GL_UnloadLibrary
  */
 //go:sdl3extern
-var GL_GetProcAddress func(proc *byte) FunctionPointer
+var GL_GetProcAddress func(proc *byte) uintptr
 
 /**
 * Get an EGL library function by name.
@@ -3190,7 +3190,7 @@ var GL_GetProcAddress func(proc *byte) FunctionPointer
 * \sa SDL_EGL_GetCurrentDisplay
  */
 //go:sdl3extern
-var EGL_GetProcAddress func(proc *byte) FunctionPointer
+var EGL_GetProcAddress func(proc *byte) uintptr
 
 /**
 * Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().
