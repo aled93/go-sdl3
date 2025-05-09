@@ -34,7 +34,7 @@
   - [ ] mouse
   - [ ] mutex
   - [ ] pen
-  - [ ] pixels
+  - [x] pixels
   - [ ] platform
   - [ ] power
   - [ ] process
