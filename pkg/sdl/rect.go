@@ -27,6 +27,8 @@
  */
 package sdl
 
+import "math"
+
 /**
 * The structure that defines a point (using integers).
 *
@@ -369,10 +371,10 @@ func RectEmptyFloat(r *FRect) bool {
  */
 func RectsEqualEpsilon(a *FRect, b *FRect, epsilon float32) bool {
 	if (a != nil) && (b != nil) && ((a == b) ||
-		((fabsf(a.x-b.x) <= epsilon) &&
-			(fabsf(a.y-b.y) <= epsilon) &&
-			(fabsf(a.w-b.w) <= epsilon) &&
-			(fabsf(a.h-b.h) <= epsilon))) {
+		((float32(math.Abs(float64(a.x-b.x))) <= epsilon) &&
+			(float32(math.Abs(float64(a.y-b.y))) <= epsilon) &&
+			(float32(math.Abs(float64(a.w-b.w))) <= epsilon) &&
+			(float32(math.Abs(float64(a.h-b.h))) <= epsilon))) {
 		return true
 	} else {
 		return false
