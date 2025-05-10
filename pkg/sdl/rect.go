@@ -38,7 +38,7 @@ import "math"
 * \sa SDL_PointInRect
  */
 type Point struct {
-	x, y int
+	X, Y int
 }
 
 /**
@@ -50,7 +50,7 @@ type Point struct {
 * \sa SDL_PointInRectFloat
  */
 type FPoint struct {
-	x, y float32
+	X, Y float32
 }
 
 /**
@@ -67,8 +67,8 @@ type FPoint struct {
 * \sa SDL_GetRectEnclosingPoints
  */
 type Rect struct {
-	x, y int
-	w, h int
+	X, Y int
+	W, H int
 }
 
 /**
@@ -88,10 +88,10 @@ type Rect struct {
 * \sa SDL_PointInRectFloat
  */
 type FRect struct {
-	x float32
-	y float32
-	w float32
-	h float32
+	X float32
+	Y float32
+	W float32
+	H float32
 }
 
 /**
@@ -106,10 +106,10 @@ type FRect struct {
 * \since This function is available since SDL 3.2.0.
  */
 func RectToFRect(rect *Rect, frect *FRect) {
-	frect.x = float32(rect.x)
-	frect.y = float32(rect.y)
-	frect.w = float32(rect.w)
-	frect.h = float32(rect.h)
+	frect.X = float32(rect.X)
+	frect.Y = float32(rect.Y)
+	frect.W = float32(rect.W)
+	frect.H = float32(rect.H)
 }
 
 /**
@@ -134,7 +134,7 @@ func RectToFRect(rect *Rect, frect *FRect) {
 * \since This function is available since SDL 3.2.0.
  */
 func PointInRect(p *Point, r *Rect) bool {
-	if p != nil && r != nil && (p.x >= r.x) && (p.x < (r.x + r.w)) && (p.y >= r.y) && (p.y < (r.y + r.h)) {
+	if p != nil && r != nil && (p.X >= r.X) && (p.X < (r.X + r.W)) && (p.Y >= r.Y) && (p.Y < (r.Y + r.H)) {
 		return true
 	} else {
 		return false
@@ -160,7 +160,7 @@ func PointInRect(p *Point, r *Rect) bool {
 * \since This function is available since SDL 3.2.0.
  */
 func RectEmpty(r *Rect) bool {
-	if (r == nil) || (r.w <= 0) || (r.h <= 0) {
+	if (r == nil) || (r.W <= 0) || (r.H <= 0) {
 		return true
 	} else {
 		return false
@@ -187,7 +187,7 @@ func RectEmpty(r *Rect) bool {
 * \since This function is available since SDL 3.2.0.
  */
 func RectsEqual(a *Rect, b *Rect) bool {
-	if (a != nil) && (b != nil) && (a.x == b.x) && (a.y == b.y) && (a.w == b.w) && (a.h == b.h) {
+	if (a != nil) && (b != nil) && (a.X == b.X) && (a.Y == b.Y) && (a.W == b.W) && (a.H == b.H) {
 		return true
 	} else {
 		return false
@@ -310,8 +310,8 @@ var GetRectAndLineIntersection func(rect *Rect, X1 *int, Y1 *int, X2 *int, Y2 *i
 * \since This function is available since SDL 3.2.0.
  */
 func PointInRectFloat(p *FPoint, r *FRect) bool {
-	if (p != nil) && (r != nil) && (p.x >= r.x) && (p.x <= (r.x + r.w)) &&
-		(p.y >= r.y) && (p.y <= (r.y + r.h)) {
+	if (p != nil) && (r != nil) && (p.X >= r.X) && (p.X <= (r.X + r.W)) &&
+		(p.Y >= r.Y) && (p.Y <= (r.Y + r.H)) {
 		return true
 	} else {
 		return false
@@ -337,7 +337,7 @@ func PointInRectFloat(p *FPoint, r *FRect) bool {
 * \since This function is available since SDL 3.2.0.
  */
 func RectEmptyFloat(r *FRect) bool {
-	if (r == nil) || (r.w < 0.0) || (r.h < 0.0) {
+	if (r == nil) || (r.W < 0.0) || (r.H < 0.0) {
 		return true
 	} else {
 		return false
@@ -371,10 +371,10 @@ func RectEmptyFloat(r *FRect) bool {
  */
 func RectsEqualEpsilon(a *FRect, b *FRect, epsilon float32) bool {
 	if (a != nil) && (b != nil) && ((a == b) ||
-		((float32(math.Abs(float64(a.x-b.x))) <= epsilon) &&
-			(float32(math.Abs(float64(a.y-b.y))) <= epsilon) &&
-			(float32(math.Abs(float64(a.w-b.w))) <= epsilon) &&
-			(float32(math.Abs(float64(a.h-b.h))) <= epsilon))) {
+		((float32(math.Abs(float64(a.X-b.X))) <= epsilon) &&
+			(float32(math.Abs(float64(a.Y-b.Y))) <= epsilon) &&
+			(float32(math.Abs(float64(a.W-b.W))) <= epsilon) &&
+			(float32(math.Abs(float64(a.H-b.H))) <= epsilon))) {
 		return true
 	} else {
 		return false

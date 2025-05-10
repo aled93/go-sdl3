@@ -121,14 +121,14 @@ type DisplayModeData struct{}
 * \sa SDL_GetWindowFullscreenMode
  */
 type DisplayMode struct {
-	DisplayID                DisplayID   /**< the display this mode is associated with */
-	Format                   PixelFormat /**< pixel format */
-	W                        int         /**< width */
-	H                        int         /**< height */
-	Pixel_density            float32     /**< scale converting size to pixels (e.g. a 1920x1080 mode with 2.0 scale would have 3840x2160 pixels) */
-	Refresh_rate             float32     /**< refresh rate (or 0.0f for unspecified) */
-	Refresh_rate_numerator   int         /**< precise refresh rate numerator (or 0 for unspecified) */
-	Refresh_rate_denominator int         /**< precise refresh rate denominator */
+	DisplayID              DisplayID   /**< the display this mode is associated with */
+	Format                 PixelFormat /**< pixel format */
+	W                      int         /**< width */
+	H                      int         /**< height */
+	PixelDensity           float32     /**< scale converting size to pixels (e.g. a 1920x1080 mode with 2.0 scale would have 3840x2160 pixels) */
+	RefreshRate            float32     /**< refresh rate (or 0.0f for unspecified) */
+	RefreshRateNumerator   int         /**< precise refresh rate numerator (or 0 for unspecified) */
+	RefreshRateDenominator int         /**< precise refresh rate denominator */
 
 	Internal *DisplayModeData /**< Private */
 }
@@ -1711,7 +1711,7 @@ var SetWindowTitle func(window *Window, title *byte) bool
 * \sa SDL_SetWindowTitle
  */
 //go:sdl3extern
-var SDL_GetWindowTitle func(window *Window) *byte
+var GetWindowTitle func(window *Window) *byte
 
 /**
 * Set the icon for a window.

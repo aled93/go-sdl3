@@ -1212,7 +1212,7 @@ type FColor struct {
 * \sa SDL_SetPaletteColors
  */
 type Palette struct {
-	Ncolors  int    /**< number of elements in `colors`. */
+	NColors  int    /**< number of elements in `colors`. */
 	Colors   *Color /**< an array of colors, `ncolors` long. */
 	Version  uint32 /**< internal use only, do not touch. */
 	Refcount int    /**< internal use only, do not touch. */
@@ -1224,22 +1224,22 @@ type Palette struct {
 * \since This struct is available since SDL 3.2.0.
  */
 type PixelFormatDetails struct {
-	Format          PixelFormat
-	Bits_per_pixel  uint8
-	Bytes_per_pixel uint8
-	Padding         [2]uint8
-	Rmask           uint32
-	Gmask           uint32
-	Bmask           uint32
-	Amask           uint32
-	Rbits           uint8
-	Gbits           uint8
-	Bbits           uint8
-	Abits           uint8
-	Rshift          uint8
-	Gshift          uint8
-	Bshift          uint8
-	Ashift          uint8
+	Format        PixelFormat
+	BitsPerPixel  uint8
+	BytesPerPixel uint8
+	Padding       [2]uint8
+	RMask         uint32
+	GMask         uint32
+	BMask         uint32
+	AMask         uint32
+	RBits         uint8
+	GBits         uint8
+	BBits         uint8
+	ABits         uint8
+	RShift        uint8
+	GShift        uint8
+	BShift        uint8
+	AShift        uint8
 }
 
 /**
