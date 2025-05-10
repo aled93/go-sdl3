@@ -12,7 +12,7 @@
   - [ ] dialog
   - [ ] endian
   - [ ] error
-  - [ ] events
+  - [x] events
   - [ ] filesystem
   - [ ] gamepad
   - [ ] gpu
