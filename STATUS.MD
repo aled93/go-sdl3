@@ -3,7 +3,7 @@
   - [ ] assert
   - [ ] asyncio
   - [ ] atomic
-  - [ ] audio
+  - [x] audio
   - [ ] bits
   - [x] blendmode
   - [x] camera
