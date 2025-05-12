@@ -6,7 +6,7 @@
   - [ ] audio
   - [ ] bits
   - [x] blendmode
-  - [ ] camera
+  - [x] camera
   - [ ] clipboard
   - [ ] cpuinfo
   - [ ] dialog
