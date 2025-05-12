@@ -42,7 +42,7 @@
   - [x] rect
   - [ ] render
   - [x] scancode
-  - [ ] sensor
+  - [x] sensor
   - [ ] storage
   - [x] surface
   - [x] system
