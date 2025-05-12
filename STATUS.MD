@@ -24,7 +24,7 @@
   - [x] iostream
   - [ ] joystick
   - [ ] keyboard
-  - [ ] keycode
+  - [x] keycode
   - [ ] loadso
   - [ ] locale
   - [ ] log
