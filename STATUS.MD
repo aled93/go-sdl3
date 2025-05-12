@@ -20,7 +20,7 @@
   - [ ] haptic
   - [ ] hidapi
   - [ ] hints
-  - [ ] init
+  - [x] init
   - [x] iostream
   - [x] joystick
   - [x] keyboard
