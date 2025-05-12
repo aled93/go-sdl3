@@ -41,7 +41,7 @@
   - [x] properties
   - [x] rect
   - [ ] render
-  - [ ] scancode
+  - [x] scancode
   - [ ] sensor
   - [ ] storage
   - [x] surface
