@@ -31,7 +31,7 @@
   - [ ] messagebox
   - [ ] metal
   - [ ] misc
-  - [ ] mouse
+  - [x] mouse
   - [ ] mutex
   - [ ] pen
   - [x] pixels

@@ -1,0 +1,751 @@
+/*
+  Simple DirectMedia Layer
+  Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org>
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+*/
+
+/**
+ * # CategoryMouse
+ *
+ * Any GUI application has to deal with the mouse, and SDL provides functions
+ * to manage mouse input and the displayed cursor.
+ *
+ * Most interactions with the mouse will come through the event subsystem.
+ * Moving a mouse generates an SDL_EVENT_MOUSE_MOTION event, pushing a button
+ * generates SDL_EVENT_MOUSE_BUTTON_DOWN, etc, but one can also query the
+ * current state of the mouse at any time with SDL_GetMouseState().
+ *
+ * For certain games, it's useful to disassociate the mouse cursor from mouse
+ * input. An FPS, for example, would not want the player's motion to stop as
+ * the mouse hits the edge of the window. For these scenarios, use
+ * SDL_SetWindowRelativeMouseMode(), which hides the cursor, grabs mouse input
+ * to the window, and reads mouse input no matter how far it moves.
+ *
+ * Games that want the system to track the mouse but want to draw their own
+ * cursor can use SDL_HideCursor() and SDL_ShowCursor(). It might be more
+ * efficient to let the system manage the cursor, if possible, using
+ * SDL_SetCursor() with a custom image made through SDL_CreateColorCursor(),
+ * or perhaps just a specific system cursor from SDL_CreateSystemCursor().
+ *
+ * SDL can, on many platforms, differentiate between multiple connected mice,
+ * allowing for interesting input scenarios and multiplayer games. They can be
+ * enumerated with SDL_GetMice(), and SDL will send SDL_EVENT_MOUSE_ADDED and
+ * SDL_EVENT_MOUSE_REMOVED events as they are connected and unplugged.
+ *
+ * Since many apps only care about basic mouse input, SDL offers a virtual
+ * mouse device for touch and pen input, which often can make a desktop
+ * application work on a touchscreen phone without any code changes. Apps that
+ * care about touch/pen separately from mouse input should filter out events
+ * with a `which` field of SDL_TOUCH_MOUSEID/SDL_PEN_MOUSEID.
+ */
+package sdl
+
+/**
+ * This is a unique ID for a mouse for the time it is connected to the system,
+ * and is never reused for the lifetime of the application.
+ *
+ * If the mouse is disconnected and reconnected, it will get a new ID.
+ *
+ * The value 0 is an invalid ID.
+ *
+ * \since This datatype is available since SDL 3.2.0.
+ */
+type MouseID uint32
+
+/**
+ * The structure used to identify an SDL cursor.
+ *
+ * This is opaque data.
+ *
+ * \since This struct is available since SDL 3.2.0.
+ */
+type Cursor uintptr
+
+/**
+ * Cursor types for SDL_CreateSystemCursor().
+ *
+ * \since This enum is available since SDL 3.2.0.
+ */
+type SystemCursor int
+
+const (
+	SC_Default    SystemCursor = iota /**< Default cursor. Usually an arrow. */
+	SC_Text                           /**< Text selection. Usually an I-beam. */
+	SC_Wait                           /**< Wait. Usually an hourglass or watch or spinning ball. */
+	SC_Crosshair                      /**< Crosshair. */
+	SC_Progress                       /**< Program is busy but still interactive. Usually it's WAIT with an arrow. */
+	SC_NWSEResize                     /**< Double arrow pointing northwest and southeast. */
+	SC_NESWResize                     /**< Double arrow pointing northeast and southwest. */
+	SC_EWResize                       /**< Double arrow pointing west and east. */
+	SC_NSResize                       /**< Double arrow pointing north and south. */
+	SC_Move                           /**< Four pointed arrow pointing north, south, east, and west. */
+	SC_NotAllowed                     /**< Not permitted. Usually a slashed circle or crossbones. */
+	SC_Pointer                        /**< Pointer that indicates a link. Usually a pointing hand. */
+	SC_NWResize                       /**< Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE. */
+	SC_NResize                        /**< Window resize top. May be NS_RESIZE. */
+	SC_NEResize                       /**< Window resize top-right. May be NESW_RESIZE. */
+	SC_EResize                        /**< Window resize right. May be EW_RESIZE. */
+	SC_SEResize                       /**< Window resize bottom-right. May be NWSE_RESIZE. */
+	SC_SResize                        /**< Window resize bottom. May be NS_RESIZE. */
+	SC_SWResize                       /**< Window resize bottom-left. May be NESW_RESIZE. */
+	SC_WResize                        /**< Window resize left. May be EW_RESIZE. */
+	SC_Count
+)
+
+/**
+ * Scroll direction types for the Scroll event
+ *
+ * \since This enum is available since SDL 3.2.0.
+ */
+type MouseWheelDirection int
+
+const (
+	MW_Normal  MouseWheelDirection = iota /**< The scroll direction is normal */
+	MW_Flipped                            /**< The scroll direction is flipped / natural */
+)
+
+/**
+ * A bitmask of pressed mouse buttons, as reported by SDL_GetMouseState, etc.
+ *
+ * - Button 1: Left mouse button
+ * - Button 2: Middle mouse button
+ * - Button 3: Right mouse button
+ * - Button 4: Side mouse button 1
+ * - Button 5: Side mouse button 2
+ *
+ * \since This datatype is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetMouseState
+ * \sa SDL_GetGlobalMouseState
+ * \sa SDL_GetRelativeMouseState
+ */
+type MouseButton uint32
+type MouseButtonFlags uint32
+
+const (
+	MB_Left   MouseButton = 1
+	MB_Middle MouseButton = 2
+	MB_Right  MouseButton = 3
+	MB_X1     MouseButton = 4
+	MB_X2     MouseButton = 5
+)
+
+func BUTTON_MASK(X MouseButton) MouseButtonFlags {
+	return MouseButtonFlags(1 << (uint32(X) - 1))
+}
+
+const (
+	MBF_LMask  MouseButtonFlags = 1 << (uint32(MB_Left) - 1)
+	MBF_MMask  MouseButtonFlags = 1 << (uint32(MB_Middle) - 1)
+	MBF_RMask  MouseButtonFlags = 1 << (uint32(MB_Right) - 1)
+	MBF_X1Mask MouseButtonFlags = 1 << (uint32(MB_X1) - 1)
+	MBF_X2Mask MouseButtonFlags = 1 << (uint32(MB_X2) - 1)
+)
+
+/**
+ * A callback used to transform mouse motion delta from raw values.
+ *
+ * This is called during SDL's handling of platform mouse events to scale the
+ * values of the resulting motion delta.
+ *
+ * \param userdata what was passed as `userdata` to
+ *                 SDL_SetRelativeMouseTransform().
+ * \param timestamp the associated time at which this mouse motion event was
+ *                  received.
+ * \param window the associated window to which this mouse motion event was
+ *               addressed.
+ * \param mouseID the associated mouse from which this mouse motion event was
+ *                emitted.
+ * \param x pointer to a variable that will be treated as the resulting x-axis
+ *          motion.
+ * \param y pointer to a variable that will be treated as the resulting y-axis
+ *          motion.
+ *
+ * \threadsafety This callback is called by SDL's internal mouse input
+ *               processing procedure, which may be a thread separate from the
+ *               main event loop that is run at realtime priority. Stalling
+ *               this thread with too much work in the callback can therefore
+ *               potentially freeze the entire system. Care should be taken
+ *               with proper synchronization practices when adding other side
+ *               effects beyond mutation of the x and y values.
+ *
+ * \since This datatype is available since SDL 3.4.0.
+ *
+ * \sa SDL_SetRelativeMouseTransform
+ */
+type MouseMotionTransformCallback func(
+	userdata uintptr,
+	timestamp uint64,
+	window *Window,
+	mouseID MouseID,
+	x, y *float32,
+)
+
+/* Function prototypes */
+
+/**
+ * Return whether a mouse is currently connected.
+ *
+ * \returns true if a mouse is connected, false otherwise.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetMice
+ */
+//go:sdl3extern
+var HasMouse func() bool
+
+/**
+ * Get a list of currently connected mice.
+ *
+ * Note that this will include any device or virtual driver that includes
+ * mouse functionality, including some game controllers, KVM switches, etc.
+ * You should wait for input from a device before you consider it actively in
+ * use.
+ *
+ * \param count a pointer filled in with the number of mice returned, may be
+ *              NULL.
+ * \returns a 0 terminated array of mouse instance IDs or NULL on failure;
+ *          call SDL_GetError() for more information. This should be freed
+ *          with SDL_free() when it is no longer needed.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetMouseNameForID
+ * \sa SDL_HasMouse
+ */
+//go:sdl3extern
+var GetMice func(count *int) *MouseID
+
+/**
+ * Get the name of a mouse.
+ *
+ * This function returns "" if the mouse doesn't have a name.
+ *
+ * \param instance_id the mouse instance ID.
+ * \returns the name of the selected mouse, or NULL on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetMice
+ */
+//go:sdl3extern
+var GetMouseNameForID func(instance_id MouseID) string
+
+/**
+ * Get the window which currently has mouse focus.
+ *
+ * \returns the window with mouse focus.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ */
+//go:sdl3extern
+var GetMouseFocus func() *Window
+
+/**
+ * Query SDL's cache for the synchronous mouse button state and the
+ * window-relative SDL-cursor position.
+ *
+ * This function returns the cached synchronous state as SDL understands it
+ * from the last pump of the event queue.
+ *
+ * To query the platform for immediate asynchronous state, use
+ * SDL_GetGlobalMouseState.
+ *
+ * Passing non-NULL pointers to `x` or `y` will write the destination with
+ * respective x or y coordinates relative to the focused window.
+ *
+ * In Relative Mode, the SDL-cursor's position usually contradicts the
+ * platform-cursor's position as manually calculated from
+ * SDL_GetGlobalMouseState() and SDL_GetWindowPosition.
+ *
+ * \param x a pointer to receive the SDL-cursor's x-position from the focused
+ *          window's top left corner, can be NULL if unused.
+ * \param y a pointer to receive the SDL-cursor's y-position from the focused
+ *          window's top left corner, can be NULL if unused.
+ * \returns a 32-bit bitmask of the button state that can be bitwise-compared
+ *          against the SDL_BUTTON_MASK(X) macro.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetGlobalMouseState
+ * \sa SDL_GetRelativeMouseState
+ */
+//go:sdl3extern
+var GetMouseState func(x, y *float32) MouseButtonFlags
+
+/**
+ * Query the platform for the asynchronous mouse button state and the
+ * desktop-relative platform-cursor position.
+ *
+ * This function immediately queries the platform for the most recent
+ * asynchronous state, more costly than retrieving SDL's cached state in
+ * SDL_GetMouseState().
+ *
+ * Passing non-NULL pointers to `x` or `y` will write the destination with
+ * respective x or y coordinates relative to the desktop.
+ *
+ * In Relative Mode, the platform-cursor's position usually contradicts the
+ * SDL-cursor's position as manually calculated from SDL_GetMouseState() and
+ * SDL_GetWindowPosition.
+ *
+ * This function can be useful if you need to track the mouse outside of a
+ * specific window and SDL_CaptureMouse() doesn't fit your needs. For example,
+ * it could be useful if you need to track the mouse while dragging a window,
+ * where coordinates relative to a window might not be in sync at all times.
+ *
+ * \param x a pointer to receive the platform-cursor's x-position from the
+ *          desktop's top left corner, can be NULL if unused.
+ * \param y a pointer to receive the platform-cursor's y-position from the
+ *          desktop's top left corner, can be NULL if unused.
+ * \returns a 32-bit bitmask of the button state that can be bitwise-compared
+ *          against the SDL_BUTTON_MASK(X) macro.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_CaptureMouse
+ * \sa SDL_GetMouseState
+ * \sa SDL_GetGlobalMouseState
+ */
+//go:sdl3extern
+var GetGlobalMouseState func(x, y *float32) MouseButtonFlags
+
+/**
+ * Query SDL's cache for the synchronous mouse button state and accumulated
+ * mouse delta since last call.
+ *
+ * This function returns the cached synchronous state as SDL understands it
+ * from the last pump of the event queue.
+ *
+ * To query the platform for immediate asynchronous state, use
+ * SDL_GetGlobalMouseState.
+ *
+ * Passing non-NULL pointers to `x` or `y` will write the destination with
+ * respective x or y deltas accumulated since the last call to this function
+ * (or since event initialization).
+ *
+ * This function is useful for reducing overhead by processing relative mouse
+ * inputs in one go per-frame instead of individually per-event, at the
+ * expense of losing the order between events within the frame (e.g. quickly
+ * pressing and releasing a button within the same frame).
+ *
+ * \param x a pointer to receive the x mouse delta accumulated since last
+ *          call, can be NULL if unused.
+ * \param y a pointer to receive the y mouse delta accumulated since last
+ *          call, can be NULL if unused.
+ * \returns a 32-bit bitmask of the button state that can be bitwise-compared
+ *          against the SDL_BUTTON_MASK(X) macro.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetMouseState
+ * \sa SDL_GetGlobalMouseState
+ */
+//go:sdl3extern
+var GetRelativeMouseState func(x, y *float32) MouseButtonFlags
+
+/**
+ * Move the mouse cursor to the given position within the window.
+ *
+ * This function generates a mouse motion event if relative mode is not
+ * enabled. If relative mode is enabled, you can force mouse events for the
+ * warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
+ *
+ * Note that this function will appear to succeed, but not actually move the
+ * mouse when used over Microsoft Remote Desktop.
+ *
+ * \param window the window to move the mouse into, or NULL for the current
+ *               mouse focus.
+ * \param x the x coordinate within the window.
+ * \param y the y coordinate within the window.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_WarpMouseGlobal
+ */
+//go:sdl3extern
+var WarpMouseInWindow func(window *Window, x, y float32)
+
+/**
+ * Move the mouse to the given position in global screen space.
+ *
+ * This function generates a mouse motion event.
+ *
+ * A failure of this function usually means that it is unsupported by a
+ * platform.
+ *
+ * Note that this function will appear to succeed, but not actually move the
+ * mouse when used over Microsoft Remote Desktop.
+ *
+ * \param x the x coordinate.
+ * \param y the y coordinate.
+ * \returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_WarpMouseInWindow
+ */
+//go:sdl3extern
+var WarpMouseGlobal func(x, y float32) bool
+
+/**
+ * Set a user-defined function by which to transform relative mouse inputs.
+ *
+ * This overrides the relative system scale and relative speed scale hints.
+ * Should be called prior to enabling relative mouse mode, fails otherwise.
+ *
+ * \param callback a callback used to transform relative mouse motion, or NULL
+ *                 for default behavior.
+ * \param userdata a pointer that will be passed to `callback`.
+ * \returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.4.0.
+ */
+//go:sdl3extern
+var SetRelativeMouseTransform func(callback MouseMotionTransformCallback, userdata uintptr) bool
+
+/**
+ * Set relative mouse mode for a window.
+ *
+ * While the window has focus and relative mouse mode is enabled, the cursor
+ * is hidden, the mouse position is constrained to the window, and SDL will
+ * report continuous relative mouse motion even if the mouse is at the edge of
+ * the window.
+ *
+ * If you'd like to keep the mouse position fixed while in relative mode you
+ * can use SDL_SetWindowMouseRect(). If you'd like the cursor to be at a
+ * specific location when relative mode ends, you should use
+ * SDL_WarpMouseInWindow() before disabling relative mode.
+ *
+ * This function will flush any pending mouse motion for this window.
+ *
+ * \param window the window to change.
+ * \param enabled true to enable relative mode, false to disable.
+ * \returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetWindowRelativeMouseMode
+ */
+//go:sdl3extern
+var SetWindowRelativeMouseMode func(window *Window, enabled bool) bool
+
+/**
+ * Query whether relative mouse mode is enabled for a window.
+ *
+ * \param window the window to query.
+ * \returns true if relative mode is enabled for a window or false otherwise.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_SetWindowRelativeMouseMode
+ */
+//go:sdl3extern
+var GetWindowRelativeMouseMode func(window *Window) bool
+
+/**
+ * Capture the mouse and to track input outside an SDL window.
+ *
+ * Capturing enables your app to obtain mouse events globally, instead of just
+ * within your window. Not all video targets support this function. When
+ * capturing is enabled, the current window will get all mouse events, but
+ * unlike relative mode, no change is made to the cursor and it is not
+ * restrained to your window.
+ *
+ * This function may also deny mouse input to other windows--both those in
+ * your application and others on the system--so you should use this function
+ * sparingly, and in small bursts. For example, you might want to track the
+ * mouse while the user is dragging something, until the user releases a mouse
+ * button. It is not recommended that you capture the mouse for long periods
+ * of time, such as the entire time your app is running. For that, you should
+ * probably use SDL_SetWindowRelativeMouseMode() or SDL_SetWindowMouseGrab(),
+ * depending on your goals.
+ *
+ * While captured, mouse events still report coordinates relative to the
+ * current (foreground) window, but those coordinates may be outside the
+ * bounds of the window (including negative values). Capturing is only allowed
+ * for the foreground window. If the window loses focus while capturing, the
+ * capture will be disabled automatically.
+ *
+ * While capturing is enabled, the current window will have the
+ * `SDL_WINDOW_MOUSE_CAPTURE` flag set.
+ *
+ * Please note that SDL will attempt to "auto capture" the mouse while the
+ * user is pressing a button; this is to try and make mouse behavior more
+ * consistent between platforms, and deal with the common case of a user
+ * dragging the mouse outside of the window. This means that if you are
+ * calling SDL_CaptureMouse() only to deal with this situation, you do not
+ * have to (although it is safe to do so). If this causes problems for your
+ * app, you can disable auto capture by setting the
+ * `SDL_HINT_MOUSE_AUTO_CAPTURE` hint to zero.
+ *
+ * \param enabled true to enable capturing, false to disable.
+ * \returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetGlobalMouseState
+ */
+//go:sdl3extern
+var CaptureMouse func(enabled bool) bool
+
+/**
+ * Create a cursor using the specified bitmap data and mask (in MSB format).
+ *
+ * `mask` has to be in MSB (Most Significant Bit) format.
+ *
+ * The cursor width (`w`) must be a multiple of 8 bits.
+ *
+ * The cursor is created in black and white according to the following:
+ *
+ * - data=0, mask=1: white
+ * - data=1, mask=1: black
+ * - data=0, mask=0: transparent
+ * - data=1, mask=0: inverted color if possible, black if not.
+ *
+ * Cursors created with this function must be freed with SDL_DestroyCursor().
+ *
+ * If you want to have a color cursor, or create your cursor from an
+ * SDL_Surface, you should use SDL_CreateColorCursor(). Alternately, you can
+ * hide the cursor and draw your own as part of your game's rendering, but it
+ * will be bound to the framerate.
+ *
+ * Also, SDL_CreateSystemCursor() is available, which provides several
+ * readily-available system cursors to pick from.
+ *
+ * \param data the color value for each pixel of the cursor.
+ * \param mask the mask value for each pixel of the cursor.
+ * \param w the width of the cursor.
+ * \param h the height of the cursor.
+ * \param hot_x the x-axis offset from the left of the cursor image to the
+ *              mouse x position, in the range of 0 to `w` - 1.
+ * \param hot_y the y-axis offset from the top of the cursor image to the
+ *              mouse y position, in the range of 0 to `h` - 1.
+ * \returns a new cursor with the specified parameters on success or NULL on
+ *          failure; call SDL_GetError() for more information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_CreateColorCursor
+ * \sa SDL_CreateSystemCursor
+ * \sa SDL_DestroyCursor
+ * \sa SDL_SetCursor
+ */
+//go:sdl3extern
+var CreateCursor func(data []byte, mask []byte, w, h, hot_x, hot_y int) Cursor
+
+/**
+ * Create a color cursor.
+ *
+ * If this function is passed a surface with alternate representations, the
+ * surface will be interpreted as the content to be used for 100% display
+ * scale, and the alternate representations will be used for high DPI
+ * situations. For example, if the original surface is 32x32, then on a 2x
+ * macOS display or 200% display scale on Windows, a 64x64 version of the
+ * image will be used, if available. If a matching version of the image isn't
+ * available, the closest larger size image will be downscaled to the
+ * appropriate size and be used instead, if available. Otherwise, the closest
+ * smaller image will be upscaled and be used instead.
+ *
+ * \param surface an SDL_Surface structure representing the cursor image.
+ * \param hot_x the x position of the cursor hot spot.
+ * \param hot_y the y position of the cursor hot spot.
+ * \returns the new cursor on success or NULL on failure; call SDL_GetError()
+ *          for more information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_CreateCursor
+ * \sa SDL_CreateSystemCursor
+ * \sa SDL_DestroyCursor
+ * \sa SDL_SetCursor
+ */
+//go:sdl3extern
+var CreateColorCursor func(surface *Surface, hot_x, hot_y int) Cursor
+
+/**
+ * Create a system cursor.
+ *
+ * \param id an SDL_SystemCursor enum value.
+ * \returns a cursor on success or NULL on failure; call SDL_GetError() for
+ *          more information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_DestroyCursor
+ */
+//go:sdl3extern
+var CreateSystemCursor func(id SystemCursor) Cursor
+
+/**
+ * Set the active cursor.
+ *
+ * This function sets the currently active cursor to the specified one. If the
+ * cursor is currently visible, the change will be immediately represented on
+ * the display. SDL_SetCursor(NULL) can be used to force cursor redraw, if
+ * this is desired for any reason.
+ *
+ * \param cursor a cursor to make active.
+ * \returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_GetCursor
+ */
+//go:sdl3extern
+var SetCursor func(cursor Cursor) bool
+
+/**
+ * Get the active cursor.
+ *
+ * This function returns a pointer to the current cursor which is owned by the
+ * library. It is not necessary to free the cursor with SDL_DestroyCursor().
+ *
+ * \returns the active cursor or NULL if there is no mouse.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_SetCursor
+ */
+//go:sdl3extern
+var GetCursor func() Cursor
+
+/**
+ * Get the default cursor.
+ *
+ * You do not have to call SDL_DestroyCursor() on the return value, but it is
+ * safe to do so.
+ *
+ * \returns the default cursor on success or NULL on failuree; call
+ *          SDL_GetError() for more information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ */
+//go:sdl3extern
+var GetDefaultCursor func() Cursor
+
+/**
+ * Free a previously-created cursor.
+ *
+ * Use this function to free cursor resources created with SDL_CreateCursor(),
+ * SDL_CreateColorCursor() or SDL_CreateSystemCursor().
+ *
+ * \param cursor the cursor to free.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_CreateColorCursor
+ * \sa SDL_CreateCursor
+ * \sa SDL_CreateSystemCursor
+ */
+//go:sdl3extern
+var DestroyCursor func(cursor Cursor)
+
+/**
+ * Show the cursor.
+ *
+ * \returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_CursorVisible
+ * \sa SDL_HideCursor
+ */
+//go:sdl3extern
+var ShowCursor func() bool
+
+/**
+ * Hide the cursor.
+ *
+ * \returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_CursorVisible
+ * \sa SDL_ShowCursor
+ */
+//go:sdl3extern
+var HideCursor func() bool
+
+/**
+ * Return whether the cursor is currently being shown.
+ *
+ * \returns `true` if the cursor is being shown, or `false` if the cursor is
+ *          hidden.
+ *
+ * \threadsafety This function should only be called on the main thread.
+ *
+ * \since This function is available since SDL 3.2.0.
+ *
+ * \sa SDL_HideCursor
+ * \sa SDL_ShowCursor
+ */
+//go:sdl3extern
+var CursorVisible func() bool
