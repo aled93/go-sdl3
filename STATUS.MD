@@ -33,7 +33,7 @@
   - [ ] misc
   - [x] mouse
   - [ ] mutex
-  - [ ] pen
+  - [x] pen
   - [x] pixels
   - [ ] platform
   - [x] power
