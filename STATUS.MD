@@ -51,7 +51,7 @@
   - [ ] timer
   - [ ] tray
   - [ ] touch
-  - [ ] version
+  - [x] version
   - [x] video
   - [ ] oldnames
 - [ ] Documentation (doxygen -> godoc)
