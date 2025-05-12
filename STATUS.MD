@@ -22,7 +22,7 @@
   - [ ] hints
   - [ ] init
   - [x] iostream
-  - [ ] joystick
+  - [x] joystick
   - [x] keyboard
   - [x] keycode
   - [ ] loadso
