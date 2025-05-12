@@ -23,7 +23,7 @@
   - [ ] init
   - [x] iostream
   - [ ] joystick
-  - [ ] keyboard
+  - [x] keyboard
   - [x] keycode
   - [ ] loadso
   - [ ] locale
