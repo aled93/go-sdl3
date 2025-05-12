@@ -36,7 +36,7 @@
   - [ ] pen
   - [x] pixels
   - [ ] platform
-  - [ ] power
+  - [x] power
   - [ ] process
   - [x] properties
   - [x] rect
