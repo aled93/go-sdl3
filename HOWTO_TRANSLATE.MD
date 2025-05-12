@@ -24,6 +24,7 @@ Go:
 - Default enum underlying type in C is int
 - Rename enum variants from ALL_UPPERCASE to CamelCase
   - Prefix enum variants with enum name initials and underscore to prevent ident collision
+  - If variant name is general word like `Error`, `Unknown` and so on - add suffix, e.g. if enum is `SensorType` rename it's variant from `SDL_SENSOR_UNKNOWN` to `ST_UnknownSensorType`
 
 ## Example
 C:
