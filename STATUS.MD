@@ -50,7 +50,7 @@
   - [ ] time
   - [ ] timer
   - [ ] tray
-  - [ ] touch
+  - [x] touch
   - [x] version
   - [x] video
   - [ ] oldnames
