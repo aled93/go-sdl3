@@ -16,7 +16,7 @@
   - [ ] filesystem
   - [ ] gamepad
   - [ ] gpu
-  - [ ] guid
+  - [x] guid
   - [ ] haptic
   - [ ] hidapi
   - [ ] hints
