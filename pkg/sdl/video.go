@@ -316,7 +316,7 @@ const (
 *
 * \sa SDL_GL_CreateContext
  */
-type GLContextState = *GLContext
+type GLContext uintptr
 
 /**
 * Opaque type for an EGL display.
