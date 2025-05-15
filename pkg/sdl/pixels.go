@@ -98,7 +98,7 @@ const ALPHA_OPAQUE = 255
 *
 * \sa ALPHA_TRANSPARENT_FLOAT
  */
-const SDL_ALPHA_OPAQUE_FLOAT = 1.0
+const ALPHA_OPAQUE_FLOAT = 1.0
 
 /**
 * A fully transparent 8-bit alpha value.
