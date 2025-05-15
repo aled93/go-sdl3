@@ -65,6 +65,7 @@ type GUID [16]uint8
  *
  * \sa SDL_StringToGUID
  */
+//go:sdl3extern
 var GUIDToString func(guid GUID, pszGUID []byte, cbGUID int)
 
 /**
@@ -83,4 +84,5 @@ var GUIDToString func(guid GUID, pszGUID []byte, cbGUID int)
  *
  * \sa SDL_GUIDToString
  */
+//go:sdl3extern
 var StringToGUID func(pchGUID string) GUID
