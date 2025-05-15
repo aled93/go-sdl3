@@ -40,7 +40,7 @@
   - [ ] process
   - [x] properties
   - [x] rect
-  - [ ] render
+  - [x] render
   - [x] scancode
   - [x] sensor
   - [ ] storage
