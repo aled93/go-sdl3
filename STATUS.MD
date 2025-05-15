@@ -48,7 +48,7 @@
   - [x] system
   - [ ] thread
   - [x] time
-  - [ ] timer
+  - [x] timer
   - [ ] tray
   - [x] touch
   - [x] version
