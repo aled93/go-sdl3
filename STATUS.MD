@@ -11,7 +11,7 @@
   - [ ] cpuinfo
   - [ ] dialog
   - [ ] endian
-  - [ ] error
+  - [x] error
   - [x] events
   - [ ] filesystem
   - [ ] gamepad
@@ -47,7 +47,7 @@
   - [x] surface
   - [x] system
   - [ ] thread
-  - [ ] time
+  - [x] time
   - [ ] timer
   - [ ] tray
   - [x] touch
