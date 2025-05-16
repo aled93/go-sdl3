@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	reSdl3Extern = regexp.MustCompile(`//go:sdl3extern\((\w+)\)?`)
+	reSdl3Extern = regexp.MustCompile(`//go:sdl3extern(?:\((\w+)\)|)`)
 	//go:embed loader.tmpl
 	loaderTmplSrc string
 	loaderTmpl    = template.Must(template.New("loader").Parse(loaderTmplSrc))
