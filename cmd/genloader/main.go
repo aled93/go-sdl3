@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	reSdl3Extern = regexp.MustCompile(`//go:sdl3extern(\(\w+\))?`)
+	reSdl3Extern = regexp.MustCompile(`//go:sdl3extern\((\w+)\)?`)
 	//go:embed loader.tmpl
 	loaderTmplSrc string
 	loaderTmpl    = template.Must(template.New("loader").Parse(loaderTmplSrc))
@@ -81,9 +81,9 @@ func main() {
 
 			if decl.Doc != nil {
 				for _, cmt := range decl.Doc.List {
-					if matches := reSdl3Extern.FindAllString(cmt.Text, 4); matches != nil {
+					if matches := reSdl3Extern.FindStringSubmatch(cmt.Text); matches != nil {
 						orig := ""
-						if len(matches) >= 2 {
+						if len(matches[1]) > 0 {
 							orig = matches[1]
 						} else {
 							orig = spec.Names[0].Name
