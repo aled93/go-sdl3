@@ -2321,7 +2321,7 @@ var RenderTextureAffine func(renderer *Renderer, texture *Texture,
  * \sa SDL_RenderTexture
  */
 //go:sdl3extern
-var RenderTextureTiled func(renderer *Renderer, texture *Texture, srcrect FRect, scale float32, dstrect *FRect) bool
+var RenderTextureTiled func(renderer *Renderer, texture *Texture, srcrect *FRect, scale float32, dstrect *FRect) bool
 
 /**
  * Perform a scaled copy using the 9-grid algorithm to the current rendering

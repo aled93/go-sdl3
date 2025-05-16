@@ -72,7 +72,7 @@ type GUID [16]uint8
  * \sa SDL_StringToGUID
  */
 //go:sdl3extern
-var GUIDToString func(guid GUID, pszGUID []byte, cbGUID int)
+var GUIDToString func(guid *GUID, pszGUID []byte, cbGUID int)
 
 /**
  * Convert a GUID string into a SDL_GUID structure.

@@ -840,7 +840,7 @@ var GetJoystickType func(joystick Joystick) JoystickType
  * \sa SDL_GetJoystickGUIDForID
  */
 //go:sdl3extern
-var GetJoystickGUIDInfo func(guid GUID, vendor, product, version, crc16 *uint16)
+var GetJoystickGUIDInfo func(guid *GUID, vendor, product, version, crc16 *uint16)
 
 /**
  * Get the status of a specified joystick.
