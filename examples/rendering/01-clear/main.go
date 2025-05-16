@@ -10,6 +10,7 @@ package main
 import (
 	"log"
 	"math"
+	"runtime"
 	"sdl3/pkg/sdl"
 )
 
@@ -18,6 +19,12 @@ var window *sdl.Window
 var renderer *sdl.Renderer
 
 func main() {
+	runtime.LockOSThread()
+
+	if err := sdl.LoadLibrary(); err != nil {
+		panic(err)
+	}
+
 	sdl.SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear")
 
 	if !sdl.Init(sdl.IF_Video) {
