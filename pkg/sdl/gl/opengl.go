@@ -23,6 +23,12 @@
 */
 
 /*
+  Language bindings and additional adaptations by AleD, 2025
+  This file contains modified code and/or translated interfaces.
+  Original SDL3 source: https://github.com/libsdl-org/SDL
+*/
+
+/*
  * This is a simple file to encapsulate the OpenGL API headers.
  *
  * Define NO_SDL_GLEXT if you have your own version of glext.h and want

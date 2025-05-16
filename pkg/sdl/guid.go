@@ -19,6 +19,12 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
+/*
+  Language bindings and additional adaptations by AleD, 2025
+  This file contains modified code and/or translated interfaces.
+  Original SDL3 source: https://github.com/libsdl-org/SDL
+*/
+
 /* WIKI CATEGORY: GUID */
 
 /**
