@@ -194,7 +194,7 @@ const FLT_EPSILON = 1.1920928955078125e-07 /* 0x0.000002p0 */
 * \sa SDL_realloc
 * \sa SDL_aligned_alloc
  */
-//go:sdl3extern
+//go:sdl3extern(malloc)
 var Malloc func(size uint) uintptr
 
 /**
@@ -220,7 +220,7 @@ var Malloc func(size uint) uintptr
 * \sa SDL_malloc
 * \sa SDL_realloc
  */
-//go:sdl3extern
+//go:sdl3extern(calloc)
 var Calloc func(nmemb, size uint) uintptr
 
 /**
@@ -261,7 +261,7 @@ var Calloc func(nmemb, size uint) uintptr
 * \sa SDL_malloc
 * \sa SDL_calloc
  */
-//go:sdl3extern
+//go:sdl3extern(realloc)
 var Realloc func(mem uintptr, size uint) uintptr
 
 /**
@@ -282,7 +282,7 @@ var Realloc func(mem uintptr, size uint) uintptr
 * \sa SDL_calloc
 * \sa SDL_realloc
  */
-//go:sdl3extern
+//go:sdl3extern(free)
 var Free func(mem uintptr)
 
 /**
@@ -678,7 +678,7 @@ var DestroyEnvironment func(env Environment)
 *
 * \since This function is available since SDL 3.2.0.
  */
-//go:sdl3extern
+//go:sdl3extern(getenv)
 var Getenv func(name uintptr) uintptr
 
 /**
@@ -698,7 +698,7 @@ var Getenv func(name uintptr) uintptr
 *
 * \sa SDL_getenv
  */
-//go:sdl3extern
+//go:sdl3extern(getenv_unsafe)
 var GetenvUnsafe func(name uintptr) uintptr
 
 /**
@@ -717,7 +717,7 @@ var GetenvUnsafe func(name uintptr) uintptr
 *
 * \sa SDL_SetEnvironmentVariable
  */
-//go:sdl3extern
+//go:sdl3extern(setenv_unsafe)
 var SetenvUnsafe func(name, value uintptr, overwrite int) int
 
 /**
@@ -733,5 +733,5 @@ var SetenvUnsafe func(name, value uintptr, overwrite int) int
 *
 * \sa SDL_UnsetEnvironmentVariable
  */
-//go:sdl3extern
+//go:sdl3extern(unsetenv_unsafe)
 var UnsetenvUnsafe func(name uintptr) int
