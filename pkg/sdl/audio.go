@@ -2359,7 +2359,7 @@ var MixAudio func(dst, src []uint8, format AudioFormat, len uint32, volume float
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var ConvertAudioSamples func(src_spec *AudioSpec, src_data []uint8, src_len int, dst_spec AudioSpec, dst_data [][]uint8, dst_len []int) bool
+var ConvertAudioSamples func(src_spec *AudioSpec, src_data []uint8, src_len int, dst_spec *AudioSpec, dst_data [][]uint8, dst_len []int) bool
 
 /**
  * Get the human readable name of an audio format.
