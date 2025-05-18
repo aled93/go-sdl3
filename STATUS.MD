@@ -8,7 +8,7 @@
   - [x] blendmode
   - [x] camera
   - [x] clipboard
-  - [ ] cpuinfo
+  - [x] cpuinfo
   - [ ] dialog
   - [ ] endian
   - [x] error
