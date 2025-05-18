@@ -127,7 +127,7 @@ const (
  *
  * \since This datatype is available since SDL 3.2.0.
  */
-type AppInitFunc func(appstate *uintptr, argc int, argv []string) AppResult
+type AppInitFunc func(appstate *uintptr, argc int32, argv []string) AppResult
 
 /**
  * Function pointer typedef for SDL_AppIterate.

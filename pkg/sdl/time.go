@@ -42,15 +42,15 @@ package sdl
  * \since This struct is available since SDL 3.2.0.
  */
 type DateTime struct {
-	Year       int /**< Year */
-	Month      int /**< Month [01-12] */
-	Day        int /**< Day of the month [01-31] */
-	Hour       int /**< Hour [0-23] */
-	Minute     int /**< Minute [0-59] */
-	Second     int /**< Seconds [0-60] */
-	Nanosecond int /**< Nanoseconds [0-999999999] */
-	DayOfWeek  int /**< Day of the week [0-6] (0 being Sunday) */
-	UTCOffset  int /**< Seconds east of UTC */
+	Year       int32 /**< Year */
+	Month      int32 /**< Month [01-12] */
+	Day        int32 /**< Day of the month [01-31] */
+	Hour       int32 /**< Hour [0-23] */
+	Minute     int32 /**< Minute [0-59] */
+	Second     int32 /**< Seconds [0-60] */
+	Nanosecond int32 /**< Nanoseconds [0-999999999] */
+	DayOfWeek  int32 /**< Day of the week [0-6] (0 being Sunday) */
+	UTCOffset  int32 /**< Seconds east of UTC */
 }
 
 /**
@@ -192,7 +192,7 @@ var TimeFromWindows func(dwLowDateTime, dwHighDateTime uint32) Time
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetDaysInMonth func(year, month int) int
+var GetDaysInMonth func(year, month int32) int32
 
 /**
  * Get the day of year for a calendar date.
@@ -206,7 +206,7 @@ var GetDaysInMonth func(year, month int) int
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetDayOfYear func(year, month, day int) int
+var GetDayOfYear func(year, month, day int32) int32
 
 /**
  * Get the day of week for a calendar date.
@@ -220,4 +220,4 @@ var GetDayOfYear func(year, month, day int) int
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetDayOfWeek func(year, month, day int) int
+var GetDayOfWeek func(year, month, day int32) int32

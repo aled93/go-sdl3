@@ -60,7 +60,7 @@ type IOSAnimationCallback func(userdata uintptr)
  * \sa SDL_SetiOSEventPump
  */
 //go:sdl3extern
-var SetiOSAnimationCallback func(window *Window, interval int, callback IOSAnimationCallback, callbackParam uintptr) bool
+var SetiOSAnimationCallback func(window *Window, interval int32, callback IOSAnimationCallback, callbackParam uintptr) bool
 
 /**
  * Use this function to enable or disable the SDL event pump on Apple iOS.

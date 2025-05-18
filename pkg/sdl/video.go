@@ -129,12 +129,12 @@ type DisplayModeData struct{}
 type DisplayMode struct {
 	DisplayID              DisplayID   /**< the display this mode is associated with */
 	Format                 PixelFormat /**< pixel format */
-	W                      int         /**< width */
-	H                      int         /**< height */
+	W                      int32       /**< width */
+	H                      int32       /**< height */
 	PixelDensity           float32     /**< scale converting size to pixels (e.g. a 1920x1080 mode with 2.0 scale would have 3840x2160 pixels) */
 	RefreshRate            float32     /**< refresh rate (or 0.0f for unspecified) */
-	RefreshRateNumerator   int         /**< precise refresh rate numerator (or 0 for unspecified) */
-	RefreshRateDenominator int         /**< precise refresh rate denominator */
+	RefreshRateNumerator   int32       /**< precise refresh rate numerator (or 0 for unspecified) */
+	RefreshRateDenominator int32       /**< precise refresh rate denominator */
 
 	Internal *DisplayModeData /**< Private */
 }
@@ -532,7 +532,7 @@ const (
 * \sa SDL_GetVideoDriver
  */
 //go:sdl3extern
-var GetNumVideoDrivers func() int
+var GetNumVideoDrivers func() int32
 
 /**
 * Get the name of a built in video driver.
@@ -554,7 +554,7 @@ var GetNumVideoDrivers func() int
 * \sa SDL_GetNumVideoDrivers
  */
 //go:sdl3extern
-var GetVideoDriver func(index int) *byte
+var GetVideoDriver func(index int32) *byte
 
 /**
 * Get the name of the currently initialized video driver.
@@ -602,7 +602,7 @@ var GetSystemTheme func() SystemTheme
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetDisplays func(count *int) DisplayID
+var GetDisplays func(count *int32) DisplayID
 
 /**
 * Return the primary display.
@@ -810,7 +810,7 @@ var GetDisplayContentScale func(displayID DisplayID) float32
 * \sa SDL_GetDisplays
  */
 //go:sdl3extern
-var GetFullscreenDisplayModes func(displayID DisplayID, count *int) **DisplayMode
+var GetFullscreenDisplayModes func(displayID DisplayID, count *int32) **DisplayMode
 
 /**
 * Get the closest match to the requested display mode.
@@ -842,7 +842,7 @@ var GetFullscreenDisplayModes func(displayID DisplayID, count *int) **DisplayMod
 * \sa SDL_GetFullscreenDisplayModes
  */
 //go:sdl3extern
-var GetClosestFullscreenDisplayMode func(displayID DisplayID, w, h int, refresh_rate float32, include_high_density_modes bool, closest *DisplayMode) bool
+var GetClosestFullscreenDisplayMode func(displayID DisplayID, w, h int32, refresh_rate float32, include_high_density_modes bool, closest *DisplayMode) bool
 
 /**
 * Get information about the desktop's display mode.
@@ -1085,7 +1085,7 @@ var GetWindowPixelFormat func(window *Window) PixelFormat
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetWindows func(count *int) **Window
+var GetWindows func(count *int32) **Window
 
 /**
 * Create a window with the specified dimensions and flags.
@@ -1176,7 +1176,7 @@ var GetWindows func(count *int) **Window
 * \sa SDL_DestroyWindow
  */
 //go:sdl3extern
-var CreateWindow func(title *byte, w, h int, flags WindowFlags) *Window
+var CreateWindow func(title *byte, w, h int32, flags WindowFlags) *Window
 
 /**
 * Create a child popup window of the specified parent window.
@@ -1253,7 +1253,7 @@ var CreateWindow func(title *byte, w, h int, flags WindowFlags) *Window
 * \sa SDL_GetWindowParent
  */
 //go:sdl3extern
-var CreatePopupWindow func(parent *Window, offset_x, offset_y, w, h int, flags WindowFlags) *Window
+var CreatePopupWindow func(parent *Window, offset_x, offset_y, w, h int32, flags WindowFlags) *Window
 
 /**
 * Create a window with the specified properties.
@@ -1784,7 +1784,7 @@ var SetWindowIcon func(window *Window, icon *Surface) bool
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var SetWindowPosition func(window *Window, x, y int) bool
+var SetWindowPosition func(window *Window, x, y int32) bool
 
 /**
 * Get the position of a window.
@@ -1810,7 +1810,7 @@ var SetWindowPosition func(window *Window, x, y int) bool
 * \sa SDL_SetWindowPosition
  */
 //go:sdl3extern
-var GetWindowPosition func(window *Window, x, y *int) bool
+var GetWindowPosition func(window *Window, x, y *int32) bool
 
 /**
 * Request that the size of a window's client area be set.
@@ -1848,7 +1848,7 @@ var GetWindowPosition func(window *Window, x, y *int) bool
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var SetWindowSize func(window *Window, w, h int) bool
+var SetWindowSize func(window *Window, w, h int32) bool
 
 /**
 * Get the size of a window's client area.
@@ -1872,7 +1872,7 @@ var SetWindowSize func(window *Window, w, h int) bool
 * \sa SDL_SetWindowSize
  */
 //go:sdl3extern
-var GetWindowSize func(window *Window, w, h *int) bool
+var GetWindowSize func(window *Window, w, h *int32) bool
 
 /**
 * Get the safe area for this window.
@@ -1995,7 +1995,7 @@ var GetWindowAspectRatio func(window *Window, min_aspect, max_aspect *float32) b
 * \sa SDL_GetWindowSize
  */
 //go:sdl3extern
-var GetWindowBordersSize func(window *Window, top, left, bottom, right *int) bool
+var GetWindowBordersSize func(window *Window, top, left, bottom, right *int32) bool
 
 /**
 * Get the size of a window's client area, in pixels.
@@ -2016,7 +2016,7 @@ var GetWindowBordersSize func(window *Window, top, left, bottom, right *int) boo
 * \sa SDL_GetWindowSize
  */
 //go:sdl3extern
-var GetWindowSizeInPixels func(window *Window, w, h *int) bool
+var GetWindowSizeInPixels func(window *Window, w, h *int32) bool
 
 /**
 * Set the minimum size of a window's client area.
@@ -2035,7 +2035,7 @@ var GetWindowSizeInPixels func(window *Window, w, h *int) bool
 * \sa SDL_SetWindowMaximumSize
  */
 //go:sdl3extern
-var SetWindowMinimumSize func(window *Window, min_w, min_h int) bool
+var SetWindowMinimumSize func(window *Window, min_w, min_h int32) bool
 
 /**
 * Get the minimum size of a window's client area.
@@ -2056,7 +2056,7 @@ var SetWindowMinimumSize func(window *Window, min_w, min_h int) bool
 * \sa SDL_SetWindowMinimumSize
  */
 //go:sdl3extern
-var GetWindowMinimumSize func(window *Window, w, h *int) bool
+var GetWindowMinimumSize func(window *Window, w, h *int32) bool
 
 /**
 * Set the maximum size of a window's client area.
@@ -2075,7 +2075,7 @@ var GetWindowMinimumSize func(window *Window, w, h *int) bool
 * \sa SDL_SetWindowMinimumSize
  */
 //go:sdl3extern
-var SetWindowMaximumSize func(window *Window, max_w, max_h int) bool
+var SetWindowMaximumSize func(window *Window, max_w, max_h int32) bool
 
 /**
 * Get the maximum size of a window's client area.
@@ -2096,7 +2096,7 @@ var SetWindowMaximumSize func(window *Window, max_w, max_h int) bool
 * \sa SDL_SetWindowMaximumSize
  */
 //go:sdl3extern
-var GetWindowMaximumSize func(window *Window, w, h *int) bool
+var GetWindowMaximumSize func(window *Window, w, h *int32) bool
 
 /**
 * Set the border state of a window.
@@ -2469,7 +2469,7 @@ var SetWindowSurfaceVSync func(window *Window, vsync VSync) bool
 * \sa SDL_SetWindowSurfaceVSync
  */
 //go:sdl3extern
-var GetWindowSurfaceVSync func(window *Window, vsync *int) bool
+var GetWindowSurfaceVSync func(window *Window, vsync *VSync) bool
 
 /**
 * Copy the window surface to the screen.
@@ -2521,7 +2521,7 @@ var UpdateWindowSurface func(window *Window) bool
 * \sa SDL_UpdateWindowSurface
  */
 //go:sdl3extern
-var UpdateWindowSurfaceRects func(window *Window, rects *Rect, numrects int) bool
+var UpdateWindowSurfaceRects func(window *Window, rects *Rect, numrects int32) bool
 
 /**
 * Destroy the surface associated with the window.
@@ -2820,7 +2820,7 @@ var SetWindowFocusable func(window *Window, focusable bool) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var ShowWindowSystemMenu func(window *Window, x, y int) bool
+var ShowWindowSystemMenu func(window *Window, x, y int32) bool
 
 /**
 * Possible return values from the SDL_HitTest callback.
@@ -3264,7 +3264,7 @@ var GL_ResetAttributes func()
 * \sa SDL_GL_ResetAttributes
  */
 //go:sdl3extern
-var GL_SetAttribute func(attr GLAttr, value int) bool
+var GL_SetAttribute func(attr GLAttr, value int32) bool
 
 /**
 * Get the actual value for an attribute from the current context.
@@ -3283,7 +3283,7 @@ var GL_SetAttribute func(attr GLAttr, value int) bool
 * \sa SDL_GL_SetAttribute
  */
 //go:sdl3extern
-var GL_GetAttribute func(attr GLAttr, value *int) bool
+var GL_GetAttribute func(attr GLAttr, value *int32) bool
 
 /**
 * Create an OpenGL context for an OpenGL window, and make it current.
@@ -3454,7 +3454,7 @@ var EGL_SetAttributeCallbacks func(
 * \sa SDL_GL_GetSwapInterval
  */
 //go:sdl3extern
-var GL_SetSwapInterval func(interval int) bool
+var GL_SetSwapInterval func(interval int32) bool
 
 /**
 * Get the swap interval for the current OpenGL context.
@@ -3476,7 +3476,7 @@ var GL_SetSwapInterval func(interval int) bool
 * \sa SDL_GL_SetSwapInterval
  */
 //go:sdl3extern
-var GL_GetSwapInterval func(interval *int) bool
+var GL_GetSwapInterval func(interval *int32) bool
 
 /**
 * Update a window with OpenGL rendering.

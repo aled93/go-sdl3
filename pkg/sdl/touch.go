@@ -131,7 +131,7 @@ const MOUSE_TOUCHID TouchID = TouchID(0xFFFF_FFFF_FFFF_FFFF) // -1
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetTouchDevices func(count *int) *TouchID
+var GetTouchDevices func(count *int32) *TouchID
 
 /**
  * Get the touch device name as reported from the driver.
@@ -170,4 +170,4 @@ var GetTouchDeviceType func(touchID TouchID) TouchDeviceType
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetTouchFingers func(touchID TouchID, count *int) **Finger
+var GetTouchFingers func(touchID TouchID, count *int32) **Finger

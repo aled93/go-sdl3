@@ -60,7 +60,7 @@ const (
 	SCANCODE_MASK = (1 << 30)
 )
 
-func SCANCODE_TO_KEYCODE(X int) Keycode {
+func SCANCODE_TO_KEYCODE(X int32) Keycode {
 	return Keycode(X | SCANCODE_MASK)
 }
 

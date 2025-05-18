@@ -88,7 +88,7 @@ var GetAndroidActivity func() uintptr
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetAndroidSDKVersion func() int
+var GetAndroidSDKVersion func() int32
 
 /**
 * Query if the application is running on a Chromebook.
@@ -303,7 +303,7 @@ var RequestAndroidPermission func(permission *byte, cb RequestAndroidPermissionC
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var ShowAndroidToast func(message *byte, duration, gravity, xoffset, yoffset int) bool
+var ShowAndroidToast func(message *byte, duration, gravity, xoffset, yoffset int32) bool
 
 /**
 * Send a user command to SDLActivity.
@@ -320,4 +320,4 @@ var ShowAndroidToast func(message *byte, duration, gravity, xoffset, yoffset int
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SendAndroidMessage func(command uint32, param int) bool
+var SendAndroidMessage func(command uint32, param int32) bool

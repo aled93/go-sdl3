@@ -263,8 +263,8 @@ func DEFINE_PIXELFOURCC(A, B, C, D byte) uint32 {
  */
 func DEFINE_PIXELFORMAT[O BitmapOrder | PackedOrder | ArrayOrder](typ PixelType,
 	order O, layout PackedLayout, bits, bytes byte) PixelFormat {
-	return PixelFormat((int(1) << 28) | (int(typ) << 24) | (int(order) << 20) |
-		(int(layout) << 16) | (int(bits) << 8) | (int(bytes) << 0))
+	return PixelFormat((int32(1) << 28) | (int32(typ) << 24) | (int32(order) << 20) |
+		(int32(layout) << 16) | (int32(bits) << 8) | (int32(bytes) << 0))
 }
 
 /**
@@ -280,8 +280,8 @@ func DEFINE_PIXELFORMAT[O BitmapOrder | PackedOrder | ArrayOrder](typ PixelType,
 *
 * \since This macro is available since SDL 3.2.0.
  */
-func PIXELFLAG(format PixelFormat) int {
-	return (int(format) >> 28) & 0x0F
+func PIXELFLAG(format PixelFormat) int32 {
+	return (int32(format) >> 28) & 0x0F
 }
 
 /**
@@ -313,8 +313,8 @@ func PIXELTYPE(format PixelFormat) PixelType {
 *
 * \since This macro is available since SDL 3.2.0.
  */
-func PIXELORDER(format PixelFormat) int {
-	return (int(format) >> 20) & 0x0F
+func PIXELORDER(format PixelFormat) int32 {
+	return (int32(format) >> 20) & 0x0F
 }
 
 /**
@@ -331,7 +331,7 @@ func PIXELORDER(format PixelFormat) int {
 * \since This macro is available since SDL 3.2.0.
  */
 func PIXELLAYOUT(format PixelFormat) PackedLayout {
-	return PackedLayout((int(format) >> 16) & 0x0F)
+	return PackedLayout((int32(format) >> 16) & 0x0F)
 }
 
 /**
@@ -352,11 +352,11 @@ func PIXELLAYOUT(format PixelFormat) PackedLayout {
 *
 * \sa SDL_BYTESPERPIXEL
  */
-func BITSPERPIXEL(format PixelFormat) int {
+func BITSPERPIXEL(format PixelFormat) int32 {
 	if ISPIXELFORMAT_FOURCC(format) {
 		return 0
 	} else {
-		return (int(format) >> 8) & 0xFF
+		return (int32(format) >> 8) & 0xFF
 	}
 }
 
@@ -378,7 +378,7 @@ func BITSPERPIXEL(format PixelFormat) int {
 *
 * \sa SDL_BITSPERPIXEL
  */
-func BYTESPERPIXEL(format PixelFormat) int {
+func BYTESPERPIXEL(format PixelFormat) int32 {
 	if ISPIXELFORMAT_FOURCC(format) {
 		if (format == PF_YUY2) ||
 			(format == PF_UYVY) ||
@@ -389,7 +389,7 @@ func BYTESPERPIXEL(format PixelFormat) int {
 			return 1
 		}
 	} else {
-		return int(format) & 0xFF
+		return int32(format) & 0xFF
 	}
 }
 
@@ -1218,10 +1218,10 @@ type FColor struct {
 * \sa SDL_SetPaletteColors
  */
 type Palette struct {
-	NColors  int    /**< number of elements in `colors`. */
+	NColors  int32  /**< number of elements in `colors`. */
 	Colors   *Color /**< an array of colors, `ncolors` long. */
 	Version  uint32 /**< internal use only, do not touch. */
-	Refcount int    /**< internal use only, do not touch. */
+	Refcount int32  /**< internal use only, do not touch. */
 }
 
 /**
@@ -1281,7 +1281,7 @@ var GetPixelFormatName func(format PixelFormat) *byte
 * \sa SDL_GetPixelFormatForMasks
  */
 //go:sdl3extern
-var GetMasksForPixelFormat func(format PixelFormat, bpp *int, Rmask, Gmask, Bmask, Amask *uint32) bool
+var GetMasksForPixelFormat func(format PixelFormat, bpp *int32, Rmask, Gmask, Bmask, Amask *uint32) bool
 
 /**
 * Convert a bpp value and RGBA masks to an enumerated pixel format.
@@ -1304,7 +1304,7 @@ var GetMasksForPixelFormat func(format PixelFormat, bpp *int, Rmask, Gmask, Bmas
 * \sa SDL_GetMasksForPixelFormat
  */
 //go:sdl3extern
-var GetPixelFormatForMasks func(bpp int, Rmask, Gmask, Bmask, Amask uint32) PixelFormat
+var GetPixelFormatForMasks func(bpp int32, Rmask, Gmask, Bmask, Amask uint32) PixelFormat
 
 /**
 * Create an SDL_PixelFormatDetails structure corresponding to a pixel format.
@@ -1343,7 +1343,7 @@ var GetPixelFormatDetails func(format PixelFormat) *PixelFormatDetails
 * \sa SDL_SetSurfacePalette
  */
 //go:sdl3extern
-var CreatePalette func(ncolors int) *Palette
+var CreatePalette func(ncolors int32) *Palette
 
 /**
 * Set a range of colors in a palette.
@@ -1361,7 +1361,7 @@ var CreatePalette func(ncolors int) *Palette
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetPaletteColors func(palette *Palette, colors *Color, firstcolor int, ncolors int) bool
+var SetPaletteColors func(palette *Palette, colors *Color, firstcolor int32, ncolors int32) bool
 
 /**
 * Free a palette created with SDL_CreatePalette().

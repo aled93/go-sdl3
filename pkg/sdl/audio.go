@@ -194,8 +194,8 @@ const AUDIO_MASK_SIGNED = 1 << 15
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func DEFINE_AUDIO_FORMAT(signed, bigendian, flt, size int) AudioFormat {
-	return AudioFormat(int(uint16(signed)<<15) | int(uint16(bigendian)<<12) | int(uint16(flt)<<8) | (size & AUDIO_MASK_BITSIZE))
+func DEFINE_AUDIO_FORMAT(signed, bigendian, flt, size int32) AudioFormat {
+	return AudioFormat(int32(uint16(signed)<<15) | int32(uint16(bigendian)<<12) | int32(uint16(flt)<<8) | (size & AUDIO_MASK_BITSIZE))
 }
 
 /**
@@ -267,8 +267,8 @@ func init() {
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func AUDIO_BITSIZE(x AudioFormat) int {
-	return int(x) & AUDIO_MASK_BITSIZE
+func AUDIO_BITSIZE(x AudioFormat) int32 {
+	return int32(x) & AUDIO_MASK_BITSIZE
 }
 
 /**
@@ -283,7 +283,7 @@ func AUDIO_BITSIZE(x AudioFormat) int {
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func AUDIO_BYTESIZE(x AudioFormat) int {
+func AUDIO_BYTESIZE(x AudioFormat) int32 {
 	return AUDIO_BITSIZE(x) / 8
 }
 
@@ -423,8 +423,8 @@ const AUDIO_DEVICE_DEFAULT_RECORDING AudioDeviceID = 0xFFFF_FFFE
  */
 type AudioSpec struct {
 	Format   AudioFormat /**< Audio data format */
-	Channels int         /**< Number of channels: 1 mono, 2 stereo, etc */
-	Freq     int         /**< sample rate: sample frames per second */
+	Channels int32       /**< Number of channels: 1 mono, 2 stereo, etc */
+	Freq     int32       /**< sample rate: sample frames per second */
 }
 
 /**
@@ -440,7 +440,7 @@ type AudioSpec struct {
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func AUDIO_FRAMESIZE(x AudioSpec) int {
+func AUDIO_FRAMESIZE(x AudioSpec) int32 {
 	return AUDIO_BYTESIZE(x.Format) * x.Channels
 }
 
@@ -494,7 +494,7 @@ type AudioStream uintptr
  * \sa SDL_GetAudioDriver
  */
 //go:sdl3extern
-var GetNumAudioDrivers func() int
+var GetNumAudioDrivers func() int32
 
 /**
  * Use this function to get the name of a built in audio driver.
@@ -519,7 +519,7 @@ var GetNumAudioDrivers func() int
  * \sa SDL_GetNumAudioDrivers
  */
 //go:sdl3extern
-var GetAudioDriver func(index int) string
+var GetAudioDriver func(index int32) string
 
 /**
  * Get the name of the current audio driver.
@@ -566,7 +566,7 @@ var GetCurrentAudioDriver func() string
  * \sa SDL_GetAudioRecordingDevices
  */
 //go:sdl3extern
-var GetAudioPlaybackDevices func(count *int) *AudioDeviceID
+var GetAudioPlaybackDevices func(count *int32) *AudioDeviceID
 
 /**
  * Get a list of currently-connected audio recording devices.
@@ -596,7 +596,7 @@ var GetAudioPlaybackDevices func(count *int) *AudioDeviceID
  * \sa SDL_GetAudioPlaybackDevices
  */
 //go:sdl3extern
-var GetAudioRecordingDevices func(count *int) *AudioDeviceID
+var GetAudioRecordingDevices func(count *int32) *AudioDeviceID
 
 /**
  * Get the human-readable name of a specific audio device.
@@ -649,7 +649,7 @@ var GetAudioDeviceName func(devid AudioDeviceID) string
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetAudioDeviceFormat func(devid AudioDeviceID, spec *AudioSpec, sample_frames *int) bool
+var GetAudioDeviceFormat func(devid AudioDeviceID, spec *AudioSpec, sample_frames *int32) bool
 
 /**
  * Get the current channel map of an audio device.
@@ -673,7 +673,7 @@ var GetAudioDeviceFormat func(devid AudioDeviceID, spec *AudioSpec, sample_frame
  * \sa SDL_SetAudioStreamInputChannelMap
  */
 //go:sdl3extern
-var GetAudioDeviceChannelMap func(devid AudioDeviceID, count int) *int
+var GetAudioDeviceChannelMap func(devid AudioDeviceID, count int32) *int32
 
 /**
  * Open a specific audio device.
@@ -995,7 +995,7 @@ var CloseAudioDevice func(devid AudioDeviceID)
  * \sa SDL_GetAudioStreamDevice
  */
 //go:sdl3extern
-var BindAudioStreams func(devid AudioDeviceID, streams []AudioStream, num_streams int) bool
+var BindAudioStreams func(devid AudioDeviceID, streams []AudioStream, num_streams int32) bool
 
 /**
  * Bind a single audio stream to an audio device.
@@ -1039,7 +1039,7 @@ var BindAudioStream func(devid AudioDeviceID, stream AudioStream) bool
  * \sa SDL_BindAudioStreams
  */
 //go:sdl3extern
-var UnbindAudioStreams func(streams []AudioStream, num_streams int)
+var UnbindAudioStreams func(streams []AudioStream, num_streams int32)
 
 /**
  * Unbind a single audio stream from its audio device.
@@ -1290,7 +1290,7 @@ var SetAudioStreamGain func(stream AudioStream, gain float32) bool
  * \sa SDL_SetAudioStreamInputChannelMap
  */
 //go:sdl3extern
-var GetAudioStreamInputChannelMap func(stream AudioStream, count *int) *int
+var GetAudioStreamInputChannelMap func(stream AudioStream, count *int32) *int32
 
 /**
  * Get the current output channel map of an audio stream.
@@ -1315,7 +1315,7 @@ var GetAudioStreamInputChannelMap func(stream AudioStream, count *int) *int
  * \sa SDL_SetAudioStreamInputChannelMap
  */
 //go:sdl3extern
-var GetAudioStreamOutputChannelMap func(stream AudioStream, count *int) *int
+var GetAudioStreamOutputChannelMap func(stream AudioStream, count *int32) *int32
 
 /**
  * Set the current input channel map of an audio stream.
@@ -1376,7 +1376,7 @@ var GetAudioStreamOutputChannelMap func(stream AudioStream, count *int) *int
  * \sa SDL_SetAudioStreamInputChannelMap
  */
 //go:sdl3extern
-var SetAudioStreamInputChannelMap func(stream AudioStream, chmap *int, count int) bool
+var SetAudioStreamInputChannelMap func(stream AudioStream, chmap *int32, count int32) bool
 
 /**
  * Set the current output channel map of an audio stream.
@@ -1435,7 +1435,7 @@ var SetAudioStreamInputChannelMap func(stream AudioStream, chmap *int, count int
  * \sa SDL_SetAudioStreamInputChannelMap
  */
 //go:sdl3extern
-var SetAudioStreamOutputChannelMap func(stream AudioStream, chmap *int, count int) bool
+var SetAudioStreamOutputChannelMap func(stream AudioStream, chmap *int32, count int32) bool
 
 /**
  * Add data to the stream.
@@ -1466,7 +1466,7 @@ var SetAudioStreamOutputChannelMap func(stream AudioStream, chmap *int, count in
  * \sa SDL_GetAudioStreamQueued
  */
 //go:sdl3extern
-var PutAudioStreamData func(stream AudioStream, buf []byte, len int) bool
+var PutAudioStreamData func(stream AudioStream, buf []byte, len int32) bool
 
 /**
  * Add data to the stream with each channel in a separate array.
@@ -1520,7 +1520,7 @@ var PutAudioStreamData func(stream AudioStream, buf []byte, len int) bool
  * \sa SDL_GetAudioStreamQueued
  */
 //go:sdl3extern
-var PutAudioStreamPlanarData func(stream AudioStream, channel_buffers []*byte, num_channels, num_samples int) bool
+var PutAudioStreamPlanarData func(stream AudioStream, channel_buffers []*byte, num_channels, num_samples int32) bool
 
 /**
  * Get converted/resampled data from the stream.
@@ -1551,7 +1551,7 @@ var PutAudioStreamPlanarData func(stream AudioStream, channel_buffers []*byte, n
  * \sa SDL_PutAudioStreamData
  */
 //go:sdl3extern
-var GetAudioStreamData func(stream AudioStream, buf []byte, len int) int
+var GetAudioStreamData func(stream AudioStream, buf []byte, len int32) int32
 
 /**
  * Get the number of converted/resampled bytes available.
@@ -1578,7 +1578,7 @@ var GetAudioStreamData func(stream AudioStream, buf []byte, len int) int
  * \sa SDL_PutAudioStreamData
  */
 //go:sdl3extern
-var GetAudioStreamAvailable func(stream AudioStream) int
+var GetAudioStreamAvailable func(stream AudioStream) int32
 
 /**
  * Get the number of bytes currently queued.
@@ -1617,7 +1617,7 @@ var GetAudioStreamAvailable func(stream AudioStream) int
  * \sa SDL_ClearAudioStream
  */
 //go:sdl3extern
-var GetAudioStreamQueued func(stream AudioStream) int
+var GetAudioStreamQueued func(stream AudioStream) int32
 
 /**
  * Tell the stream that you're done sending data, and anything being buffered
@@ -1819,7 +1819,7 @@ var UnlockAudioStream func(stream AudioStream) bool
  * \sa SDL_SetAudioStreamGetCallback
  * \sa SDL_SetAudioStreamPutCallback
  */
-type AudioStreamCallback func(userdata uintptr, stream AudioStream, additional_amount, total_amount int)
+type AudioStreamCallback func(userdata uintptr, stream AudioStream, additional_amount, total_amount int32)
 
 /**
  * Set a callback that runs when data is requested from an audio stream.
@@ -2118,7 +2118,7 @@ var SetAudioIterationCallbacks func(devid AudioDeviceID, start, end AudioStreamC
  *
  * \sa SDL_SetAudioPostmixCallback
  */
-type AudioPostmixCallback func(userdata uintptr, spec *AudioSpec, buffer *float32, buflen int)
+type AudioPostmixCallback func(userdata uintptr, spec *AudioSpec, buffer *float32, buflen int32)
 
 /**
  * Set a callback that fires when data is about to be fed to an audio device.
@@ -2359,7 +2359,7 @@ var MixAudio func(dst, src []uint8, format AudioFormat, len uint32, volume float
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var ConvertAudioSamples func(src_spec *AudioSpec, src_data []uint8, src_len int, dst_spec *AudioSpec, dst_data [][]uint8, dst_len []int) bool
+var ConvertAudioSamples func(src_spec *AudioSpec, src_data []uint8, src_len int32, dst_spec *AudioSpec, dst_data [][]uint8, dst_len []int32) bool
 
 /**
  * Get the human readable name of an audio format.
@@ -2390,4 +2390,4 @@ var GetAudioFormatName func(format AudioFormat) string
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetSilenceValueForFormat func(format AudioFormat) int
+var GetSilenceValueForFormat func(format AudioFormat) int32

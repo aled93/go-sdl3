@@ -58,7 +58,7 @@ var SetX11EventHook func(callback X11EventHook, userdata uintptr)
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetLinuxThreadPriority func(threadID int64, priority int) bool
+var SetLinuxThreadPriority func(threadID int64, priority int32) bool
 
 /**
  * Sets the priority (not nice level) and scheduling policy for a thread.
@@ -75,4 +75,4 @@ var SetLinuxThreadPriority func(threadID int64, priority int) bool
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetLinuxThreadPriorityAndPolicy func(threadID int64, sdlPriority int, schedPolicy int) bool
+var SetLinuxThreadPriorityAndPolicy func(threadID int64, sdlPriority int32, schedPolicy int32) bool

@@ -91,4 +91,4 @@ const (
  *
  * \since This function is available since SDL 3.2.0.
  */
-var GetPowerInfo func(seconds, percent *int) PowerState
+var GetPowerInfo func(seconds, percent *int32) PowerState

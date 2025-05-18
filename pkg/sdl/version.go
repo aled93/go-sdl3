@@ -71,7 +71,7 @@ const MicroVersion = 0
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func VERSIONNUM(major, minor, patch int) int {
+func VERSIONNUM(major, minor, patch int32) int32 {
 	return major*1000000 + minor*1000 + patch
 }
 
@@ -84,7 +84,7 @@ func VERSIONNUM(major, minor, patch int) int {
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func VERSIONNUM_MAJOR(version int) int {
+func VERSIONNUM_MAJOR(version int32) int32 {
 	return version / 1000000
 }
 
@@ -97,7 +97,7 @@ func VERSIONNUM_MAJOR(version int) int {
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func VERSIONNUM_MINOR(version int) int {
+func VERSIONNUM_MINOR(version int32) int32 {
 	return (version / 1000) % 1000
 }
 
@@ -110,7 +110,7 @@ func VERSIONNUM_MINOR(version int) int {
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func VERSIONNUM_MICRO(version int) int {
+func VERSIONNUM_MICRO(version int32) int32 {
 	return version % 1000
 }
 
@@ -128,7 +128,7 @@ const VERSION = MajorVersion*1000000 + MinorVersion*1000 + MicroVersion
  *
  * \since This macro is available since SDL 3.2.0.
  */
-func VERSION_ATLEAST(X, Y, Z int) bool {
+func VERSION_ATLEAST(X, Y, Z int32) bool {
 	return VERSION >= VERSIONNUM(X, Y, Z)
 }
 
@@ -149,7 +149,7 @@ func VERSION_ATLEAST(X, Y, Z int) bool {
  * \sa SDL_GetRevision
  */
 //go:sdl3extern
-var GetVersion func() int
+var GetVersion func() int32
 
 /**
  * Get the code revision of SDL that is linked against your program.

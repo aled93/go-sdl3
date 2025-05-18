@@ -33,4 +33,4 @@ var GetDirect3D9AdapterIndex func(displayID DisplayID)
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetDXGIOutputInfo func(displayID DisplayID, adapterIndex *int, outputIndex *int) bool
+var GetDXGIOutputInfo func(displayID DisplayID, adapterIndex *int32, outputIndex *int32) bool

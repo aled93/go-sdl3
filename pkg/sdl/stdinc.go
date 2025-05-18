@@ -497,7 +497,7 @@ var AlignedFree func(mem uintptr)
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetNumAllocations func() int
+var GetNumAllocations func() int32
 
 /**
 * A thread-safe set of environment variables
@@ -718,7 +718,7 @@ var GetenvUnsafe func(name uintptr) uintptr
 * \sa SDL_SetEnvironmentVariable
  */
 //go:sdl3extern(setenv_unsafe)
-var SetenvUnsafe func(name, value uintptr, overwrite int) int
+var SetenvUnsafe func(name, value uintptr, overwrite int32) int32
 
 /**
 * Clear a variable from the environment.
@@ -734,4 +734,4 @@ var SetenvUnsafe func(name, value uintptr, overwrite int) int
 * \sa SDL_UnsetEnvironmentVariable
  */
 //go:sdl3extern(unsetenv_unsafe)
-var UnsetenvUnsafe func(name uintptr) int
+var UnsetenvUnsafe func(name uintptr) int32

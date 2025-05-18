@@ -196,7 +196,7 @@ var HasJoystick func() bool
  * \sa SDL_OpenJoystick
  */
 //go:sdl3extern
-var GetJoysticks func(count *int) *JoystickID
+var GetJoysticks func(count *int32) *JoystickID
 
 /**
  * Get the implementation dependent name of a joystick.
@@ -246,7 +246,7 @@ var GetJoystickPathForID func(instance_id JoystickID) string
  * \sa SDL_GetJoysticks
  */
 //go:sdl3extern
-var GetJoystickPlayerIndexForID func(instance_id JoystickID) int
+var GetJoystickPlayerIndexForID func(instance_id JoystickID) int32
 
 /**
  * Get the implementation-dependent GUID of a joystick.
@@ -379,7 +379,7 @@ var GetJoystickFromID func(instance_id JoystickID) Joystick
  * \sa SDL_SetJoystickPlayerIndex
  */
 //go:sdl3extern
-var GetJoystickFromPlayerIndex func(player_index int) Joystick
+var GetJoystickFromPlayerIndex func(player_index int32) Joystick
 
 /**
  * The structure that describes a virtual joystick touchpad.
@@ -441,11 +441,11 @@ type VirtualJoystickDesc struct {
 
 	Userdata          uintptr                                                                         /**< User data pointer passed to callbacks */
 	Update            func(userdata uintptr)                                                          /**< Called when the joystick state should be updated */
-	SetPlayerIndex    func(userdata uintptr, player_index int)                                        /**< Called when the player index is set */
+	SetPlayerIndex    func(userdata uintptr, player_index int32)                                      /**< Called when the player index is set */
 	Rumble            func(userdata uintptr, low_frequency_rumble, high_frequency_rumble uint16) bool /**< Implements SDL_RumbleJoystick() */
 	RumbleTriggers    func(userdata uintptr, left_rumble, right_rumble uint16) bool                   /**< Implements SDL_RumbleJoystickTriggers() */
 	SetLED            func(userdata uintptr, red, green, blue uint8) bool                             /**< Implements SDL_SetJoystickLED() */
-	SendEffect        func(userdata uintptr, data []byte, size int) bool                              /**< Implements SDL_SendJoystickEffect() */
+	SendEffect        func(userdata uintptr, data []byte, size int32) bool                            /**< Implements SDL_SendJoystickEffect() */
 	SetSensorsEnabled func(userdata uintptr, enabled bool) bool                                       /**< Implements SDL_SetGamepadSensorEnabled() */
 	Cleanup           func(userdata uintptr)                                                          /**< Cleans up the userdata when the joystick is detached */
 }
@@ -512,7 +512,7 @@ var IsJoystickVirtual func(instance_id JoystickID) bool
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetJoystickVirtualAxis func(joystick Joystick, axis int, value int16) bool
+var SetJoystickVirtualAxis func(joystick Joystick, axis int32, value int16) bool
 
 /**
  * Generate ball motion on an opened virtual joystick.
@@ -533,7 +533,7 @@ var SetJoystickVirtualAxis func(joystick Joystick, axis int, value int16) bool
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetJoystickVirtualBall func(joystick Joystick, ball int, xrel, yrel int16) bool
+var SetJoystickVirtualBall func(joystick Joystick, ball int32, xrel, yrel int16) bool
 
 /**
  * Set the state of a button on an opened virtual joystick.
@@ -553,7 +553,7 @@ var SetJoystickVirtualBall func(joystick Joystick, ball int, xrel, yrel int16) b
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetJoystickVirtualButton func(joystick Joystick, button int, down bool) bool
+var SetJoystickVirtualButton func(joystick Joystick, button int32, down bool) bool
 
 /**
  * Set the state of a hat on an opened virtual joystick.
@@ -573,7 +573,7 @@ var SetJoystickVirtualButton func(joystick Joystick, button int, down bool) bool
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetJoystickVirtualHat func(joystick Joystick, hat int, value uint8) bool
+var SetJoystickVirtualHat func(joystick Joystick, hat int32, value uint8) bool
 
 /**
  * Set touchpad finger state on an opened virtual joystick.
@@ -600,7 +600,7 @@ var SetJoystickVirtualHat func(joystick Joystick, hat int, value uint8) bool
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetJoystickVirtualTouchpad func(joystick Joystick, touchpad, finger int, down bool, x, y, pressure float32) bool
+var SetJoystickVirtualTouchpad func(joystick Joystick, touchpad, finger int32, down bool, x, y, pressure float32) bool
 
 /**
  * Send a sensor update for an opened virtual joystick.
@@ -623,7 +623,7 @@ var SetJoystickVirtualTouchpad func(joystick Joystick, touchpad, finger int, dow
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SendJoystickVirtualSensorData func(joystick Joystick, type_ SensorType, sensor_timestamp uint64, data *float32, num_values int) bool
+var SendJoystickVirtualSensorData func(joystick Joystick, type_ SensorType, sensor_timestamp uint64, data *float32, num_values int32) bool
 
 /**
  * Get the properties associated with a joystick.
@@ -700,7 +700,7 @@ var GetJoystickPath func(joystick Joystick) string
  * \sa SDL_SetJoystickPlayerIndex
  */
 //go:sdl3extern
-var GetJoystickPlayerIndex func(joystick Joystick) int
+var GetJoystickPlayerIndex func(joystick Joystick) int32
 
 /**
  * Set the player index of an opened joystick.
@@ -716,7 +716,7 @@ var GetJoystickPlayerIndex func(joystick Joystick) int
  * \sa SDL_GetJoystickPlayerIndex
  */
 //go:sdl3extern
-var SetJoystickPlayerIndex func(joystick Joystick, player_index int) bool
+var SetJoystickPlayerIndex func(joystick Joystick, player_index int32) bool
 
 /**
  * Get the implementation-dependent GUID for the joystick.
@@ -885,7 +885,7 @@ var GetJoystickID func(joystick Joystick) JoystickID
  * \sa SDL_GetNumJoystickHats
  */
 //go:sdl3extern
-var GetNumJoystickAxes func(joystick Joystick) int
+var GetNumJoystickAxes func(joystick Joystick) int32
 
 /**
  * Get the number of trackballs on a joystick.
@@ -907,7 +907,7 @@ var GetNumJoystickAxes func(joystick Joystick) int
  * \sa SDL_GetNumJoystickHats
  */
 //go:sdl3extern
-var GetNumJoystickBalls func(joystick Joystick) int
+var GetNumJoystickBalls func(joystick Joystick) int32
 
 /**
  * Get the number of POV hats on a joystick.
@@ -924,7 +924,7 @@ var GetNumJoystickBalls func(joystick Joystick) int
  * \sa SDL_GetNumJoystickButtons
  */
 //go:sdl3extern
-var GetNumJoystickHats func(joystick Joystick) int
+var GetNumJoystickHats func(joystick Joystick) int32
 
 /**
  * Get the number of buttons on a joystick.
@@ -941,7 +941,7 @@ var GetNumJoystickHats func(joystick Joystick) int
  * \sa SDL_GetNumJoystickHats
  */
 //go:sdl3extern
-var GetNumJoystickButtons func(joystick Joystick) int
+var GetNumJoystickButtons func(joystick Joystick) int32
 
 /**
  * Set the state of joystick event processing.
@@ -1010,7 +1010,7 @@ var UpdateJoysticks func()
  * \sa SDL_GetNumJoystickAxes
  */
 //go:sdl3extern
-var GetJoystickAxis func(joystick Joystick, axis int) int16
+var GetJoystickAxis func(joystick Joystick, axis int32) int16
 
 /**
  * Get the initial state of an axis control on a joystick.
@@ -1027,7 +1027,7 @@ var GetJoystickAxis func(joystick Joystick, axis int) int16
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetJoystickAxisInitialState func(joystick Joystick, axis int, state *int16) bool
+var GetJoystickAxisInitialState func(joystick Joystick, axis int32, state *int16) bool
 
 /**
  * Get the ball axis change since the last poll.
@@ -1049,7 +1049,7 @@ var GetJoystickAxisInitialState func(joystick Joystick, axis int, state *int16) 
  * \sa SDL_GetNumJoystickBalls
  */
 //go:sdl3extern
-var GetJoystickBall func(joystick Joystick, ball int, dx, dy *int) bool
+var GetJoystickBall func(joystick Joystick, ball int32, dx, dy *int32) bool
 
 /**
  * Get the current state of a POV hat on a joystick.
@@ -1094,7 +1094,7 @@ const (
  * \sa SDL_GetNumJoystickButtons
  */
 //go:sdl3extern
-var GetJoystickButton func(joystick Joystick, button int) bool
+var GetJoystickButton func(joystick Joystick, button int32) bool
 
 /**
  * Start a rumble effect.
@@ -1181,7 +1181,7 @@ var SetJoystickLED func(joystick Joystick, red, green, blue uint8) bool
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SendJoystickEffect func(joystick Joystick, data []byte, size int) bool
+var SendJoystickEffect func(joystick Joystick, data []byte, size int32) bool
 
 /**
  * Close a joystick previously opened with SDL_OpenJoystick().
@@ -1228,4 +1228,4 @@ var GetJoystickConnectionState func(joystick Joystick) JoystickConnectionState
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetJoystickPowerInfo func(joystick Joystick, percent *int) PowerState
+var GetJoystickPowerInfo func(joystick Joystick, percent *int32) PowerState

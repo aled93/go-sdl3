@@ -240,7 +240,7 @@ var HasMouse func() bool
  * \sa SDL_HasMouse
  */
 //go:sdl3extern
-var GetMice func(count *int) *MouseID
+var GetMice func(count *int32) *MouseID
 
 /**
  * Get the name of a mouse.
@@ -586,7 +586,7 @@ var CaptureMouse func(enabled bool) bool
  * \sa SDL_SetCursor
  */
 //go:sdl3extern
-var CreateCursor func(data []byte, mask []byte, w, h, hot_x, hot_y int) Cursor
+var CreateCursor func(data []byte, mask []byte, w, h, hot_x, hot_y int32) Cursor
 
 /**
  * Create a color cursor.
@@ -617,7 +617,7 @@ var CreateCursor func(data []byte, mask []byte, w, h, hot_x, hot_y int) Cursor
  * \sa SDL_SetCursor
  */
 //go:sdl3extern
-var CreateColorCursor func(surface *Surface, hot_x, hot_y int) Cursor
+var CreateColorCursor func(surface *Surface, hot_x, hot_y int32) Cursor
 
 /**
  * Create a system cursor.

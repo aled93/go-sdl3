@@ -107,10 +107,10 @@ type Camera uintptr
 type CameraSpec struct {
 	Format               PixelFormat /**< Frame format */
 	Colorspace           Colorspace  /**< Frame colorspace */
-	Width                int         /**< Frame width */
-	Height               int         /**< Frame height */
-	FramerateNumerator   int         /**< Frame rate numerator ((num / denom) == FPS, (denom / num) == duration in seconds) */
-	FramerateDenominator int         /**< Frame rate demoninator ((num / denom) == FPS, (denom / num) == duration in seconds) */
+	Width                int32       /**< Frame width */
+	Height               int32       /**< Frame height */
+	FramerateNumerator   int32       /**< Frame rate numerator ((num / denom) == FPS, (denom / num) == duration in seconds) */
+	FramerateDenominator int32       /**< Frame rate demoninator ((num / denom) == FPS, (denom / num) == duration in seconds) */
 }
 
 /**
@@ -150,7 +150,7 @@ const (
  * \sa SDL_GetCameraDriver
  */
 //go:sdl3extern
-var GetNumCameraDrivers func() int
+var GetNumCameraDrivers func() int32
 
 /**
  * Use this function to get the name of a built in camera driver.
@@ -175,7 +175,7 @@ var GetNumCameraDrivers func() int
  * \sa SDL_GetNumCameraDrivers
  */
 //go:sdl3extern
-var GetCameraDriver func(index int) string
+var GetCameraDriver func(index int32) string
 
 /**
  * Get the name of the current camera driver.
@@ -210,7 +210,7 @@ var GetCurrentCameraDriver func() string
  * \sa SDL_OpenCamera
  */
 //go:sdl3extern
-var GetCameras func(count *int) *CameraID
+var GetCameras func(count *int32) *CameraID
 
 /**
  * Get the list of native formats/sizes a camera supports.
@@ -250,7 +250,7 @@ var GetCameras func(count *int) *CameraID
  * \sa SDL_OpenCamera
  */
 //go:sdl3extern
-var GetCameraSupportedFormats func(instance_id CameraID, count *int) **CameraSpec
+var GetCameraSupportedFormats func(instance_id CameraID, count *int32) **CameraSpec
 
 /**
  * Get the human-readable device name for a camera.
@@ -368,7 +368,7 @@ var OpenCamera func(instance_id CameraID, spec *CameraSpec) Camera
  * \sa SDL_CloseCamera
  */
 //go:sdl3extern
-var GetCameraPermissionState func(camera Camera) int
+var GetCameraPermissionState func(camera Camera) int32
 
 /**
  * Get the instance ID of an opened camera.

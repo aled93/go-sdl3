@@ -44,7 +44,7 @@ import "math"
 * \sa SDL_PointInRect
  */
 type Point struct {
-	X, Y int
+	X, Y int32
 }
 
 /**
@@ -73,8 +73,8 @@ type FPoint struct {
 * \sa SDL_GetRectEnclosingPoints
  */
 type Rect struct {
-	X, Y int
-	W, H int
+	X, Y int32
+	W, H int32
 }
 
 /**
@@ -269,7 +269,7 @@ var GetRectUnion func(A *Rect, B *Rect, result *Rect) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetRectEnclosingPoints func(points *Point, count int, clip *Rect, result *Rect) bool
+var GetRectEnclosingPoints func(points *Point, count int32, clip *Rect, result *Rect) bool
 
 /**
 * Calculate the intersection of a rectangle and line segment.
@@ -290,7 +290,7 @@ var GetRectEnclosingPoints func(points *Point, count int, clip *Rect, result *Re
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetRectAndLineIntersection func(rect *Rect, X1 *int, Y1 *int, X2 *int, Y2 *int) bool
+var GetRectAndLineIntersection func(rect *Rect, X1 *int32, Y1 *int32, X2 *int32, Y2 *int32) bool
 
 /* SDL_FRect versions... */
 
@@ -484,7 +484,7 @@ var GetRectUnionFloat func(A *FRect, B *FRect, result *FRect) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetRectEnclosingPointsFloat func(points *FPoint, count int, clip *FRect, result *FRect) bool
+var GetRectEnclosingPointsFloat func(points *FPoint, count int32, clip *FRect, result *FRect) bool
 
 /**
 * Calculate the intersection of a rectangle and line segment with float

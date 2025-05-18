@@ -594,7 +594,7 @@ type JoyBatteryEvent struct {
 	Timestamp uint64     /**< In nanoseconds, populated using SDL_GetTicksNS() */
 	Which     JoystickID /**< The joystick instance id */
 	State     PowerState /**< The joystick battery state */
-	Percent   int        /**< The joystick battery percent charge remaining */
+	Percent   int32      /**< The joystick battery percent charge remaining */
 }
 
 /**
@@ -1187,7 +1187,7 @@ const (
  * \sa SDL_PushEvent
  */
 //go:sdl3extern
-var PeepEvents func(events *Event, numevents int, action EventAction, minType, maxType uint32) int
+var PeepEvents func(events *Event, numevents int32, action EventAction, minType, maxType uint32) int32
 
 /* @} */
 
@@ -1626,7 +1626,7 @@ var EventEnabled func(eventType EventType) bool
  * \sa SDL_PushEvent
  */
 //go:sdl3extern
-var RegisterEvents func(numevents int) uint32
+var RegisterEvents func(numevents int32) uint32
 
 /**
  * Get window associated with an event.
@@ -1676,4 +1676,4 @@ var GetWindowFromEvent func(event *Event) *Window
  * \since This function is available since SDL 3.4.0.
  */
 //go:sdl3extern
-var GetEventDescription func(event *Event, buf []byte, buflen int) int
+var GetEventDescription func(event *Event, buf []byte, buflen int32) int32

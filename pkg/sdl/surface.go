@@ -121,12 +121,12 @@ const (
 type Surface struct {
 	Flags  SurfaceFlags /**< The flags of the surface, read-only */
 	Format PixelFormat  /**< The format of the surface, read-only */
-	W      int          /**< The width of the surface, read-only. */
-	H      int          /**< The height of the surface, read-only. */
-	Pitch  int          /**< The distance in bytes between rows of pixels, read-only */
+	W      int32        /**< The width of the surface, read-only. */
+	H      int32        /**< The height of the surface, read-only. */
+	Pitch  int32        /**< The distance in bytes between rows of pixels, read-only */
 	Pixels uintptr      /**< A pointer to the pixels of the surface, the pixels are writeable if non-NULL */
 
-	RefCount int /**< Application reference count, used when freeing surface */
+	RefCount int32 /**< Application reference count, used when freeing surface */
 
 	Reserved uintptr /**< Reserved for internal use */
 }
@@ -150,7 +150,7 @@ type Surface struct {
 * \sa SDL_DestroySurface
  */
 //go:sdl3extern
-var CreateSurface func(width, height int, format PixelFormat) *Surface
+var CreateSurface func(width, height int32, format PixelFormat) *Surface
 
 /**
 * Allocate a new surface with a specific pixel format and existing pixel
@@ -181,7 +181,7 @@ var CreateSurface func(width, height int, format PixelFormat) *Surface
 * \sa SDL_DestroySurface
  */
 //go:sdl3extern
-var CreateSurfaceFrom func(width, height int, format PixelFormat, pixels uintptr, pitch int) *Surface
+var CreateSurfaceFrom func(width, height int32, format PixelFormat, pixels uintptr, pitch int32) *Surface
 
 /**
 * Free a surface.
@@ -421,7 +421,7 @@ var SurfaceHasAlternateImages func(surface *Surface) bool
 * \sa SDL_RemoveSurfaceAlternateImages
 * \sa SDL_SurfaceHasAlternateImages
  */
-var GetSurfaceImages func(surface *Surface, count *int) **Surface
+var GetSurfaceImages func(surface *Surface, count *int32) **Surface
 
 /**
 * Remove all alternate versions of a surface.
@@ -914,7 +914,7 @@ var DuplicateSurface func(surface *Surface) *Surface
 * \sa SDL_DestroySurface
  */
 //go:sdl3extern
-var ScaleSurface func(surface *Surface, width, height int, scaleMode ScaleMode) *Surface
+var ScaleSurface func(surface *Surface, width, height int32, scaleMode ScaleMode) *Surface
 
 /**
 * Copy an existing surface to a new surface of the specified format.
@@ -997,7 +997,7 @@ var ConvertSurfaceAndColorspace func(surface *Surface, format PixelFormat, palet
 * \sa SDL_ConvertPixelsAndColorspace
  */
 //go:sdl3extern
-var ConvertPixels func(width, height int, src_format PixelFormat, src uintptr, src_pitch int, dst_format PixelFormat, dst uintptr, dst_pitch int) bool
+var ConvertPixels func(width, height int32, src_format PixelFormat, src uintptr, src_pitch int32, dst_format PixelFormat, dst uintptr, dst_pitch int32) bool
 
 /**
 * Copy a block of pixels of one format and colorspace to another format and
@@ -1031,10 +1031,10 @@ var ConvertPixels func(width, height int, src_format PixelFormat, src uintptr, s
 * \sa SDL_ConvertPixels
  */
 //go:sdl3extern
-var ConvertPixelsAndColorspace func(width, height int, src_format PixelFormat,
+var ConvertPixelsAndColorspace func(width, height int32, src_format PixelFormat,
 	src_colorspace Colorspace, src_properties PropertiesID, src uintptr,
-	src_pitch int, dst_format PixelFormat, dst_colorspace Colorspace,
-	dst_properties PropertiesID, dst uintptr, dst_pitch int) bool
+	src_pitch int32, dst_format PixelFormat, dst_colorspace Colorspace,
+	dst_properties PropertiesID, dst uintptr, dst_pitch int32) bool
 
 /**
 * Premultiply the alpha on a block of pixels.
@@ -1061,9 +1061,9 @@ var ConvertPixelsAndColorspace func(width, height int, src_format PixelFormat,
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var PremultiplyAlpha func(width, height int, src_format PixelFormat,
-	src uintptr, src_pitch int, dst_format PixelFormat, dst uintptr,
-	dst_pitch int, linear bool) bool
+var PremultiplyAlpha func(width, height int32, src_format PixelFormat,
+	src uintptr, src_pitch int32, dst_format PixelFormat, dst uintptr,
+	dst_pitch int32, linear bool) bool
 
 /**
 * Premultiply the alpha in a surface.
@@ -1160,7 +1160,7 @@ var FillSurfaceRect func(dst *Surface, rect *Rect, color uint32) bool
 * \sa SDL_FillSurfaceRect
  */
 //go:sdl3extern
-var FillSurfaceRects func(dst *Surface, rects *Rect, count int, color uint32) bool
+var FillSurfaceRects func(dst *Surface, rects *Rect, count int32, color uint32) bool
 
 /**
 * Performs a fast blit from the source surface to the destination surface
@@ -1428,7 +1428,7 @@ var BlitSurfaceTiledWithScale func(src *Surface, srcrect *Rect, scale float32,
  */
 //go:sdl3extern
 var BlitSurface9Grid func(src *Surface, srcrect *Rect, left_width, right_width,
-	top_height, bottom_height int, scale float32, scaleMode ScaleMode,
+	top_height, bottom_height int32, scale float32, scaleMode ScaleMode,
 	dst *Surface, dstrect *Rect) bool
 
 /**
@@ -1526,7 +1526,7 @@ var MapSurfaceRGBA func(surface *Surface, r, g, b, a uint8) uint32
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var ReadSurfacePixel func(surface *Surface, x, y int, r, g, b, a *uint8) bool
+var ReadSurfacePixel func(surface *Surface, x, y int32, r, g, b, a *uint8) bool
 
 /**
 * Retrieves a single pixel from a surface.
@@ -1553,7 +1553,7 @@ var ReadSurfacePixel func(surface *Surface, x, y int, r, g, b, a *uint8) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var ReadSurfacePixelFloat func(surface *Surface, x, y int, r, g, b, a *float32) bool
+var ReadSurfacePixelFloat func(surface *Surface, x, y int32, r, g, b, a *float32) bool
 
 /**
 * Writes a single pixel to a surface.
@@ -1579,7 +1579,7 @@ var ReadSurfacePixelFloat func(surface *Surface, x, y int, r, g, b, a *float32) 
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteSurfacePixel func(surface *Surface, x, y int, r, g, b, a uint8) bool
+var WriteSurfacePixel func(surface *Surface, x, y int32, r, g, b, a uint8) bool
 
 /**
 * Writes a single pixel to a surface.
@@ -1602,4 +1602,4 @@ var WriteSurfacePixel func(surface *Surface, x, y int, r, g, b, a uint8) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteSurfacePixelFloat func(surface *Surface, x, y int, r, g, b, a float32) bool
+var WriteSurfacePixelFloat func(surface *Surface, x, y int32, r, g, b, a float32) bool

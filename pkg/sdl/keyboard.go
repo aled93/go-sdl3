@@ -87,7 +87,7 @@ var HasKeyboard func() bool
  * \sa SDL_HasKeyboard
  */
 //go:sdl3extern
-var GetKeyboards func(count *int) *KeyboardID
+var GetKeyboards func(count *int32) *KeyboardID
 
 /**
  * Get the name of a keyboard.
@@ -151,7 +151,7 @@ var GetKeyboardFocus func() *Window
  * \sa SDL_ResetKeyboard
  */
 //go:sdl3extern
-var GetKeyboardState func(numkeys *int) *bool
+var GetKeyboardState func(numkeys *int32) *bool
 
 /**
  * Clear the state of the keyboard.
@@ -563,7 +563,7 @@ var ClearComposition func(window *Window) bool
  * \sa SDL_StartTextInput
  */
 //go:sdl3extern
-var SetTextInputArea func(window *Window, rect *Rect, cursor int) bool
+var SetTextInputArea func(window *Window, rect *Rect, cursor int32) bool
 
 /**
  * Get the area used to type Unicode text input.
@@ -585,7 +585,7 @@ var SetTextInputArea func(window *Window, rect *Rect, cursor int) bool
  * \sa SDL_SetTextInputArea
  */
 //go:sdl3extern
-var GetTextInputArea func(window *Window, rect *Rect, cursor *int) bool
+var GetTextInputArea func(window *Window, rect *Rect, cursor *int32) bool
 
 /**
  * Check whether the platform has screen keyboard support.

@@ -135,10 +135,10 @@ type Renderer uintptr
  */
 type Texture struct {
 	Format PixelFormat /**< The format of the texture, read-only */
-	W      int         /**< The width of the texture, read-only. */
-	H      int         /**< The height of the texture, read-only. */
+	W      int32       /**< The width of the texture, read-only. */
+	H      int32       /**< The height of the texture, read-only. */
 
-	RefCount int /**< Application reference count, used when freeing texture */
+	RefCount int32 /**< Application reference count, used when freeing texture */
 }
 
 /* Function prototypes */
@@ -162,7 +162,7 @@ type Texture struct {
  * \sa SDL_GetRenderDriver
  */
 //go:sdl3extern
-var GetNumRenderDrivers func() int
+var GetNumRenderDrivers func() int32
 
 /**
  * Use this function to get the name of a built in 2D rendering driver.
@@ -187,7 +187,7 @@ var GetNumRenderDrivers func() int
  * \sa SDL_GetNumRenderDrivers
  */
 //go:sdl3extern
-var GetRenderDriver func(index int) string
+var GetRenderDriver func(index int32) string
 
 /**
  * Create a window and default renderer.
@@ -210,7 +210,7 @@ var GetRenderDriver func(index int) string
  * \sa SDL_CreateWindow
  */
 //go:sdl3extern
-var CreateWindowAndRenderer func(title string, width, height int, window_flags WindowFlags, window **Window, renderer **Renderer) bool
+var CreateWindowAndRenderer func(title string, width, height int32, window_flags WindowFlags, window **Window, renderer **Renderer) bool
 
 /**
  * Create a 2D rendering context for a window.
@@ -563,7 +563,7 @@ const (
  * \sa SDL_GetCurrentRenderOutputSize
  */
 //go:sdl3extern
-var GetRenderOutputSize func(renderer *Renderer, w, h *int) bool
+var GetRenderOutputSize func(renderer *Renderer, w, h *int32) bool
 
 /**
  * Get the current output size in pixels of a rendering context.
@@ -587,7 +587,7 @@ var GetRenderOutputSize func(renderer *Renderer, w, h *int) bool
  * \sa SDL_GetRenderOutputSize
  */
 //go:sdl3extern
-var GetCurrentRenderOutputSize func(renderer *Renderer, w, h *int) bool
+var GetCurrentRenderOutputSize func(renderer *Renderer, w, h *int32) bool
 
 /**
  * Create a texture for a rendering context.
@@ -613,7 +613,7 @@ var GetCurrentRenderOutputSize func(renderer *Renderer, w, h *int) bool
  * \sa SDL_UpdateTexture
  */
 //go:sdl3extern
-var CreateTexture func(renderer *Renderer, format PixelFormat, access TextureAccess, w, h int) *Texture
+var CreateTexture func(renderer *Renderer, format PixelFormat, access TextureAccess, w, h int32) *Texture
 
 /**
  * Create a texture from an existing surface.
@@ -1235,7 +1235,7 @@ var GetTextureScaleMode func(texture *Texture, scaleMode *ScaleMode) bool
  * \sa SDL_UpdateYUVTexture
  */
 //go:sdl3extern
-var UpdateTexture func(texture *Texture, rect *Rect, pixels []byte, pitch int) bool
+var UpdateTexture func(texture *Texture, rect *Rect, pixels []byte, pitch int32) bool
 
 /**
  * Update a rectangle within a planar YV12 or IYUV texture with new pixel
@@ -1270,9 +1270,9 @@ var UpdateTexture func(texture *Texture, rect *Rect, pixels []byte, pitch int) b
 //go:sdl3extern
 var UpdateYUVTexture func(texture *Texture,
 	rect *Rect,
-	Yplane *uint8, Ypitch int,
-	Uplane *uint8, Upitch int,
-	Vplane *uint8, Vpitch int) bool
+	Yplane *uint8, Ypitch int32,
+	Uplane *uint8, Upitch int32,
+	Vplane *uint8, Vpitch int32) bool
 
 /**
  * Update a rectangle within a planar NV12 or NV21 texture with new pixels.
@@ -1303,8 +1303,8 @@ var UpdateYUVTexture func(texture *Texture,
 //go:sdl3extern
 var UpdateNVTexture func(texture *Texture,
 	rect *Rect,
-	Yplane *uint8, Ypitch int,
-	UVplane *uint8, UVpitch int) bool
+	Yplane *uint8, Ypitch int32,
+	UVplane *uint8, UVpitch int32) bool
 
 /**
  * Lock a portion of the texture for **write-only** pixel access.
@@ -1339,7 +1339,7 @@ var UpdateNVTexture func(texture *Texture,
 //go:sdl3extern
 var LockTexture func(texture *Texture,
 	rect *Rect,
-	pixels *uintptr, pitch *int) bool
+	pixels *uintptr, pitch *int32) bool
 
 /**
  * Lock a portion of the texture for **write-only** pixel access, and expose
@@ -1500,7 +1500,7 @@ var GetRenderTarget func(renderer *Renderer) *Texture
  * \sa SDL_GetRenderLogicalPresentationRect
  */
 //go:sdl3extern
-var SetRenderLogicalPresentation func(renderer *Renderer, w, h int, mode RendererLogicalPresentation) bool
+var SetRenderLogicalPresentation func(renderer *Renderer, w, h int32, mode RendererLogicalPresentation) bool
 
 /**
  * Get device independent resolution and presentation mode for rendering.
@@ -1525,7 +1525,7 @@ var SetRenderLogicalPresentation func(renderer *Renderer, w, h int, mode Rendere
  * \sa SDL_SetRenderLogicalPresentation
  */
 //go:sdl3extern
-var GetRenderLogicalPresentation func(renderer *Renderer, w, h *int, mode *RendererLogicalPresentation) bool
+var GetRenderLogicalPresentation func(renderer *Renderer, w, h *int32, mode *RendererLogicalPresentation) bool
 
 /**
  * Get the final presentation rectangle for rendering.
@@ -2093,7 +2093,7 @@ var RenderPoint func(renderer *Renderer, x, y float32) bool
  * \sa SDL_RenderPoint
  */
 //go:sdl3extern
-var RenderPoints func(renderer *Renderer, points []FPoint, count int) bool
+var RenderPoints func(renderer *Renderer, points []FPoint, count int32) bool
 
 /**
  * Draw a line on the current rendering target at subpixel precision.
@@ -2132,7 +2132,7 @@ var RenderLine func(renderer *Renderer, x1, y1, x2, y2 float32) bool
  * \sa SDL_RenderLine
  */
 //go:sdl3extern
-var RenderLines func(renderer *Renderer, points []FPoint, count int) bool
+var RenderLines func(renderer *Renderer, points []FPoint, count int32) bool
 
 /**
  * Draw a rectangle on the current rendering target at subpixel precision.
@@ -2169,7 +2169,7 @@ var RenderRect func(renderer *Renderer, rect *FRect) bool
  * \sa SDL_RenderRect
  */
 //go:sdl3extern
-var RenderRects func(renderer *Renderer, rects []FRect, count int) bool
+var RenderRects func(renderer *Renderer, rects []FRect, count int32) bool
 
 /**
  * Fill a rectangle on the current rendering target with the drawing color at
@@ -2207,7 +2207,7 @@ var RenderFillRect func(renderer *Renderer, rect *FRect) bool
  * \sa SDL_RenderFillRect
  */
 //go:sdl3extern
-var RenderFillRects func(renderer *Renderer, rects []FRect, count int) bool
+var RenderFillRects func(renderer *Renderer, rects []FRect, count int32) bool
 
 /**
  * Copy a portion of the texture to the current rendering target at subpixel
@@ -2422,8 +2422,8 @@ var RenderTexture9GridTiled func(renderer *Renderer, texture *Texture, srcrect *
 //go:sdl3extern
 var RenderGeometry func(renderer *Renderer,
 	texture *Texture,
-	vertices []Vertex, num_vertices int,
-	indices []int, num_indices int) bool
+	vertices []Vertex, num_vertices int32,
+	indices []int32, num_indices int32) bool
 
 /**
  * Render a list of triangles, optionally using a texture and indices into the
@@ -2456,11 +2456,11 @@ var RenderGeometry func(renderer *Renderer,
 //go:sdl3extern
 var RenderGeometryRaw func(renderer *Renderer,
 	texture *Texture,
-	xy []float32, xy_stride int,
-	color *FColor, color_stride int,
-	uv []float32, uv_stride int,
-	num_vertices int,
-	indices uintptr, num_indices, size_indices int) bool
+	xy []float32, xy_stride int32,
+	color *FColor, color_stride int32,
+	uv []float32, uv_stride int32,
+	num_vertices int32,
+	indices uintptr, num_indices, size_indices int32) bool
 
 /**
  * Set the texture addressing mode used in SDL_RenderGeometry().
@@ -2772,7 +2772,7 @@ const (
  * \sa SDL_SetRenderVSync
  */
 //go:sdl3extern
-var GetRenderVSync func(renderer *Renderer, vsync *int) bool
+var GetRenderVSync func(renderer *Renderer, vsync *int32) bool
 
 /**
  * The size, in pixels, of a single SDL_RenderDebugText() character.

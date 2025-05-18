@@ -148,7 +148,7 @@ const (
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetSensors func(count *int) *SensorID
+var GetSensors func(count *int32) *SensorID
 
 /**
  * Get the implementation dependent name of a sensor.
@@ -189,7 +189,7 @@ var GetSensorTypeForID func(instance_id SensorID) SensorType
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetSensorNonPortableTypeForID func(instance_id SensorID) int
+var GetSensorNonPortableTypeForID func(instance_id SensorID) int32
 
 /**
  * Open a sensor for use.
@@ -260,7 +260,7 @@ var GetSensorType func(sensor Sensor) SensorType
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetSensorNonPortableType func(sensor Sensor) int
+var GetSensorNonPortableType func(sensor Sensor) int32
 
 /**
  * Get the instance ID of a sensor.
@@ -288,7 +288,7 @@ var GetSensorID func(sensor Sensor) SensorID
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetSensorData func(sensor Sensor, data []float32, num_values int) bool
+var GetSensorData func(sensor Sensor, data []float32, num_values int32) bool
 
 /**
  * Close a sensor previously opened with SDL_OpenSensor().
