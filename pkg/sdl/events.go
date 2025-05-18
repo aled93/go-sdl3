@@ -102,7 +102,9 @@ const (
 	ET_LocaleChanged /**< The user's locale preferences have changed. */
 
 	ET_SystemThemeChanged /**< The system theme changed */
+)
 
+const (
 	/* Display events */
 	/* 0x150 was SDL_DISPLAYEVENT, reserve the number for sdl2-compat */
 	ET_DisplayOrientation         EventType = 0x151 + iota /**< Display orientation has changed to data1 */
@@ -112,9 +114,11 @@ const (
 	ET_DisplayDesktopModeChanged                           /**< Display has changed desktop mode */
 	ET_DisplayCurrentModeChanged                           /**< Display has changed current mode */
 	ET_DisplayContentScaleChanged                          /**< Display has changed content scale */
-	ET_DisplayFirst                         = ET_DisplayOrientation
-	ET_DisplayLast                          = ET_DisplayContentScaleChanged
+	ET_DisplayFirst               EventType = ET_DisplayOrientation
+	ET_DisplayLast                EventType = ET_DisplayContentScaleChanged
+)
 
+const (
 	/* Window events */
 	/* 0x200 was SDL_WINDOWEVENT, reserve the number for sdl2-compat */
 	/* 0x201 was SDL_SYSWMEVENT, reserve the number for sdl2-compat */
@@ -145,21 +149,25 @@ const (
 	  in an event watcher, the window handle is still valid and can still be used to retrieve any properties
 	  associated with the window. Otherwise, the handle has already been destroyed and all resources
 	  associated with it are invalid */
-	ET_WindowHdrStateChanged /**< Window HDR properties have changed */
-	ET_WindowFirst           = ET_WindowShown
-	ET_WindowLast            = ET_WindowHdrStateChanged
+	ET_WindowHdrStateChanged           /**< Window HDR properties have changed */
+	ET_WindowFirst           EventType = ET_WindowShown
+	ET_WindowLast            EventType = ET_WindowHdrStateChanged
+)
 
+const (
 	/* Keyboard events */
-	ET_KeyDown       = 0x300 + iota /**< Key pressed */
-	ET_KeyUp                        /**< Key released */
-	ET_TextEditing                  /**< Keyboard text editing (composition) */
-	ET_TextInput                    /**< Keyboard text input */
-	ET_KeymapChanged                /**< Keymap changed due to a system event such as an
+	ET_KeyDown       EventType = 0x300 + iota /**< Key pressed */
+	ET_KeyUp                                  /**< Key released */
+	ET_TextEditing                            /**< Keyboard text editing (composition) */
+	ET_TextInput                              /**< Keyboard text input */
+	ET_KeymapChanged                          /**< Keymap changed due to a system event such as an
 	  input language or keyboard layout change. */
 	ET_KeyboardAdded         /**< A new keyboard has been inserted into the system */
 	ET_KeyboardRemoved       /**< A keyboard has been removed */
 	ET_TextEditingCandidates /**< Keyboard text editing candidates */
+)
 
+const (
 	/* Mouse events */
 	ET_MouseMotion     EventType = 0x400 + iota /**< Mouse moved */
 	ET_MouseButtonDown                          /**< Mouse button pressed */
@@ -167,7 +175,9 @@ const (
 	ET_MouseWheel                               /**< Mouse wheel motion */
 	ET_MouseAdded                               /**< A new mouse has been inserted into the system */
 	ET_MouseRemoved                             /**< A mouse has been removed */
+)
 
+const (
 	/* Joystick events */
 	ET_JoystickAxisMotion     EventType = 0x600 + iota /**< Joystick axis motion */
 	ET_JoystickBallMotion                              /**< Joystick trackball motion */
@@ -178,7 +188,9 @@ const (
 	ET_JoystickRemoved                                 /**< An opened joystick has been removed */
 	ET_JoystickBatteryUpdated                          /**< Joystick battery level change */
 	ET_JoystickUpdateComplete                          /**< Joystick update is complete */
+)
 
+const (
 	/* Gamepad events */
 	ET_GamepadAxisMotion         EventType = 0x650 + iota /**< Gamepad axis motion */
 	ET_GamepadButtonDown                                  /**< Gamepad button pressed */
@@ -203,14 +215,18 @@ const (
 
 	/* Clipboard events */
 	ET_Clipboard_update EventType = 0x900 /**< The clipboard or primary selection changed */
+)
 
+const (
 	/* Drag and drop events */
 	ET_DropFile     EventType = 0x1000 + iota /**< The system requests a file open */
 	ET_DropText                               /**< text/plain drag-and-drop event */
 	ET_DropBegin                              /**< A new set of drops is beginning (NULL filename) */
 	ET_DropComplete                           /**< Current set of drops is now complete (NULL filename) */
 	ET_DropPosition                           /**< Position while moving over the window */
+)
 
+const (
 	/* Audio hotplug events */
 	ET_AudioDeviceAdded         EventType = 0x1100 + iota /**< A new audio device is available */
 	ET_AudioDeviceRemoved                                 /**< An audio device has been removed. */
@@ -218,7 +234,9 @@ const (
 
 	/* Sensor events */
 	ET_SensorUpdate EventType = 0x1200 /**< A sensor was updated */
+)
 
+const (
 	/* Pressure-sensitive pen events */
 	ET_PenProximityIn  EventType = 0x1300 + iota /**< Pressure-sensitive pen has become available */
 	ET_PenProximityOut                           /**< Pressure-sensitive pen has become unavailable */
@@ -228,18 +246,24 @@ const (
 	ET_PenButtonUp                               /**< Pressure-sensitive pen button released */
 	ET_PenMotion                                 /**< Pressure-sensitive pen is moving on the tablet */
 	ET_PenAxis                                   /**< Pressure-sensitive pen angle/pressure/etc changed */
+)
 
+const (
 	/* Camera hotplug events */
-	ET_CameraDeviceAdded    = 0x1400 + iota /**< A new camera device is available */
-	ET_CameraDeviceRemoved                  /**< A camera device has been removed. */
-	ET_CameraDeviceApproved                 /**< A camera device has been approved for use by the user. */
-	ET_CameraDeviceDenied                   /**< A camera device has been denied for use by the user. */
+	ET_CameraDeviceAdded    EventType = 0x1400 + iota /**< A new camera device is available */
+	ET_CameraDeviceRemoved                            /**< A camera device has been removed. */
+	ET_CameraDeviceApproved                           /**< A camera device has been approved for use by the user. */
+	ET_CameraDeviceDenied                             /**< A camera device has been denied for use by the user. */
+)
 
+const (
 	/* Render events */
-	ET_RenderTargetsReset = 0x2000 + iota /**< The render targets have been reset and their contents need to be updated */
-	ET_RenderDeviceReset                  /**< The device has been reset and all textures need to be recreated */
-	ET_RenderDeviceLost                   /**< The device has been lost and can't be recovered. */
+	ET_RenderTargetsReset EventType = 0x2000 + iota /**< The render targets have been reset and their contents need to be updated */
+	ET_RenderDeviceReset                            /**< The device has been reset and all textures need to be recreated */
+	ET_RenderDeviceLost                             /**< The device has been lost and can't be recovered. */
+)
 
+const (
 	/* Reserved events for private platforms */
 	ET_Private0 EventType = 0x4000 + iota
 	ET_Private1
