@@ -19,7 +19,7 @@
   - [x] guid
   - [ ] haptic
   - [ ] hidapi
-  - [ ] hints
+  - [x] hints
   - [x] init
   - [x] iostream
   - [x] joystick
