@@ -67,7 +67,7 @@ var IsTV func() bool
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type Sandbox int
+type Sandbox int32
 
 const (
 	SandboxNone Sandbox = iota

@@ -64,7 +64,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type BlendOperation int
+type BlendOperation int32
 
 const (
 	BO_Add         BlendOperation = 0x1 /**< dst + src: supported by all renderers */
@@ -84,7 +84,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type BlendFactor int
+type BlendFactor int32
 
 const (
 	BF_Zero             = 0x1 /**< 0, 0, 0, 0 */

@@ -102,7 +102,7 @@ const (
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type PenAxis int
+type PenAxis int32
 
 const (
 	PA_Pressure           PenAxis = iota /**< Pen pressure.  Unidirectional: 0 to 1.0 */

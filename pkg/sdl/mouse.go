@@ -87,7 +87,7 @@ type Cursor uintptr
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type SystemCursor int
+type SystemCursor int32
 
 const (
 	SC_Default    SystemCursor = iota /**< Default cursor. Usually an arrow. */
@@ -118,7 +118,7 @@ const (
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type MouseWheelDirection int
+type MouseWheelDirection int32
 
 const (
 	MW_Normal  MouseWheelDirection = iota /**< The scroll direction is normal */

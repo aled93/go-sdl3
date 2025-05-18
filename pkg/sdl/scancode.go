@@ -51,7 +51,7 @@ package sdl
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type Scancode int
+type Scancode int32
 
 const (
 	SC_Unknown Scancode = 0

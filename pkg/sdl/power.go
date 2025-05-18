@@ -48,7 +48,7 @@ package sdl
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type PowerState int
+type PowerState int32
 
 const (
 	PS_ErrorGettingStatus PowerState = iota - 1 /**< error determining power status */

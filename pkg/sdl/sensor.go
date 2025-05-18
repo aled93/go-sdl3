@@ -121,7 +121,7 @@ const STANDARD_GRAVITY = 9.80665
  *
  * \sa SDL_GetCurrentDisplayOrientation
  */
-type SensorType int
+type SensorType int32
 
 const (
 	ST_InvalidSensorType SensorType = iota - 1 /**< Returned for an invalid sensor */

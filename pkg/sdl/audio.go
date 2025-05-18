@@ -212,7 +212,7 @@ func DEFINE_AUDIO_FORMAT(signed, bigendian, flt, size int) AudioFormat {
  * \sa SDL_AUDIO_ISSIGNED
  * \sa SDL_AUDIO_ISUNSIGNED
  */
-type AudioFormat int
+type AudioFormat int32
 
 const (
 	AF_UnknownFormat AudioFormat = 0x0000 /**< Unspecified audio format */

@@ -68,7 +68,7 @@ func MUSTLOCK(S Surface) bool {
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type ScaleMode int
+type ScaleMode int32
 
 const (
 	SM_Invalid  ScaleMode = iota - 1
@@ -82,7 +82,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type FlipMode int
+type FlipMode int32
 
 const (
 	FM_None       FlipMode = iota /**< Do not flip */

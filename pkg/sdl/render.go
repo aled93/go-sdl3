@@ -77,7 +77,7 @@ type Vertex struct {
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type TextureAccess int
+type TextureAccess int32
 
 const (
 	TA_Static    TextureAccess = iota /**< Changes rarely, not lockable */
@@ -92,7 +92,7 @@ const (
  *
  * \since This enum is available since SDL 3.4.0.
  */
-type TextureAddressMode int
+type TextureAddressMode int32
 
 const (
 	TA_Invalid TextureAddressMode = iota - 1
@@ -106,7 +106,7 @@ const (
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type RendererLogicalPresentation int
+type RendererLogicalPresentation int32
 
 const (
 	LP_Disabled      RendererLogicalPresentation = iota /**< There is no logical size in effect */

@@ -129,7 +129,7 @@ const ALPHA_TRANSPARENT_FLOAT = 0.0
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type PixelType int
+type PixelType int32
 
 const (
 	PT_Unknown PixelType = iota
@@ -153,7 +153,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type BitmapOrder int
+type BitmapOrder int32
 
 const (
 	BO_None BitmapOrder = iota
@@ -166,7 +166,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type PackedOrder int
+type PackedOrder int32
 
 const (
 	PO_None PackedOrder = iota
@@ -185,7 +185,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type ArrayOrder int
+type ArrayOrder int32
 
 const (
 	AO_None ArrayOrder = iota
@@ -202,7 +202,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type PackedLayout int
+type PackedLayout int32
 
 const (
 	PL_None PackedLayout = iota
@@ -579,7 +579,7 @@ func ISPIXELFORMAT_FOURCC(format PixelFormat) bool {
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type PixelFormat int
+type PixelFormat int32
 
 const (
 	PF_UNKNOWN   PixelFormat = 0
@@ -756,7 +756,7 @@ func init() {
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type ColorType int
+type ColorType int32
 
 const (
 	CT_Unknown ColorType = 0
@@ -770,7 +770,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type ColorRange int
+type ColorRange int32
 
 const (
 	CR_Unknown ColorRange = 0
@@ -784,7 +784,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type ColorPrimaries int
+type ColorPrimaries int32
 
 const (
 	CP_Unknown     ColorPrimaries = 0
@@ -810,7 +810,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type TransferCharacteristics int
+type TransferCharacteristics int32
 
 const (
 	TC_Unknown       TransferCharacteristics = 0
@@ -841,7 +841,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type MatrixCoefficients int
+type MatrixCoefficients int32
 
 const (
 	MC_Identity          MatrixCoefficients = 0
@@ -866,7 +866,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type ChromaLocation int
+type ChromaLocation int32
 
 const (
 	CL_None    ChromaLocation = 0 /**< RGB, no chroma sampling */
@@ -1088,7 +1088,7 @@ func ISCOLORSPACE_FULL_RANGE(cspace Colorspace) bool {
 * \sa SDL_MatrixCoefficients
 * \sa SDL_TransferCharacteristics
  */
-type Colorspace int
+type Colorspace int32
 
 const (
 	CS_Unknown Colorspace = 0

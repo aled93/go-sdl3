@@ -38,7 +38,7 @@ package sdl
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type IOStatus int
+type IOStatus int32
 
 const (
 	IOS_Ready     IOStatus = iota /**< Everything is ready (no errors and not EOF). */
@@ -57,7 +57,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type IOWhence int
+type IOWhence int32
 
 const (
 	IOS_Set IOWhence = iota /**< Seek from the beginning of data */

@@ -395,7 +395,7 @@ var StartTextInput func(window *Window) bool
  *
  * \sa SDL_StartTextInputWithProperties
  */
-type TextInputType int
+type TextInputType int32
 
 const (
 	TIT_Text                  TextInputType = iota /**< The input is text */
@@ -420,7 +420,7 @@ const (
  *
  * \sa SDL_StartTextInputWithProperties
  */
-type Capitalization int
+type Capitalization int32
 
 const (
 	C_None      Capitalization = iota /**< No auto-capitalization will be done */

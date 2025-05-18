@@ -102,7 +102,7 @@ const (
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type AppResult int
+type AppResult int32
 
 const (
 	AR_Continue AppResult = iota /**< Value that requests that the app continue from the main callbacks. */

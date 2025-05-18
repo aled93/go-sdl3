@@ -94,7 +94,7 @@ type JoystickID uint32
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type JoystickType int
+type JoystickType int32
 
 const (
 	JT_Unknown JoystickType = iota
@@ -118,7 +118,7 @@ const (
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type JoystickConnectionState int
+type JoystickConnectionState int32
 
 const (
 	JCS_Invalid JoystickConnectionState = iota - 1

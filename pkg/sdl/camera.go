@@ -120,7 +120,7 @@ type CameraSpec struct {
  *
  * \sa SDL_GetCameraPosition
  */
-type CameraPosition int
+type CameraPosition int32
 
 const (
 	CP_UnknownPosition CameraPosition = iota

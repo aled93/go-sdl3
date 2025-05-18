@@ -74,7 +74,7 @@ type FingerID uint64
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type TouchDeviceType int
+type TouchDeviceType int32
 
 const (
 	TDT_Invalid          TouchDeviceType = iota - 1

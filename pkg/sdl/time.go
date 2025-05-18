@@ -60,7 +60,7 @@ type DateTime struct {
  *
  * \sa SDL_GetDateTimeLocalePreferences
  */
-type DateFormat int
+type DateFormat int32
 
 const (
 	DF_YYYYMMDD DateFormat = 0 /**< Year/Month/Day */
@@ -75,7 +75,7 @@ const (
  *
  * \sa SDL_GetDateTimeLocalePreferences
  */
-type TimeFormat int
+type TimeFormat int32
 
 const (
 	TF_24Hr TimeFormat = 0 /**< 24 hour time */

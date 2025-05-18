@@ -96,7 +96,7 @@ const PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER = "SDL.video.wayland.wl_displ
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type SystemTheme int
+type SystemTheme int32
 
 const (
 	ST_Unknown SystemTheme = iota /**< Unknown system theme */
@@ -144,7 +144,7 @@ type DisplayMode struct {
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type DisplayOrientation int
+type DisplayOrientation int32
 
 const (
 	DO_Unknown          DisplayOrientation = iota /**< The display orientation can't be determined */
@@ -291,7 +291,7 @@ const WINDOWPOS_CENTERED_MASK = 0x2FFF0000
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type FlashOperation int
+type FlashOperation int32
 
 const (
 	FO_Cancel       FlashOperation = iota /**< Cancel any window flash state */
@@ -304,7 +304,7 @@ const (
 *
 * \since This enum is available since SDL 3.2.8.
  */
-type ProgressState int
+type ProgressState int32
 
 const (
 	PS_Invalid       ProgressState = iota - 1 /**< An invalid progress state indicating an error; check SDL_GetError() */
@@ -357,7 +357,7 @@ type EGLAttrib uintptr
 *
 * \since This datatype is available since SDL 3.2.0.
  */
-type EGLint int
+type EGLint int32
 
 /**
 * EGL platform attribute initialization callback.
@@ -433,7 +433,7 @@ type EGLIntArrayCallback func(userdata uintptr, display EGLDisplay, config EGLCo
 *
 * \since This enum is available since SDL 3.2.0.
  */
-type GLAttr int
+type GLAttr int32
 
 const (
 	GLA_RedSize                  GLAttr = iota /**< the minimum number of bits for the red channel of the color buffer; defaults to 8. */
@@ -2836,7 +2836,7 @@ var ShowWindowSystemMenu func(window *Window, x, y int) bool
 *
 * \sa SDL_HitTest
  */
-type HitTestResult int
+type HitTestResult int32
 
 const (
 	HTR_Normal            HitTestResult = iota /**< Region is normal. No special properties. */

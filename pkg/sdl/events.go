@@ -65,7 +65,7 @@ import "unsafe"
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type EventType int
+type EventType int32
 
 const (
 	ET_First EventType = 0 /**< Unused (do not remove) */
@@ -1112,7 +1112,7 @@ var PumpEvents func()
  *
  * \since This enum is available since SDL 3.2.0.
  */
-type EventAction int
+type EventAction int32
 
 const (
 	EA_AddEvent  EventAction = iota /**< Add events to the back of the queue. */
