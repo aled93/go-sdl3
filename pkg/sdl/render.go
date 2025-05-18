@@ -80,9 +80,9 @@ type Vertex struct {
 type TextureAccess int32
 
 const (
-	TA_Static    TextureAccess = iota /**< Changes rarely, not lockable */
-	TA_Streaming                      /**< Changes frequently, lockable */
-	TA_Target                         /**< Texture can be used as a render target */
+	TextureAccessStatic    TextureAccess = iota /**< Changes rarely, not lockable */
+	TextureAccessStreaming                      /**< Changes frequently, lockable */
+	TextureAccessTarget                         /**< Texture can be used as a render target */
 )
 
 /**
@@ -95,10 +95,10 @@ const (
 type TextureAddressMode int32
 
 const (
-	TA_Invalid TextureAddressMode = iota - 1
-	TA_Auto                       /**< Wrapping is enabled if texture coordinates are outside [0, 1], this is the default */
-	TA_Clamp                      /**< Texture coordinates are clamped to the [0, 1] range */
-	TA_Wrap                       /**< The texture is repeated (tiled) */
+	TextureAddressInvalid TextureAddressMode = iota - 1
+	TextureAddressAuto                       /**< Wrapping is enabled if texture coordinates are outside [0, 1], this is the default */
+	TextureAddressClamp                      /**< Texture coordinates are clamped to the [0, 1] range */
+	TextureAddressWrap                       /**< The texture is repeated (tiled) */
 )
 
 /**
@@ -109,11 +109,11 @@ const (
 type RendererLogicalPresentation int32
 
 const (
-	LP_Disabled      RendererLogicalPresentation = iota /**< There is no logical size in effect */
-	LP_Stretch                                          /**< The rendered content is stretched to the output resolution */
-	LP_Letterbox                                        /**< The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars */
-	LP_Overscan                                         /**< The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds */
-	LP_Integer_scale                                    /**< The rendered content is scaled up by integer multiples to fit the output resolution */
+	LogicalPresentationDisabled      RendererLogicalPresentation = iota /**< There is no logical size in effect */
+	LogicalPresentationStretch                                          /**< The rendered content is stretched to the output resolution */
+	LogicalPresentationLetterbox                                        /**< The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars */
+	LogicalPresentationOverscan                                         /**< The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds */
+	LogicalPresentationInteger_scale                                    /**< The rendered content is scaled up by integer multiples to fit the output resolution */
 )
 
 /**

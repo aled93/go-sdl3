@@ -99,9 +99,9 @@ const PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER = "SDL.video.wayland.wl_displ
 type SystemTheme int32
 
 const (
-	ST_Unknown SystemTheme = iota /**< Unknown system theme */
-	ST_Light                      /**< Light colored system theme */
-	ST_Dark                       /**< Dark colored system theme */
+	SystenThemeUnknown SystemTheme = iota /**< Unknown system theme */
+	SystenThemeLight                      /**< Light colored system theme */
+	SystenThemeDark                       /**< Dark colored system theme */
 )
 
 /**
@@ -147,11 +147,11 @@ type DisplayMode struct {
 type DisplayOrientation int32
 
 const (
-	DO_Unknown          DisplayOrientation = iota /**< The display orientation can't be determined */
-	DO_Landscape                                  /**< The display is in landscape mode, with the right side up, relative to portrait mode */
-	DO_LandscapeFlipped                           /**< The display is in landscape mode, with the left side up, relative to portrait mode */
-	DO_Portrait                                   /**< The display is in portrait mode */
-	DO_PortraitFlipped                            /**< The display is in portrait mode, upside down */
+	OrientationUnknown          DisplayOrientation = iota /**< The display orientation can't be determined */
+	OrientationLandscape                                  /**< The display is in landscape mode, with the right side up, relative to portrait mode */
+	OrientationLandscapeFlipped                           /**< The display is in landscape mode, with the left side up, relative to portrait mode */
+	OrientationPortrait                                   /**< The display is in portrait mode */
+	OrientationPortraitFlipped                            /**< The display is in portrait mode, upside down */
 )
 
 /**
@@ -294,9 +294,9 @@ const WINDOWPOS_CENTERED_MASK = 0x2FFF0000
 type FlashOperation int32
 
 const (
-	FO_Cancel       FlashOperation = iota /**< Cancel any window flash state */
-	FO_Briefly                            /**< Flash the window briefly to get attention */
-	FO_UntilFocused                       /**< Flash the window until it gets focus */
+	FlashCancel       FlashOperation = iota /**< Cancel any window flash state */
+	FlashBriefly                            /**< Flash the window briefly to get attention */
+	FlashUntilFocused                       /**< Flash the window until it gets focus */
 )
 
 /**
@@ -307,12 +307,12 @@ const (
 type ProgressState int32
 
 const (
-	PS_Invalid       ProgressState = iota - 1 /**< An invalid progress state indicating an error; check SDL_GetError() */
-	PS_None                                   /**< No progress bar is shown */
-	PS_Indeterminate                          /**< The progress bar is shown in a indeterminate state */
-	PS_Normal                                 /**< The progress bar is shown in a normal state */
-	PS_Paused                                 /**< The progress bar is shown in a paused state */
-	PS_Error                                  /**< The progress bar is shown in a state indicating the application had an error */
+	ProgressStateInvalid       ProgressState = iota - 1 /**< An invalid progress state indicating an error; check SDL_GetError() */
+	ProgressStateNone                                   /**< No progress bar is shown */
+	ProgressStateIndeterminate                          /**< The progress bar is shown in a indeterminate state */
+	ProgressStateNormal                                 /**< The progress bar is shown in a normal state */
+	ProgressStatePaused                                 /**< The progress bar is shown in a paused state */
+	ProgressStateError                                  /**< The progress bar is shown in a state indicating the application had an error */
 )
 
 /**

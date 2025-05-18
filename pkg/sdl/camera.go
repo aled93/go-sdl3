@@ -123,9 +123,9 @@ type CameraSpec struct {
 type CameraPosition int32
 
 const (
-	CP_UnknownPosition CameraPosition = iota
-	CP_FrontFacing
-	CP_BackFacing
+	CameraPositionUnknown CameraPosition = iota
+	CameraPositionFrontFacing
+	CameraPositionBackFacing
 )
 
 /**

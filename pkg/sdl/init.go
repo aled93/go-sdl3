@@ -72,14 +72,14 @@ package sdl
 type InitFlags uint32
 
 const (
-	IF_Audio    InitFlags = 0x00000010 /**< `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS` */
-	IF_Video    InitFlags = 0x00000020 /**< `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main thread */
-	IF_Joystick InitFlags = 0x00000200 /**< `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the same thread as SDL_INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD */
-	IF_Haptic   InitFlags = 0x00001000
-	IF_Gamepad  InitFlags = 0x00002000 /**< `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK` */
-	IF_Events   InitFlags = 0x00004000
-	IF_Sensor   InitFlags = 0x00008000 /**< `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS` */
-	IF_Camera   InitFlags = 0x00010000 /**< `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS` */
+	InitAudio    InitFlags = 0x00000010 /**< `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS` */
+	InitVideo    InitFlags = 0x00000020 /**< `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main thread */
+	InitJoystick InitFlags = 0x00000200 /**< `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the same thread as SDL_INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD */
+	InitHaptic   InitFlags = 0x00001000
+	InitGamepad  InitFlags = 0x00002000 /**< `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK` */
+	InitEvents   InitFlags = 0x00004000
+	InitSensor   InitFlags = 0x00008000 /**< `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS` */
+	InitCamera   InitFlags = 0x00010000 /**< `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS` */
 )
 
 /**
@@ -105,9 +105,9 @@ const (
 type AppResult int32
 
 const (
-	AR_Continue AppResult = iota /**< Value that requests that the app continue from the main callbacks. */
-	AR_Success                   /**< Value that requests termination with success from the main callbacks. */
-	AR_Failure                   /**< Value that requests termination with error from the main callbacks. */
+	AppContinue AppResult = iota /**< Value that requests that the app continue from the main callbacks. */
+	AppSuccess                   /**< Value that requests termination with success from the main callbacks. */
+	AppFailure                   /**< Value that requests termination with error from the main callbacks. */
 )
 
 /**

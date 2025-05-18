@@ -67,12 +67,12 @@ type PropertiesID uint32
 type PropertyType int32
 
 const (
-	PT_Invalid PropertyType = iota
-	PT_Pointer
-	PT_String
-	PT_Number
-	PT_Float
-	PT_Boolean
+	PropertyTypeInvalid PropertyType = iota
+	PropertyTypePointer
+	PropertyTypeString
+	PropertyTypeNumber
+	PropertyTypeFloat
+	PropertyTypeBoolean
 )
 
 /**

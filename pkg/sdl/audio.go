@@ -215,43 +215,43 @@ func DEFINE_AUDIO_FORMAT(signed, bigendian, flt, size int32) AudioFormat {
 type AudioFormat int32
 
 const (
-	AF_UnknownFormat AudioFormat = 0x0000 /**< Unspecified audio format */
-	AF_U8            AudioFormat = 0x0008 /**< Unsigned 8-bit samples */
+	AudioUnknown AudioFormat = 0x0000 /**< Unspecified audio format */
+	AudioU8      AudioFormat = 0x0008 /**< Unsigned 8-bit samples */
 	/* SDL_DEFINE_AUDIO_FORMAT(0, 0, 0, 8), */
-	AF_S8 AudioFormat = 0x8008 /**< Signed 8-bit samples */
+	AudioS8 AudioFormat = 0x8008 /**< Signed 8-bit samples */
 	/* SDL_DEFINE_AUDIO_FORMAT(1, 0, 0, 8), */
-	AF_S16LE AudioFormat = 0x8010 /**< Signed 16-bit samples */
+	AudioS16LE AudioFormat = 0x8010 /**< Signed 16-bit samples */
 	/* SDL_DEFINE_AUDIO_FORMAT(1, 0, 0, 16), */
-	AF_S16BE AudioFormat = 0x9010 /**< As above, but big-endian byte order */
+	AudioS16BE AudioFormat = 0x9010 /**< As above, but big-endian byte order */
 	/* SDL_DEFINE_AUDIO_FORMAT(1, 1, 0, 16), */
-	AF_S32LE AudioFormat = 0x8020 /**< 32-bit integer samples */
+	AudioS32LE AudioFormat = 0x8020 /**< 32-bit integer samples */
 	/* SDL_DEFINE_AUDIO_FORMAT(1, 0, 0, 32), */
-	AF_S32BE AudioFormat = 0x9020 /**< As above, but big-endian byte order */
+	AudioS32BE AudioFormat = 0x9020 /**< As above, but big-endian byte order */
 	/* SDL_DEFINE_AUDIO_FORMAT(1, 1, 0, 32), */
-	AF_F32LE AudioFormat = 0x8120 /**< 32-bit floating point samples */
+	AudioF32LE AudioFormat = 0x8120 /**< 32-bit floating point samples */
 	/* SDL_DEFINE_AUDIO_FORMAT(1, 0, 1, 32), */
-	AF_F32BE AudioFormat = 0x9120 /**< As above, but big-endian byte order */
+	AudioF32BE AudioFormat = 0x9120 /**< As above, but big-endian byte order */
 	/* SDL_DEFINE_AUDIO_FORMAT(1, 1, 1, 32), */
 )
 
 /* These represent the current system's byteorder. */
 var (
-	AF_S16 AudioFormat
-	AF_S32 AudioFormat
-	AF_F32 AudioFormat
+	AudioS16 AudioFormat
+	AudioS32 AudioFormat
+	AudioF32 AudioFormat
 )
 
 func init() {
 	if binary.NativeEndian.Uint16([]byte{0x12, 0x34}) == uint16(0x3412) {
 		// little endian
-		AF_S16 = AF_S16LE
-		AF_S32 = AF_S32LE
-		AF_F32 = AF_F32LE
+		AudioS16 = AudioS16LE
+		AudioS32 = AudioS32LE
+		AudioF32 = AudioF32LE
 	} else {
 		// big endian
-		AF_S16 = AF_S16BE
-		AF_S32 = AF_S32BE
-		AF_F32 = AF_F32BE
+		AudioS16 = AudioS16BE
+		AudioS32 = AudioS32BE
+		AudioF32 = AudioF32BE
 	}
 }
 

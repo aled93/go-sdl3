@@ -97,17 +97,17 @@ type JoystickID uint32
 type JoystickType int32
 
 const (
-	JT_Unknown JoystickType = iota
-	JT_Gamepad
-	JT_Wheel
-	JT_ArcadeStick
-	JT_FlightStick
-	JT_DancePad
-	JT_Guitar
-	JT_DrumKit
-	JT_ArcadePad
-	JT_Throttle
-	JT_Count
+	JoystickTypeUnknown JoystickType = iota
+	JoystickTypeGamepad
+	JoystickTypeWheel
+	JoystickTypeArcadeStick
+	JoystickTypeFlightStick
+	JoystickTypeDancePad
+	JoystickTypeGuitar
+	JoystickTypeDrumKit
+	JoystickTypeArcadePad
+	JoystickTypeThrottle
+	JoystickTypeCount
 )
 
 /**
@@ -121,10 +121,10 @@ const (
 type JoystickConnectionState int32
 
 const (
-	JCS_Invalid JoystickConnectionState = iota - 1
-	JCS_Unknown
-	JCS_Wired
-	JCS_Wireless
+	JoystickConnectionInvalid JoystickConnectionState = iota - 1
+	JoystickConnectionUnknown
+	JoystickConnectionWired
+	JoystickConnectionWireless
 )
 
 /**

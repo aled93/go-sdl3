@@ -48,14 +48,14 @@ package sdl
 type BlendMode uint32
 
 const (
-	BM_None               BlendMode = 0x00000000 /**< no blending: dstRGBA = srcRGBA */
-	BM_Blend              BlendMode = 0x00000001 /**< alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA)) */
-	BM_BlendPremultiplied BlendMode = 0x00000010 /**< pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA)) */
-	BM_Add                BlendMode = 0x00000002 /**< additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA */
-	BM_AddPremultiplied   BlendMode = 0x00000020 /**< pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA */
-	BM_Mod                BlendMode = 0x00000004 /**< color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA */
-	BM_Mul                BlendMode = 0x00000008 /**< color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA */
-	BM_Invalid            BlendMode = 0x7FFFFFFF
+	BlendModeNone               BlendMode = 0x00000000 /**< no blending: dstRGBA = srcRGBA */
+	BlendModeBlend              BlendMode = 0x00000001 /**< alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA)) */
+	BlendModeBlendPremultiplied BlendMode = 0x00000010 /**< pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA)) */
+	BlendModeAdd                BlendMode = 0x00000002 /**< additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA */
+	BlendModeAddPremultiplied   BlendMode = 0x00000020 /**< pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA */
+	BlendModeMod                BlendMode = 0x00000004 /**< color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA */
+	BlendModeMul                BlendMode = 0x00000008 /**< color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA */
+	BlendModeInvalid            BlendMode = 0x7FFFFFFF
 )
 
 /**
@@ -67,11 +67,11 @@ const (
 type BlendOperation int32
 
 const (
-	BO_Add         BlendOperation = 0x1 /**< dst + src: supported by all renderers */
-	BO_Subtract    BlendOperation = 0x2 /**< src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan */
-	BO_RevSubtract BlendOperation = 0x3 /**< dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan */
-	BO_Minimum     BlendOperation = 0x4 /**< min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan */
-	BO_Maximum     BlendOperation = 0x5 /**< max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan */
+	BlendOperationAdd         BlendOperation = 0x1 /**< dst + src: supported by all renderers */
+	BlendOperationSubtract    BlendOperation = 0x2 /**< src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan */
+	BlendOperationRevSubtract BlendOperation = 0x3 /**< dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan */
+	BlendOperationMinimum     BlendOperation = 0x4 /**< min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan */
+	BlendOperationMaximum     BlendOperation = 0x5 /**< max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan */
 )
 
 /**
@@ -87,16 +87,16 @@ const (
 type BlendFactor int32
 
 const (
-	BF_Zero             BlendFactor = 0x1 /**< 0, 0, 0, 0 */
-	BF_One              BlendFactor = 0x2 /**< 1, 1, 1, 1 */
-	BF_SrcColor         BlendFactor = 0x3 /**< srcR, srcG, srcB, srcA */
-	BF_OneMinusSrcColor BlendFactor = 0x4 /**< 1-srcR, 1-srcG, 1-srcB, 1-srcA */
-	BF_SrcAlpha         BlendFactor = 0x5 /**< srcA, srcA, srcA, srcA */
-	BF_OneMinusSrcAlpha BlendFactor = 0x6 /**< 1-srcA, 1-srcA, 1-srcA, 1-srcA */
-	BF_DstColor         BlendFactor = 0x7 /**< dstR, dstG, dstB, dstA */
-	BF_OneMinusDstColor BlendFactor = 0x8 /**< 1-dstR, 1-dstG, 1-dstB, 1-dstA */
-	BF_DstAlpha         BlendFactor = 0x9 /**< dstA, dstA, dstA, dstA */
-	BF_OneMinusDstAlpha BlendFactor = 0xA /**< 1-dstA, 1-dstA, 1-dstA, 1-dstA */
+	BlendFactorZero             BlendFactor = 0x1 /**< 0, 0, 0, 0 */
+	BlendFactorOne              BlendFactor = 0x2 /**< 1, 1, 1, 1 */
+	BlendFactorSrcColor         BlendFactor = 0x3 /**< srcR, srcG, srcB, srcA */
+	BlendFactorOneMinusSrcColor BlendFactor = 0x4 /**< 1-srcR, 1-srcG, 1-srcB, 1-srcA */
+	BlendFactorSrcAlpha         BlendFactor = 0x5 /**< srcA, srcA, srcA, srcA */
+	BlendFactorOneMinusSrcAlpha BlendFactor = 0x6 /**< 1-srcA, 1-srcA, 1-srcA, 1-srcA */
+	BlendFactorDstColor         BlendFactor = 0x7 /**< dstR, dstG, dstB, dstA */
+	BlendFactorOneMinusDstColor BlendFactor = 0x8 /**< 1-dstR, 1-dstG, 1-dstB, 1-dstA */
+	BlendFactorDstAlpha         BlendFactor = 0x9 /**< dstA, dstA, dstA, dstA */
+	BlendFactorOneMinusDstAlpha BlendFactor = 0xA /**< 1-dstA, 1-dstA, 1-dstA, 1-dstA */
 )
 
 /**

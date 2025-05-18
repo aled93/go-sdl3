@@ -27,7 +27,7 @@ func main() {
 
 	sdl.SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear")
 
-	if !sdl.Init(sdl.IF_Video) {
+	if !sdl.Init(sdl.InitVideo) {
 		log.Printf("Couldn't initialize SDL: %s\n", sdl.GetError())
 		return
 	}
@@ -44,14 +44,14 @@ main_loop:
 
 		for sdl.PollEvent(&event) {
 			switch event.Type {
-			case sdl.ET_Quit, sdl.ET_WindowCloseRequested:
+			case sdl.EventQuit, sdl.EventWindowCloseRequested:
 				break main_loop /* end the program, reporting success to the OS. */
 
-			case sdl.ET_KeyDown:
+			case sdl.EventKeyDown:
 				keyEv := event.AsKeyboardEvent()
 
 				switch keyEv.Scancode {
-				case sdl.SC_Escape:
+				case sdl.ScancodeEscape:
 					break main_loop
 				}
 			}

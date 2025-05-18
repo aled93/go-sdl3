@@ -124,14 +124,14 @@ const STANDARD_GRAVITY = 9.80665
 type SensorType int32
 
 const (
-	ST_InvalidSensorType SensorType = iota - 1 /**< Returned for an invalid sensor */
-	ST_UnknownSensorType                       /**< Unknown sensor type */
-	ST_Accel                                   /**< Accelerometer */
-	ST_Gyro                                    /**< Gyroscope */
-	ST_AccelL                                  /**< Accelerometer for left Joy-Con controller and Wii nunchuk */
-	ST_GyroL                                   /**< Gyroscope for left Joy-Con controller */
-	ST_AccelR                                  /**< Accelerometer for right Joy-Con controller */
-	ST_GyroR                                   /**< Gyroscope for right Joy-Con controller */
+	SensorInvalid SensorType = iota - 1 /**< Returned for an invalid sensor */
+	SensorUnknown                       /**< Unknown sensor type */
+	SensorAccel                         /**< Accelerometer */
+	SensorGyro                          /**< Gyroscope */
+	SensorAccelL                        /**< Accelerometer for left Joy-Con controller and Wii nunchuk */
+	SensorGyroL                         /**< Gyroscope for left Joy-Con controller */
+	SensorAccelR                        /**< Accelerometer for right Joy-Con controller */
+	SensorGyroR                         /**< Gyroscope for right Joy-Con controller */
 )
 
 /* Function prototypes */

@@ -68,223 +68,223 @@ import "unsafe"
 type EventType int32
 
 const (
-	ET_First EventType = 0 /**< Unused (do not remove) */
+	EventFirst EventType = 0 /**< Unused (do not remove) */
 
 	/* Application events */
-	ET_Quit EventType = 0x100 + iota /**< User-requested quit */
+	EventQuit EventType = 0x100 + iota /**< User-requested quit */
 
 	/* These application events have special meaning on iOS and Android, see README-ios.md and README-android.md for details */
-	ET_Terminating /**< The application is being terminated by the OS. This event must be handled in a callback set with SDL_AddEventWatch().
+	EventTerminating /**< The application is being terminated by the OS. This event must be handled in a callback set with SDL_AddEventWatch().
 	  Called on iOS in applicationWillTerminate()
 	  Called on Android in onDestroy()
 	*/
-	ET_LowMemory /**< The application is low on memory, free memory if possible. This event must be handled in a callback set with SDL_AddEventWatch().
+	EventLowMemory /**< The application is low on memory, free memory if possible. This event must be handled in a callback set with SDL_AddEventWatch().
 	  Called on iOS in applicationDidReceiveMemoryWarning()
 	  Called on Android in onTrimMemory()
 	*/
-	ET_WillEnterBackground /**< The application is about to enter the background. This event must be handled in a callback set with SDL_AddEventWatch().
+	EventWillEnterBackground /**< The application is about to enter the background. This event must be handled in a callback set with SDL_AddEventWatch().
 	  Called on iOS in applicationWillResignActive()
 	  Called on Android in onPause()
 	*/
-	ET_DidEnterBackground /**< The application did enter the background and may not get CPU for some time. This event must be handled in a callback set with SDL_AddEventWatch().
+	EventDidEnterBackground /**< The application did enter the background and may not get CPU for some time. This event must be handled in a callback set with SDL_AddEventWatch().
 	  Called on iOS in applicationDidEnterBackground()
 	  Called on Android in onPause()
 	*/
-	ET_WillEnterForeground /**< The application is about to enter the foreground. This event must be handled in a callback set with SDL_AddEventWatch().
+	EventWillEnterForeground /**< The application is about to enter the foreground. This event must be handled in a callback set with SDL_AddEventWatch().
 	  Called on iOS in applicationWillEnterForeground()
 	  Called on Android in onResume()
 	*/
-	ET_DidEnterForeground /**< The application is now interactive. This event must be handled in a callback set with SDL_AddEventWatch().
+	EventDidEnterForeground /**< The application is now interactive. This event must be handled in a callback set with SDL_AddEventWatch().
 	  Called on iOS in applicationDidBecomeActive()
 	  Called on Android in onResume()
 	*/
 
-	ET_LocaleChanged /**< The user's locale preferences have changed. */
+	EventLocaleChanged /**< The user's locale preferences have changed. */
 
-	ET_SystemThemeChanged /**< The system theme changed */
+	EventSystemThemeChanged /**< The system theme changed */
 )
 
 const (
 	/* Display events */
 	/* 0x150 was SDL_DISPLAYEVENT, reserve the number for sdl2-compat */
-	ET_DisplayOrientation         EventType = 0x151 + iota /**< Display orientation has changed to data1 */
-	ET_DisplayAdded                                        /**< Display has been added to the system */
-	ET_DisplayRemoved                                      /**< Display has been removed from the system */
-	ET_DisplayMoved                                        /**< Display has changed position */
-	ET_DisplayDesktopModeChanged                           /**< Display has changed desktop mode */
-	ET_DisplayCurrentModeChanged                           /**< Display has changed current mode */
-	ET_DisplayContentScaleChanged                          /**< Display has changed content scale */
-	ET_DisplayFirst               EventType = ET_DisplayOrientation
-	ET_DisplayLast                EventType = ET_DisplayContentScaleChanged
+	EventDisplayOrientation         EventType = 0x151 + iota /**< Display orientation has changed to data1 */
+	EventDisplayAdded                                        /**< Display has been added to the system */
+	EventDisplayRemoved                                      /**< Display has been removed from the system */
+	EventDisplayMoved                                        /**< Display has changed position */
+	EventDisplayDesktopModeChanged                           /**< Display has changed desktop mode */
+	EventDisplayCurrentModeChanged                           /**< Display has changed current mode */
+	EventDisplayContentScaleChanged                          /**< Display has changed content scale */
+	EventDisplayFirst               EventType = EventDisplayOrientation
+	EventDisplayLast                EventType = EventDisplayContentScaleChanged
 )
 
 const (
 	/* Window events */
 	/* 0x200 was SDL_WINDOWEVENT, reserve the number for sdl2-compat */
 	/* 0x201 was SDL_SYSWMEVENT, reserve the number for sdl2-compat */
-	ET_WindowShown               EventType = 0x202 + iota /**< Window has been shown */
-	ET_WindowHidden                                       /**< Window has been hidden */
-	ET_WindowExposed                                      /**< Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event */
-	ET_WindowMoved                                        /**< Window has been moved to data1, data2 */
-	ET_WindowResized                                      /**< Window has been resized to data1xdata2 */
-	ET_WindowPixelSizeChanged                             /**< The pixel size of the window has changed to data1xdata2 */
-	ET_WindowMetalViewResized                             /**< The pixel size of a Metal view associated with the window has changed */
-	ET_WindowMinimized                                    /**< Window has been minimized */
-	ET_WindowMaximized                                    /**< Window has been maximized */
-	ET_WindowRestored                                     /**< Window has been restored to normal size and position */
-	ET_WindowMouseEnter                                   /**< Window has gained mouse focus */
-	ET_WindowMouseLeave                                   /**< Window has lost mouse focus */
-	ET_WindowFocusGained                                  /**< Window has gained keyboard focus */
-	ET_WindowFocusLost                                    /**< Window has lost keyboard focus */
-	ET_WindowCloseRequested                               /**< The window manager requests that the window be closed */
-	ET_WindowHitRest                                      /**< Window had a hit test that wasn't SDL_HITTEST_NORMAL */
-	ET_WindowIccprofChanged                               /**< The ICC profile of the window's display has changed */
-	ET_WindowDisplayChanged                               /**< Window has been moved to display data1 */
-	ET_WindowDisplayScaleChanged                          /**< Window display scale has been changed */
-	ET_WindowSafeAreaChanged                              /**< The window safe area has been changed */
-	ET_WindowOccluded                                     /**< The window has been occluded */
-	ET_WindowEnterFullscreen                              /**< The window has entered fullscreen mode */
-	ET_WindowLeaveFullscreen                              /**< The window has left fullscreen mode */
-	ET_WindowDestroyed                                    /**< The window with the associated ID is being or has been destroyed. If this message is being handled
+	EventWindowShown               EventType = 0x202 + iota /**< Window has been shown */
+	EventWindowHidden                                       /**< Window has been hidden */
+	EventWindowExposed                                      /**< Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event */
+	EventWindowMoved                                        /**< Window has been moved to data1, data2 */
+	EventWindowResized                                      /**< Window has been resized to data1xdata2 */
+	EventWindowPixelSizeChanged                             /**< The pixel size of the window has changed to data1xdata2 */
+	EventWindowMetalViewResized                             /**< The pixel size of a Metal view associated with the window has changed */
+	EventWindowMinimized                                    /**< Window has been minimized */
+	EventWindowMaximized                                    /**< Window has been maximized */
+	EventWindowRestored                                     /**< Window has been restored to normal size and position */
+	EventWindowMouseEnter                                   /**< Window has gained mouse focus */
+	EventWindowMouseLeave                                   /**< Window has lost mouse focus */
+	EventWindowFocusGained                                  /**< Window has gained keyboard focus */
+	EventWindowFocusLost                                    /**< Window has lost keyboard focus */
+	EventWindowCloseRequested                               /**< The window manager requests that the window be closed */
+	EventWindowHitRest                                      /**< Window had a hit test that wasn't SDL_HITTEST_NORMAL */
+	EventWindowIccprofChanged                               /**< The ICC profile of the window's display has changed */
+	EventWindowDisplayChanged                               /**< Window has been moved to display data1 */
+	EventWindowDisplayScaleChanged                          /**< Window display scale has been changed */
+	EventWindowSafeAreaChanged                              /**< The window safe area has been changed */
+	EventWindowOccluded                                     /**< The window has been occluded */
+	EventWindowEnterFullscreen                              /**< The window has entered fullscreen mode */
+	EventWindowLeaveFullscreen                              /**< The window has left fullscreen mode */
+	EventWindowDestroyed                                    /**< The window with the associated ID is being or has been destroyed. If this message is being handled
 	  in an event watcher, the window handle is still valid and can still be used to retrieve any properties
 	  associated with the window. Otherwise, the handle has already been destroyed and all resources
 	  associated with it are invalid */
-	ET_WindowHdrStateChanged           /**< Window HDR properties have changed */
-	ET_WindowFirst           EventType = ET_WindowShown
-	ET_WindowLast            EventType = ET_WindowHdrStateChanged
+	EventWindowHdrStateChanged           /**< Window HDR properties have changed */
+	EventWindowFirst           EventType = EventWindowShown
+	EventWindowLast            EventType = EventWindowHdrStateChanged
 )
 
 const (
 	/* Keyboard events */
-	ET_KeyDown       EventType = 0x300 + iota /**< Key pressed */
-	ET_KeyUp                                  /**< Key released */
-	ET_TextEditing                            /**< Keyboard text editing (composition) */
-	ET_TextInput                              /**< Keyboard text input */
-	ET_KeymapChanged                          /**< Keymap changed due to a system event such as an
+	EventKeyDown       EventType = 0x300 + iota /**< Key pressed */
+	EventKeyUp                                  /**< Key released */
+	EventTextEditing                            /**< Keyboard text editing (composition) */
+	EventTextInput                              /**< Keyboard text input */
+	EventKeymapChanged                          /**< Keymap changed due to a system event such as an
 	  input language or keyboard layout change. */
-	ET_KeyboardAdded         /**< A new keyboard has been inserted into the system */
-	ET_KeyboardRemoved       /**< A keyboard has been removed */
-	ET_TextEditingCandidates /**< Keyboard text editing candidates */
+	EventKeyboardAdded         /**< A new keyboard has been inserted into the system */
+	EventKeyboardRemoved       /**< A keyboard has been removed */
+	EventTextEditingCandidates /**< Keyboard text editing candidates */
 )
 
 const (
 	/* Mouse events */
-	ET_MouseMotion     EventType = 0x400 + iota /**< Mouse moved */
-	ET_MouseButtonDown                          /**< Mouse button pressed */
-	ET_MouseButtonUp                            /**< Mouse button released */
-	ET_MouseWheel                               /**< Mouse wheel motion */
-	ET_MouseAdded                               /**< A new mouse has been inserted into the system */
-	ET_MouseRemoved                             /**< A mouse has been removed */
+	EventMouseMotion     EventType = 0x400 + iota /**< Mouse moved */
+	EventMouseButtonDown                          /**< Mouse button pressed */
+	EventMouseButtonUp                            /**< Mouse button released */
+	EventMouseWheel                               /**< Mouse wheel motion */
+	EventMouseAdded                               /**< A new mouse has been inserted into the system */
+	EventMouseRemoved                             /**< A mouse has been removed */
 )
 
 const (
 	/* Joystick events */
-	ET_JoystickAxisMotion     EventType = 0x600 + iota /**< Joystick axis motion */
-	ET_JoystickBallMotion                              /**< Joystick trackball motion */
-	ET_JoystickHatMotion                               /**< Joystick hat position change */
-	ET_JoystickButtonDown                              /**< Joystick button pressed */
-	ET_JoystickButtonUp                                /**< Joystick button released */
-	ET_JoystickAdded                                   /**< A new joystick has been inserted into the system */
-	ET_JoystickRemoved                                 /**< An opened joystick has been removed */
-	ET_JoystickBatteryUpdated                          /**< Joystick battery level change */
-	ET_JoystickUpdateComplete                          /**< Joystick update is complete */
+	EventJoystickAxisMotion     EventType = 0x600 + iota /**< Joystick axis motion */
+	EventJoystickBallMotion                              /**< Joystick trackball motion */
+	EventJoystickHatMotion                               /**< Joystick hat position change */
+	EventJoystickButtonDown                              /**< Joystick button pressed */
+	EventJoystickButtonUp                                /**< Joystick button released */
+	EventJoystickAdded                                   /**< A new joystick has been inserted into the system */
+	EventJoystickRemoved                                 /**< An opened joystick has been removed */
+	EventJoystickBatteryUpdated                          /**< Joystick battery level change */
+	EventJoystickUpdateComplete                          /**< Joystick update is complete */
 )
 
 const (
 	/* Gamepad events */
-	ET_GamepadAxisMotion         EventType = 0x650 + iota /**< Gamepad axis motion */
-	ET_GamepadButtonDown                                  /**< Gamepad button pressed */
-	ET_GamepadButtonUp                                    /**< Gamepad button released */
-	ET_GamepadAdded                                       /**< A new gamepad has been inserted into the system */
-	ET_GamepadRemoved                                     /**< A gamepad has been removed */
-	ET_GamepadRemapped                                    /**< The gamepad mapping was updated */
-	ET_GamepadTouchpadDown                                /**< Gamepad touchpad was touched */
-	ET_GamepadTouchpadMotion                              /**< Gamepad touchpad finger was moved */
-	ET_GamepadTouchpadUp                                  /**< Gamepad touchpad finger was lifted */
-	ET_GamepadSensorUpdate                                /**< Gamepad sensor was updated */
-	ET_GamepadUpdateComplete                              /**< Gamepad update is complete */
-	ET_GamepadSteamHandleUpdated                          /**< Gamepad Steam handle has changed */
+	EventGamepadAxisMotion         EventType = 0x650 + iota /**< Gamepad axis motion */
+	EventGamepadButtonDown                                  /**< Gamepad button pressed */
+	EventGamepadButtonUp                                    /**< Gamepad button released */
+	EventGamepadAdded                                       /**< A new gamepad has been inserted into the system */
+	EventGamepadRemoved                                     /**< A gamepad has been removed */
+	EventGamepadRemapped                                    /**< The gamepad mapping was updated */
+	EventGamepadTouchpadDown                                /**< Gamepad touchpad was touched */
+	EventGamepadTouchpadMotion                              /**< Gamepad touchpad finger was moved */
+	EventGamepadTouchpadUp                                  /**< Gamepad touchpad finger was lifted */
+	EventGamepadSensorUpdate                                /**< Gamepad sensor was updated */
+	EventGamepadUpdateComplete                              /**< Gamepad update is complete */
+	EventGamepadSteamHandleUpdated                          /**< Gamepad Steam handle has changed */
 
 	/* Touch events */
-	ET_FingerDown EventType = 0x700
-	ET_FingerUp
-	ET_FingerMotion
-	ET_FingerCanceled
+	EventFingerDown EventType = 0x700
+	EventFingerUp
+	EventFingerMotion
+	EventFingerCanceled
 
 	/* 0x800, 0x801, and 0x802 were the Gesture events from SDL2. Do not reuse these values! sdl2-compat needs them! */
 
 	/* Clipboard events */
-	ET_Clipboard_update EventType = 0x900 /**< The clipboard or primary selection changed */
+	EventClipboard_update EventType = 0x900 /**< The clipboard or primary selection changed */
 )
 
 const (
 	/* Drag and drop events */
-	ET_DropFile     EventType = 0x1000 + iota /**< The system requests a file open */
-	ET_DropText                               /**< text/plain drag-and-drop event */
-	ET_DropBegin                              /**< A new set of drops is beginning (NULL filename) */
-	ET_DropComplete                           /**< Current set of drops is now complete (NULL filename) */
-	ET_DropPosition                           /**< Position while moving over the window */
+	EventDropFile     EventType = 0x1000 + iota /**< The system requests a file open */
+	EventDropText                               /**< text/plain drag-and-drop event */
+	EventDropBegin                              /**< A new set of drops is beginning (NULL filename) */
+	EventDropComplete                           /**< Current set of drops is now complete (NULL filename) */
+	EventDropPosition                           /**< Position while moving over the window */
 )
 
 const (
 	/* Audio hotplug events */
-	ET_AudioDeviceAdded         EventType = 0x1100 + iota /**< A new audio device is available */
-	ET_AudioDeviceRemoved                                 /**< An audio device has been removed. */
-	ET_AudioDeviceFormatChanged                           /**< An audio device's format has been changed by the system. */
+	EventAudioDeviceAdded         EventType = 0x1100 + iota /**< A new audio device is available */
+	EventAudioDeviceRemoved                                 /**< An audio device has been removed. */
+	EventAudioDeviceFormatChanged                           /**< An audio device's format has been changed by the system. */
 
 	/* Sensor events */
-	ET_SensorUpdate EventType = 0x1200 /**< A sensor was updated */
+	EventSensorUpdate EventType = 0x1200 /**< A sensor was updated */
 )
 
 const (
 	/* Pressure-sensitive pen events */
-	ET_PenProximityIn  EventType = 0x1300 + iota /**< Pressure-sensitive pen has become available */
-	ET_PenProximityOut                           /**< Pressure-sensitive pen has become unavailable */
-	ET_PenDown                                   /**< Pressure-sensitive pen touched drawing surface */
-	ET_PenUp                                     /**< Pressure-sensitive pen stopped touching drawing surface */
-	ET_PenButtonDown                             /**< Pressure-sensitive pen button pressed */
-	ET_PenButtonUp                               /**< Pressure-sensitive pen button released */
-	ET_PenMotion                                 /**< Pressure-sensitive pen is moving on the tablet */
-	ET_PenAxis                                   /**< Pressure-sensitive pen angle/pressure/etc changed */
+	EventPenProximityIn  EventType = 0x1300 + iota /**< Pressure-sensitive pen has become available */
+	EventPenProximityOut                           /**< Pressure-sensitive pen has become unavailable */
+	EventPenDown                                   /**< Pressure-sensitive pen touched drawing surface */
+	EventPenUp                                     /**< Pressure-sensitive pen stopped touching drawing surface */
+	EventPenButtonDown                             /**< Pressure-sensitive pen button pressed */
+	EventPenButtonUp                               /**< Pressure-sensitive pen button released */
+	EventPenMotion                                 /**< Pressure-sensitive pen is moving on the tablet */
+	EventPenAxis                                   /**< Pressure-sensitive pen angle/pressure/etc changed */
 )
 
 const (
 	/* Camera hotplug events */
-	ET_CameraDeviceAdded    EventType = 0x1400 + iota /**< A new camera device is available */
-	ET_CameraDeviceRemoved                            /**< A camera device has been removed. */
-	ET_CameraDeviceApproved                           /**< A camera device has been approved for use by the user. */
-	ET_CameraDeviceDenied                             /**< A camera device has been denied for use by the user. */
+	EventCameraDeviceAdded    EventType = 0x1400 + iota /**< A new camera device is available */
+	EventCameraDeviceRemoved                            /**< A camera device has been removed. */
+	EventCameraDeviceApproved                           /**< A camera device has been approved for use by the user. */
+	EventCameraDeviceDenied                             /**< A camera device has been denied for use by the user. */
 )
 
 const (
 	/* Render events */
-	ET_RenderTargetsReset EventType = 0x2000 + iota /**< The render targets have been reset and their contents need to be updated */
-	ET_RenderDeviceReset                            /**< The device has been reset and all textures need to be recreated */
-	ET_RenderDeviceLost                             /**< The device has been lost and can't be recovered. */
+	EventRenderTargetsReset EventType = 0x2000 + iota /**< The render targets have been reset and their contents need to be updated */
+	EventRenderDeviceReset                            /**< The device has been reset and all textures need to be recreated */
+	EventRenderDeviceLost                             /**< The device has been lost and can't be recovered. */
 )
 
 const (
 	/* Reserved events for private platforms */
-	ET_Private0 EventType = 0x4000 + iota
-	ET_Private1
-	ET_Private2
-	ET_Private3
+	EventPrivate0 EventType = 0x4000 + iota
+	EventPrivate1
+	EventPrivate2
+	EventPrivate3
 
 	/* Internal events */
-	ET_PollSentinel EventType = 0x7F00 /**< Signals the end of an event poll cycle */
+	EventPollSentinel EventType = 0x7F00 /**< Signals the end of an event poll cycle */
 
 	/** Events ET_User through ET_Last are for your use,
 	 *  and should be allocated with SDL_RegisterEvents()
 	 */
-	ET_User EventType = 0x8000
+	EventUser EventType = 0x8000
 
 	/**
 	 *  This last event is only for bounding internal arrays
 	 */
-	ET_Last EventType = 0xFFFF
+	EventLast EventType = 0xFFFF
 
 	/* This just makes sure the enum is the size of Uint32 */
-	ET_EnumPadding EventType = 0x7FFFFFFF
+	EventEnumPadding EventType = 0x7FFFFFFF
 )
 
 /**
@@ -1139,9 +1139,9 @@ var PumpEvents func()
 type EventAction int32
 
 const (
-	EA_AddEvent  EventAction = iota /**< Add events to the back of the queue. */
-	EA_PeekEvent                    /**< Check but don't remove events from the queue front. */
-	EA_GetEvent                     /**< Retrieve/remove events from the front of the queue. */
+	AddEvent  EventAction = iota /**< Add events to the back of the queue. */
+	PeekEvent                    /**< Check but don't remove events from the queue front. */
+	GetEvent                     /**< Retrieve/remove events from the front of the queue. */
 )
 
 /**

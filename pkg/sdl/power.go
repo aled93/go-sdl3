@@ -51,12 +51,12 @@ package sdl
 type PowerState int32
 
 const (
-	PS_ErrorGettingStatus PowerState = iota - 1 /**< error determining power status */
-	PS_Unknown                                  /**< cannot determine power status */
-	PS_OnBattery                                /**< Not plugged in, running on the battery */
-	PS_NoBattery                                /**< Plugged in, no battery available */
-	PS_Charging                                 /**< Plugged in, charging battery */
-	PS_Charged                                  /**< Plugged in, battery charged */
+	PowerStateError     PowerState = iota - 1 /**< error determining power status */
+	PowerStateUnknown                         /**< cannot determine power status */
+	PowerStateOnBattery                       /**< Not plugged in, running on the battery */
+	PowerStateNoBattery                       /**< Plugged in, no battery available */
+	PowerStateCharging                        /**< Plugged in, charging battery */
+	PowerStateCharged                         /**< Plugged in, battery charged */
 )
 
 /**

@@ -90,27 +90,27 @@ type Cursor uintptr
 type SystemCursor int32
 
 const (
-	SC_Default    SystemCursor = iota /**< Default cursor. Usually an arrow. */
-	SC_Text                           /**< Text selection. Usually an I-beam. */
-	SC_Wait                           /**< Wait. Usually an hourglass or watch or spinning ball. */
-	SC_Crosshair                      /**< Crosshair. */
-	SC_Progress                       /**< Program is busy but still interactive. Usually it's WAIT with an arrow. */
-	SC_NWSEResize                     /**< Double arrow pointing northwest and southeast. */
-	SC_NESWResize                     /**< Double arrow pointing northeast and southwest. */
-	SC_EWResize                       /**< Double arrow pointing west and east. */
-	SC_NSResize                       /**< Double arrow pointing north and south. */
-	SC_Move                           /**< Four pointed arrow pointing north, south, east, and west. */
-	SC_NotAllowed                     /**< Not permitted. Usually a slashed circle or crossbones. */
-	SC_Pointer                        /**< Pointer that indicates a link. Usually a pointing hand. */
-	SC_NWResize                       /**< Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE. */
-	SC_NResize                        /**< Window resize top. May be NS_RESIZE. */
-	SC_NEResize                       /**< Window resize top-right. May be NESW_RESIZE. */
-	SC_EResize                        /**< Window resize right. May be EW_RESIZE. */
-	SC_SEResize                       /**< Window resize bottom-right. May be NWSE_RESIZE. */
-	SC_SResize                        /**< Window resize bottom. May be NS_RESIZE. */
-	SC_SWResize                       /**< Window resize bottom-left. May be NESW_RESIZE. */
-	SC_WResize                        /**< Window resize left. May be EW_RESIZE. */
-	SC_Count
+	SystemCursorDefault    SystemCursor = iota /**< Default cursor. Usually an arrow. */
+	SystemCursorText                           /**< Text selection. Usually an I-beam. */
+	SystemCursorWait                           /**< Wait. Usually an hourglass or watch or spinning ball. */
+	SystemCursorCrosshair                      /**< Crosshair. */
+	SystemCursorProgress                       /**< Program is busy but still interactive. Usually it's WAIT with an arrow. */
+	SystemCursorNWSEResize                     /**< Double arrow pointing northwest and southeast. */
+	SystemCursorNESWResize                     /**< Double arrow pointing northeast and southwest. */
+	SystemCursorEWResize                       /**< Double arrow pointing west and east. */
+	SystemCursorNSResize                       /**< Double arrow pointing north and south. */
+	SystemCursorMove                           /**< Four pointed arrow pointing north, south, east, and west. */
+	SystemCursorNotAllowed                     /**< Not permitted. Usually a slashed circle or crossbones. */
+	SystemCursorPointer                        /**< Pointer that indicates a link. Usually a pointing hand. */
+	SystemCursorNWResize                       /**< Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE. */
+	SystemCursorNResize                        /**< Window resize top. May be NS_RESIZE. */
+	SystemCursorNEResize                       /**< Window resize top-right. May be NESW_RESIZE. */
+	SystemCursorEResize                        /**< Window resize right. May be EW_RESIZE. */
+	SystemCursorSEResize                       /**< Window resize bottom-right. May be NWSE_RESIZE. */
+	SystemCursorSResize                        /**< Window resize bottom. May be NS_RESIZE. */
+	SystemCursorSWResize                       /**< Window resize bottom-left. May be NESW_RESIZE. */
+	SystemCursorWResize                        /**< Window resize left. May be EW_RESIZE. */
+	SystemCursorCount
 )
 
 /**
@@ -121,8 +121,8 @@ const (
 type MouseWheelDirection int32
 
 const (
-	MW_Normal  MouseWheelDirection = iota /**< The scroll direction is normal */
-	MW_Flipped                            /**< The scroll direction is flipped / natural */
+	MouseWhellNormal  MouseWheelDirection = iota /**< The scroll direction is normal */
+	MouseWhellFlipped                            /**< The scroll direction is flipped / natural */
 )
 
 /**
@@ -144,11 +144,11 @@ type MouseButton uint32
 type MouseButtonFlags uint32
 
 const (
-	MB_Left   MouseButton = 1
-	MB_Middle MouseButton = 2
-	MB_Right  MouseButton = 3
-	MB_X1     MouseButton = 4
-	MB_X2     MouseButton = 5
+	MouseButtonLeft   MouseButton = 1
+	MouseButtonMiddle MouseButton = 2
+	MouseButtonRight  MouseButton = 3
+	MouseButtonX1     MouseButton = 4
+	MouseButtonX2     MouseButton = 5
 )
 
 func BUTTON_MASK(X MouseButton) MouseButtonFlags {
@@ -156,11 +156,11 @@ func BUTTON_MASK(X MouseButton) MouseButtonFlags {
 }
 
 const (
-	MBF_LMask  MouseButtonFlags = 1 << (uint32(MB_Left) - 1)
-	MBF_MMask  MouseButtonFlags = 1 << (uint32(MB_Middle) - 1)
-	MBF_RMask  MouseButtonFlags = 1 << (uint32(MB_Right) - 1)
-	MBF_X1Mask MouseButtonFlags = 1 << (uint32(MB_X1) - 1)
-	MBF_X2Mask MouseButtonFlags = 1 << (uint32(MB_X2) - 1)
+	MouseButtonLMask  MouseButtonFlags = 1 << (uint32(MouseButtonLeft) - 1)
+	MouseButtonMMask  MouseButtonFlags = 1 << (uint32(MouseButtonMiddle) - 1)
+	MouseButtonRMask  MouseButtonFlags = 1 << (uint32(MouseButtonRight) - 1)
+	MouseButtonX1Mask MouseButtonFlags = 1 << (uint32(MouseButtonX1) - 1)
+	MouseButtonX2Mask MouseButtonFlags = 1 << (uint32(MouseButtonX2) - 1)
 )
 
 /**

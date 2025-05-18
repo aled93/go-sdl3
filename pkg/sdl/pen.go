@@ -105,12 +105,12 @@ const (
 type PenAxis int32
 
 const (
-	PA_Pressure           PenAxis = iota /**< Pen pressure.  Unidirectional: 0 to 1.0 */
-	PA_XTilt                             /**< Pen horizontal tilt angle.  Bidirectional: -90.0 to 90.0 (left-to-right). */
-	PA_YTilt                             /**< Pen vertical tilt angle.  Bidirectional: -90.0 to 90.0 (top-to-down). */
-	PA_Distance                          /**< Pen distance to drawing surface.  Unidirectional: 0.0 to 1.0 */
-	PA_Rotation                          /**< Pen barrel rotation.  Bidirectional: -180 to 179.9 (clockwise, 0 is facing up, -180.0 is facing down). */
-	PA_Slider                            /**< Pen finger wheel or slider (e.g., Airbrush Pen).  Unidirectional: 0 to 1.0 */
-	PA_TangentialPressure                /**< Pressure from squeezing the pen ("barrel pressure"). */
-	PA_Count                             /**< Total known pen axis types in this version of SDL. This number may grow in future releases! */
+	PenAxisPressure           PenAxis = iota /**< Pen pressure.  Unidirectional: 0 to 1.0 */
+	PenAxisXTilt                             /**< Pen horizontal tilt angle.  Bidirectional: -90.0 to 90.0 (left-to-right). */
+	PenAxisYTilt                             /**< Pen vertical tilt angle.  Bidirectional: -90.0 to 90.0 (top-to-down). */
+	PenAxisDistance                          /**< Pen distance to drawing surface.  Unidirectional: 0.0 to 1.0 */
+	PenAxisRotation                          /**< Pen barrel rotation.  Bidirectional: -180 to 179.9 (clockwise, 0 is facing up, -180.0 is facing down). */
+	PenAxisSlider                            /**< Pen finger wheel or slider (e.g., Airbrush Pen).  Unidirectional: 0 to 1.0 */
+	PenAxisTangentialPressure                /**< Pressure from squeezing the pen ("barrel pressure"). */
+	PenAxisCount                             /**< Total known pen axis types in this version of SDL. This number may grow in future releases! */
 )

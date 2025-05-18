@@ -48,10 +48,10 @@ package sdl
 type SurfaceFlags uint32
 
 const (
-	SF_Preallocated SurfaceFlags = 0x00000001 /**< Surface uses preallocated pixel memory */
-	SF_LockNeeded   SurfaceFlags = 0x00000002 /**< Surface needs to be locked to access pixels */
-	SF_Locked       SurfaceFlags = 0x00000004 /**< Surface is currently locked */
-	SF_SimdAligned  SurfaceFlags = 0x00000008 /**< Surface uses pixel memory allocated with SDL_aligned_alloc() */
+	SurfacePreallocated SurfaceFlags = 0x00000001 /**< Surface uses preallocated pixel memory */
+	SurfaceLockNeeded   SurfaceFlags = 0x00000002 /**< Surface needs to be locked to access pixels */
+	SurfaceLocked       SurfaceFlags = 0x00000004 /**< Surface is currently locked */
+	SurfaceSimdAligned  SurfaceFlags = 0x00000008 /**< Surface uses pixel memory allocated with SDL_aligned_alloc() */
 )
 
 /**
@@ -60,7 +60,7 @@ const (
 * \since This macro is available since SDL 3.2.0.
  */
 func MUSTLOCK(S Surface) bool {
-	return (S.Flags & SF_LockNeeded) == SF_LockNeeded
+	return (S.Flags & SurfaceLockNeeded) == SurfaceLockNeeded
 }
 
 /**
@@ -71,10 +71,10 @@ func MUSTLOCK(S Surface) bool {
 type ScaleMode int32
 
 const (
-	SM_Invalid  ScaleMode = iota - 1
-	SM_Nearest            /**< nearest pixel sampling */
-	SM_Linear             /**< linear filtering */
-	SM_PixelArt           /**< nearest pixel sampling with improved scaling for pixel art */
+	ScaleModeInvalid  ScaleMode = iota - 1
+	ScaleModeNearest            /**< nearest pixel sampling */
+	ScaleModeLinear             /**< linear filtering */
+	ScaleModePixelArt           /**< nearest pixel sampling with improved scaling for pixel art */
 )
 
 /**
@@ -85,9 +85,9 @@ const (
 type FlipMode int32
 
 const (
-	FM_None       FlipMode = iota /**< Do not flip */
-	FM_Horizontal                 /**< flip horizontally */
-	FM_Vertical                   /**< flip vertically */
+	FlipNone       FlipMode = iota /**< Do not flip */
+	FlipHorizontal                 /**< flip horizontally */
+	FlipVertical                   /**< flip vertically */
 )
 
 /**

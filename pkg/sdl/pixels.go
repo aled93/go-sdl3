@@ -132,20 +132,20 @@ const ALPHA_TRANSPARENT_FLOAT = 0.0
 type PixelType int32
 
 const (
-	PT_Unknown PixelType = iota
-	PT_Index1
-	PT_Index4
-	PT_Index8
-	PT_Packed8
-	PT_Packed16
-	PT_Packed32
-	PT_Arrayu8
-	PT_Arrayu16
-	PT_Arrayu32
-	PT_Arrayf16
-	PT_Arrayf32
+	PixelTypeUnknown PixelType = iota
+	PixelTypeIndex1
+	PixelTypeIndex4
+	PixelTypeIndex8
+	PixelTypePacked8
+	PixelTypePacked16
+	PixelTypePacked32
+	PixelTypeArrayu8
+	PixelTypeArrayu16
+	PixelTypeArrayu32
+	PixelTypeArrayf16
+	PixelTypeArrayf32
 	/* appended at the end for compatibility with sdl2-compat:  */
-	PT_Index2
+	PixelTypeIndex2
 )
 
 /**
@@ -156,9 +156,9 @@ const (
 type BitmapOrder int32
 
 const (
-	BO_None BitmapOrder = iota
-	BO_4321
-	BO_1234
+	BitmapOrderNone BitmapOrder = iota
+	BitmapOrder4321
+	BitmapOrder1234
 )
 
 /**
@@ -169,15 +169,15 @@ const (
 type PackedOrder int32
 
 const (
-	PO_None PackedOrder = iota
-	PO_XRGB
-	PO_RGBX
-	PO_ARGB
-	PO_RGBA
-	PO_XBGR
-	PO_BGRX
-	PO_ABGR
-	PO_BGRA
+	PackedOrderNone PackedOrder = iota
+	PackedOrderXRGB
+	PackedOrderRGBX
+	PackedOrderARGB
+	PackedOrderRGBA
+	PackedOrderXBGR
+	PackedOrderBGRX
+	PackedOrderABGR
+	PackedOrderBGRA
 )
 
 /**
@@ -188,13 +188,13 @@ const (
 type ArrayOrder int32
 
 const (
-	AO_None ArrayOrder = iota
-	AO_RGB
-	AO_RGBA
-	AO_ARGB
-	AO_BGR
-	AO_BGRA
-	AO_ABGR
+	ArrayOrderNone ArrayOrder = iota
+	ArrayOrderRGB
+	ArrayOrderRGBA
+	ArrayOrderARGB
+	ArrayOrderBGR
+	ArrayOrderBGRA
+	ArrayOrderABGR
 )
 
 /**
@@ -205,15 +205,15 @@ const (
 type PackedLayout int32
 
 const (
-	PL_None PackedLayout = iota
-	PL_332
-	PL_4444
-	PL_1555
-	PL_5551
-	PL_565
-	PL_8888
-	PL_2101010
-	PL_1010102
+	PackedLayoutNone PackedLayout = iota
+	PackedLayout332
+	PackedLayout4444
+	PackedLayout1555
+	PackedLayout5551
+	PackedLayout565
+	PackedLayout8888
+	PackedLayout2101010
+	PackedLayout1010102
 )
 
 /**
@@ -380,10 +380,10 @@ func BITSPERPIXEL(format PixelFormat) int32 {
  */
 func BYTESPERPIXEL(format PixelFormat) int32 {
 	if ISPIXELFORMAT_FOURCC(format) {
-		if (format == PF_YUY2) ||
-			(format == PF_UYVY) ||
-			(format == PF_YVYU) ||
-			(format == PF_P010) {
+		if (format == PixelFormatYUY2) ||
+			(format == PixelFormatUYVY) ||
+			(format == PixelFormatYVYU) ||
+			(format == PixelFormatP010) {
 			return 2
 		} else {
 			return 1
@@ -408,10 +408,10 @@ func BYTESPERPIXEL(format PixelFormat) int32 {
  */
 func ISPIXELFORMAT_INDEXED(format PixelFormat) bool {
 	return !ISPIXELFORMAT_FOURCC(format) &&
-		((PIXELTYPE(format) == PT_Index1) ||
-			(PIXELTYPE(format) == PT_Index2) ||
-			(PIXELTYPE(format) == PT_Index4) ||
-			(PIXELTYPE(format) == PT_Index8))
+		((PIXELTYPE(format) == PixelTypeIndex1) ||
+			(PIXELTYPE(format) == PixelTypeIndex2) ||
+			(PIXELTYPE(format) == PixelTypeIndex4) ||
+			(PIXELTYPE(format) == PixelTypeIndex8))
 }
 
 /**
@@ -429,9 +429,9 @@ func ISPIXELFORMAT_INDEXED(format PixelFormat) bool {
  */
 func ISPIXELFORMAT_PACKED(format PixelFormat) bool {
 	return !ISPIXELFORMAT_FOURCC(format) &&
-		((PIXELTYPE(format) == PT_Packed8) ||
-			(PIXELTYPE(format) == PT_Packed16) ||
-			(PIXELTYPE(format) == PT_Packed32))
+		((PIXELTYPE(format) == PixelTypePacked8) ||
+			(PIXELTYPE(format) == PixelTypePacked16) ||
+			(PIXELTYPE(format) == PixelTypePacked32))
 }
 
 /**
@@ -449,11 +449,11 @@ func ISPIXELFORMAT_PACKED(format PixelFormat) bool {
  */
 func ISPIXELFORMAT_ARRAY(format PixelFormat) bool {
 	return !ISPIXELFORMAT_FOURCC(format) &&
-		((PIXELTYPE(format) == PT_Arrayu8) ||
-			(PIXELTYPE(format) == PT_Arrayu16) ||
-			(PIXELTYPE(format) == PT_Arrayu32) ||
-			(PIXELTYPE(format) == PT_Arrayf16) ||
-			(PIXELTYPE(format) == PT_Arrayf32))
+		((PIXELTYPE(format) == PixelTypeArrayu8) ||
+			(PIXELTYPE(format) == PixelTypeArrayu16) ||
+			(PIXELTYPE(format) == PixelTypeArrayu32) ||
+			(PIXELTYPE(format) == PixelTypeArrayf16) ||
+			(PIXELTYPE(format) == PixelTypeArrayf32))
 }
 
 /**
@@ -471,8 +471,8 @@ func ISPIXELFORMAT_ARRAY(format PixelFormat) bool {
  */
 func ISPIXELFORMAT_10BIT(format PixelFormat) bool {
 	return !ISPIXELFORMAT_FOURCC(format) &&
-		((PIXELTYPE(format) == PT_Packed32) &&
-			(PIXELLAYOUT(format) == PL_2101010))
+		((PIXELTYPE(format) == PixelTypePacked32) &&
+			(PIXELLAYOUT(format) == PackedLayout2101010))
 }
 
 /**
@@ -490,8 +490,8 @@ func ISPIXELFORMAT_10BIT(format PixelFormat) bool {
  */
 func ISPIXELFORMAT_FLOAT(format PixelFormat) bool {
 	return !ISPIXELFORMAT_FOURCC(format) &&
-		((PIXELTYPE(format) == PT_Arrayf16) ||
-			(PIXELTYPE(format) == PT_Arrayf32))
+		((PIXELTYPE(format) == PixelTypeArrayf16) ||
+			(PIXELTYPE(format) == PixelTypeArrayf32))
 }
 
 /**
@@ -509,15 +509,15 @@ func ISPIXELFORMAT_FLOAT(format PixelFormat) bool {
  */
 func ISPIXELFORMAT_ALPHA(format PixelFormat) bool {
 	return (ISPIXELFORMAT_PACKED(format) &&
-		((PackedOrder(PIXELORDER(format)) == PO_ARGB) ||
-			(PackedOrder(PIXELORDER(format)) == PO_RGBA) ||
-			(PackedOrder(PIXELORDER(format)) == PO_ABGR) ||
-			(PackedOrder(PIXELORDER(format)) == PO_BGRA))) ||
+		((PackedOrder(PIXELORDER(format)) == PackedOrderARGB) ||
+			(PackedOrder(PIXELORDER(format)) == PackedOrderRGBA) ||
+			(PackedOrder(PIXELORDER(format)) == PackedOrderABGR) ||
+			(PackedOrder(PIXELORDER(format)) == PackedOrderBGRA))) ||
 		(ISPIXELFORMAT_ARRAY(format) &&
-			((ArrayOrder(PIXELORDER(format)) == AO_ARGB) ||
-				(ArrayOrder(PIXELORDER(format)) == AO_RGBA) ||
-				(ArrayOrder(PIXELORDER(format)) == AO_ABGR) ||
-				(ArrayOrder(PIXELORDER(format)) == AO_BGRA)))
+			((ArrayOrder(PIXELORDER(format)) == ArrayOrderARGB) ||
+				(ArrayOrder(PIXELORDER(format)) == ArrayOrderRGBA) ||
+				(ArrayOrder(PIXELORDER(format)) == ArrayOrderABGR) ||
+				(ArrayOrder(PIXELORDER(format)) == ArrayOrderBGRA)))
 }
 
 /**
@@ -582,172 +582,172 @@ func ISPIXELFORMAT_FOURCC(format PixelFormat) bool {
 type PixelFormat int32
 
 const (
-	PF_UNKNOWN   PixelFormat = 0
-	PF_INDEX1LSB PixelFormat = 0x11100100
+	PixelFormatUnknown   PixelFormat = 0
+	PixelFormatIndex1LSB PixelFormat = 0x11100100
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_INDEX1, SDL_BITMAPORDER_4321, 0, 1, 0), */
-	PF_INDEX1MSB PixelFormat = 0x11200100
+	PixelFormatIndex1MSB PixelFormat = 0x11200100
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_INDEX1, SDL_BITMAPORDER_1234, 0, 1, 0), */
-	PF_INDEX2LSB PixelFormat = 0x1c100200
+	PixelFormatIndex2LSB PixelFormat = 0x1c100200
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_INDEX2, SDL_BITMAPORDER_4321, 0, 2, 0), */
-	PF_INDEX2MSB PixelFormat = 0x1c200200
+	PixelFormatIndex2MSB PixelFormat = 0x1c200200
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_INDEX2, SDL_BITMAPORDER_1234, 0, 2, 0), */
-	PF_INDEX4LSB PixelFormat = 0x12100400
+	PixelFormatIndex4LSB PixelFormat = 0x12100400
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_INDEX4, SDL_BITMAPORDER_4321, 0, 4, 0), */
-	PF_INDEX4MSB PixelFormat = 0x12200400
+	PixelFormatIndex4MSB PixelFormat = 0x12200400
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_INDEX4, SDL_BITMAPORDER_1234, 0, 4, 0), */
-	PF_INDEX8 PixelFormat = 0x13000801
+	PixelFormatIndex8 PixelFormat = 0x13000801
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_INDEX8, 0, 0, 8, 1), */
-	PF_RGB332 PixelFormat = 0x14110801
+	PixelFormatRGB332 PixelFormat = 0x14110801
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED8, SDL_PACKEDORDER_XRGB, SDL_PACKEDLAYOUT_332, 8, 1), */
-	PF_XRGB4444 PixelFormat = 0x15120c02
+	PixelFormatXRGB4444 PixelFormat = 0x15120c02
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_XRGB, SDL_PACKEDLAYOUT_4444, 12, 2), */
-	PF_XBGR4444 PixelFormat = 0x15520c02
+	PixelFormatXBGR4444 PixelFormat = 0x15520c02
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_XBGR, SDL_PACKEDLAYOUT_4444, 12, 2), */
-	PF_XRGB1555 PixelFormat = 0x15130f02
+	PixelFormatXRGB1555 PixelFormat = 0x15130f02
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_XRGB, SDL_PACKEDLAYOUT_1555, 15, 2), */
-	PF_XBGR1555 PixelFormat = 0x15530f02
+	PixelFormatXBGR1555 PixelFormat = 0x15530f02
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_XBGR, SDL_PACKEDLAYOUT_1555, 15, 2), */
-	PF_ARGB4444 PixelFormat = 0x15321002
+	PixelFormatARGB4444 PixelFormat = 0x15321002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_ARGB, SDL_PACKEDLAYOUT_4444, 16, 2), */
-	PF_RGBA4444 PixelFormat = 0x15421002
+	PixelFormatRGBA4444 PixelFormat = 0x15421002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_RGBA, SDL_PACKEDLAYOUT_4444, 16, 2), */
-	PF_ABGR4444 PixelFormat = 0x15721002
+	PixelFormatABGR4444 PixelFormat = 0x15721002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_ABGR, SDL_PACKEDLAYOUT_4444, 16, 2), */
-	PF_BGRA4444 PixelFormat = 0x15821002
+	PixelFormatBGRA4444 PixelFormat = 0x15821002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_BGRA, SDL_PACKEDLAYOUT_4444, 16, 2), */
-	PF_ARGB1555 PixelFormat = 0x15331002
+	PixelFormatARGB1555 PixelFormat = 0x15331002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_ARGB, SDL_PACKEDLAYOUT_1555, 16, 2), */
-	PF_RGBA5551 PixelFormat = 0x15441002
+	PixelFormatRGBA5551 PixelFormat = 0x15441002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_RGBA, SDL_PACKEDLAYOUT_5551, 16, 2), */
-	PF_ABGR1555 PixelFormat = 0x15731002
+	PixelFormatABGR1555 PixelFormat = 0x15731002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_ABGR, SDL_PACKEDLAYOUT_1555, 16, 2), */
-	PF_BGRA5551 PixelFormat = 0x15841002
+	PixelFormatBGRA5551 PixelFormat = 0x15841002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_BGRA, SDL_PACKEDLAYOUT_5551, 16, 2), */
-	PF_RGB565 PixelFormat = 0x15151002
+	PixelFormatRGB565 PixelFormat = 0x15151002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_XRGB, SDL_PACKEDLAYOUT_565, 16, 2), */
-	PF_BGR565 PixelFormat = 0x15551002
+	PixelFormatBGR565 PixelFormat = 0x15551002
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED16, SDL_PACKEDORDER_XBGR, SDL_PACKEDLAYOUT_565, 16, 2), */
-	PF_RGB24 PixelFormat = 0x17101803
+	PixelFormatRGB24 PixelFormat = 0x17101803
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYU8, SDL_ARRAYORDER_RGB, 0, 24, 3), */
-	PF_BGR24 PixelFormat = 0x17401803
+	PixelFormatBGR24 PixelFormat = 0x17401803
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYU8, SDL_ARRAYORDER_BGR, 0, 24, 3), */
-	PF_XRGB8888 PixelFormat = 0x16161804
+	PixelFormatXRGB8888 PixelFormat = 0x16161804
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_XRGB, SDL_PACKEDLAYOUT_8888, 24, 4), */
-	PF_RGBX8888 PixelFormat = 0x16261804
+	PixelFormatRGBX8888 PixelFormat = 0x16261804
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBX, SDL_PACKEDLAYOUT_8888, 24, 4), */
-	PF_XBGR8888 PixelFormat = 0x16561804
+	PixelFormatXBGR8888 PixelFormat = 0x16561804
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_XBGR, SDL_PACKEDLAYOUT_8888, 24, 4), */
-	PF_BGRX8888 PixelFormat = 0x16661804
+	PixelFormatBGRX8888 PixelFormat = 0x16661804
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_BGRX, SDL_PACKEDLAYOUT_8888, 24, 4), */
-	PF_ARGB8888 PixelFormat = 0x16362004
+	PixelFormatARGB8888 PixelFormat = 0x16362004
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_ARGB, SDL_PACKEDLAYOUT_8888, 32, 4), */
-	PF_RGBA8888 PixelFormat = 0x16462004
+	PixelFormatRGBA8888 PixelFormat = 0x16462004
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA, SDL_PACKEDLAYOUT_8888, 32, 4), */
-	PF_ABGR8888 PixelFormat = 0x16762004
+	PixelFormatABGR8888 PixelFormat = 0x16762004
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_ABGR, SDL_PACKEDLAYOUT_8888, 32, 4), */
-	PF_BGRA8888 PixelFormat = 0x16862004
+	PixelFormatBGRA8888 PixelFormat = 0x16862004
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_BGRA, SDL_PACKEDLAYOUT_8888, 32, 4), */
-	PF_XRGB2101010 PixelFormat = 0x16172004
+	PixelFormatXRGB2101010 PixelFormat = 0x16172004
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_XRGB, SDL_PACKEDLAYOUT_2101010, 32, 4), */
-	PF_XBGR2101010 PixelFormat = 0x16572004
+	PixelFormatXBGR2101010 PixelFormat = 0x16572004
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_XBGR, SDL_PACKEDLAYOUT_2101010, 32, 4), */
-	PF_ARGB2101010 PixelFormat = 0x16372004
+	PixelFormatARGB2101010 PixelFormat = 0x16372004
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_ARGB, SDL_PACKEDLAYOUT_2101010, 32, 4), */
-	PF_ABGR2101010 PixelFormat = 0x16772004
+	PixelFormatABGR2101010 PixelFormat = 0x16772004
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_ABGR, SDL_PACKEDLAYOUT_2101010, 32, 4), */
-	PF_RGB48 PixelFormat = 0x18103006
+	PixelFormatRGB48 PixelFormat = 0x18103006
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYU16, SDL_ARRAYORDER_RGB, 0, 48, 6), */
-	PF_BGR48 PixelFormat = 0x18403006
+	PixelFormatBGR48 PixelFormat = 0x18403006
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYU16, SDL_ARRAYORDER_BGR, 0, 48, 6), */
-	PF_RGBA64 PixelFormat = 0x18204008
+	PixelFormatRGBA64 PixelFormat = 0x18204008
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYU16, SDL_ARRAYORDER_RGBA, 0, 64, 8), */
-	PF_ARGB64 PixelFormat = 0x18304008
+	PixelFormatARGB64 PixelFormat = 0x18304008
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYU16, SDL_ARRAYORDER_ARGB, 0, 64, 8), */
-	PF_BGRA64 PixelFormat = 0x18504008
+	PixelFormatBGRA64 PixelFormat = 0x18504008
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYU16, SDL_ARRAYORDER_BGRA, 0, 64, 8), */
-	PF_ABGR64 PixelFormat = 0x18604008
+	PixelFormatABGR64 PixelFormat = 0x18604008
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYU16, SDL_ARRAYORDER_ABGR, 0, 64, 8), */
-	PF_RGB48_FLOAT PixelFormat = 0x1a103006
+	PixelFormatRGB48Float PixelFormat = 0x1a103006
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF16, SDL_ARRAYORDER_RGB, 0, 48, 6), */
-	PF_BGR48_FLOAT PixelFormat = 0x1a403006
+	PixelFormatBGR48Float PixelFormat = 0x1a403006
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF16, SDL_ARRAYORDER_BGR, 0, 48, 6), */
-	PF_RGBA64_FLOAT PixelFormat = 0x1a204008
+	PixelFormatRGBA64Float PixelFormat = 0x1a204008
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF16, SDL_ARRAYORDER_RGBA, 0, 64, 8), */
-	PF_ARGB64_FLOAT PixelFormat = 0x1a304008
+	PixelFormatARGB64Float PixelFormat = 0x1a304008
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF16, SDL_ARRAYORDER_ARGB, 0, 64, 8), */
-	PF_BGRA64_FLOAT PixelFormat = 0x1a504008
+	PixelFormatBGRA64Float PixelFormat = 0x1a504008
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF16, SDL_ARRAYORDER_BGRA, 0, 64, 8), */
-	PF_ABGR64_FLOAT PixelFormat = 0x1a604008
+	PixelFormatABGR64Float PixelFormat = 0x1a604008
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF16, SDL_ARRAYORDER_ABGR, 0, 64, 8), */
-	PF_RGB96_FLOAT PixelFormat = 0x1b10600c
+	PixelFormatRGB96Float PixelFormat = 0x1b10600c
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF32, SDL_ARRAYORDER_RGB, 0, 96, 12), */
-	PF_BGR96_FLOAT PixelFormat = 0x1b40600c
+	PixelFormatBGR96Float PixelFormat = 0x1b40600c
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF32, SDL_ARRAYORDER_BGR, 0, 96, 12), */
-	PF_RGBA128_FLOAT PixelFormat = 0x1b208010
+	PixelFormatRGBA128Float PixelFormat = 0x1b208010
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF32, SDL_ARRAYORDER_RGBA, 0, 128, 16), */
-	PF_ARGB128_FLOAT PixelFormat = 0x1b308010
+	PixelFormatARGB128Float PixelFormat = 0x1b308010
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF32, SDL_ARRAYORDER_ARGB, 0, 128, 16), */
-	PF_BGRA128_FLOAT PixelFormat = 0x1b508010
+	PixelFormatBGRA128Float PixelFormat = 0x1b508010
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF32, SDL_ARRAYORDER_BGRA, 0, 128, 16), */
-	PF_ABGR128_FLOAT PixelFormat = 0x1b608010
+	PixelFormatABGR128Float PixelFormat = 0x1b608010
 	/* SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_ARRAYF32, SDL_ARRAYORDER_ABGR, 0, 128, 16), */
 
-	PF_YV12 PixelFormat = 0x32315659 /**< Planar mode: Y + V + U  (3 planes) */
+	PixelFormatYV12 PixelFormat = 0x32315659 /**< Planar mode: Y + V + U  (3 planes) */
 	/* SDL_DEFINE_PIXELFOURCC('Y', 'V', '1', '2'), */
-	PF_IYUV PixelFormat = 0x56555949 /**< Planar mode: Y + U + V  (3 planes) */
+	PixelFormatIYUV PixelFormat = 0x56555949 /**< Planar mode: Y + U + V  (3 planes) */
 	/* SDL_DEFINE_PIXELFOURCC('I', 'Y', 'U', 'V'), */
-	PF_YUY2 PixelFormat = 0x32595559 /**< Packed mode: Y0+U0+Y1+V0 (1 plane) */
+	PixelFormatYUY2 PixelFormat = 0x32595559 /**< Packed mode: Y0+U0+Y1+V0 (1 plane) */
 	/* SDL_DEFINE_PIXELFOURCC('Y', 'U', 'Y', '2'), */
-	PF_UYVY PixelFormat = 0x59565955 /**< Packed mode: U0+Y0+V0+Y1 (1 plane) */
+	PixelFormatUYVY PixelFormat = 0x59565955 /**< Packed mode: U0+Y0+V0+Y1 (1 plane) */
 	/* SDL_DEFINE_PIXELFOURCC('U', 'Y', 'V', 'Y'), */
-	PF_YVYU PixelFormat = 0x55595659 /**< Packed mode: Y0+V0+Y1+U0 (1 plane) */
+	PixelFormatYVYU PixelFormat = 0x55595659 /**< Packed mode: Y0+V0+Y1+U0 (1 plane) */
 	/* SDL_DEFINE_PIXELFOURCC('Y', 'V', 'Y', 'U'), */
-	PF_NV12 PixelFormat = 0x3231564e /**< Planar mode: Y + U/V interleaved  (2 planes) */
+	PixelFormatNV12 PixelFormat = 0x3231564e /**< Planar mode: Y + U/V interleaved  (2 planes) */
 	/* SDL_DEFINE_PIXELFOURCC('N', 'V', '1', '2'), */
-	PF_NV21 PixelFormat = 0x3132564e /**< Planar mode: Y + V/U interleaved  (2 planes) */
+	PixelFormatNV21 PixelFormat = 0x3132564e /**< Planar mode: Y + V/U interleaved  (2 planes) */
 	/* SDL_DEFINE_PIXELFOURCC('N', 'V', '2', '1'), */
-	PF_P010 PixelFormat = 0x30313050 /**< Planar mode: Y + U/V interleaved  (2 planes) */
+	PixelFormatP010 PixelFormat = 0x30313050 /**< Planar mode: Y + U/V interleaved  (2 planes) */
 	/* SDL_DEFINE_PIXELFOURCC('P', '0', '1', '0'), */
-	PF_EXTERNAL_OES PixelFormat = 0x2053454f /**< Android video texture format */
+	PixelFormatExternalOES PixelFormat = 0x2053454f /**< Android video texture format */
 	/* SDL_DEFINE_PIXELFOURCC('O', 'E', 'S', ' ') */
 
-	PF_MJPG PixelFormat = 0x47504a4d /**< Motion JPEG */
+	PixelFormatMJPG PixelFormat = 0x47504a4d /**< Motion JPEG */
 	/* SDL_DEFINE_PIXELFOURCC('M', 'J', 'P', 'G') */
 )
 
 var (
 	/* Aliases for RGBA byte arrays of color data, for the current platform */
-	PF_RGBA32 PixelFormat
-	PF_ARGB32 PixelFormat
-	PF_BGRA32 PixelFormat
-	PF_ABGR32 PixelFormat
-	PF_RGBX32 PixelFormat
-	PF_XRGB32 PixelFormat
-	PF_BGRX32 PixelFormat
-	PF_XBGR32 PixelFormat
+	PixelFormatRGBA32 PixelFormat
+	PixelFormatARGB32 PixelFormat
+	PixelFormatBGRA32 PixelFormat
+	PixelFormatABGR32 PixelFormat
+	PixelFormatRGBX32 PixelFormat
+	PixelFormatXRGB32 PixelFormat
+	PixelFormatBGRX32 PixelFormat
+	PixelFormatXBGR32 PixelFormat
 )
 
 func init() {
 	if binary.NativeEndian.Uint16([]byte{0x12, 0x34}) == uint16(0x3412) {
 		// little endian
-		PF_RGBA32 = PF_ABGR8888
-		PF_ARGB32 = PF_BGRA8888
-		PF_BGRA32 = PF_ARGB8888
-		PF_ABGR32 = PF_RGBA8888
-		PF_RGBX32 = PF_XBGR8888
-		PF_XRGB32 = PF_BGRX8888
-		PF_BGRX32 = PF_XRGB8888
-		PF_XBGR32 = PF_RGBX8888
+		PixelFormatRGBA32 = PixelFormatABGR8888
+		PixelFormatARGB32 = PixelFormatBGRA8888
+		PixelFormatBGRA32 = PixelFormatARGB8888
+		PixelFormatABGR32 = PixelFormatRGBA8888
+		PixelFormatRGBX32 = PixelFormatXBGR8888
+		PixelFormatXRGB32 = PixelFormatBGRX8888
+		PixelFormatBGRX32 = PixelFormatXRGB8888
+		PixelFormatXBGR32 = PixelFormatRGBX8888
 	} else {
 		// big endian
-		PF_RGBA32 = PF_RGBA8888
-		PF_ARGB32 = PF_ARGB8888
-		PF_BGRA32 = PF_BGRA8888
-		PF_ABGR32 = PF_ABGR8888
-		PF_RGBX32 = PF_RGBX8888
-		PF_XRGB32 = PF_XRGB8888
-		PF_BGRX32 = PF_BGRX8888
-		PF_XBGR32 = PF_XBGR8888
+		PixelFormatRGBA32 = PixelFormatRGBA8888
+		PixelFormatARGB32 = PixelFormatARGB8888
+		PixelFormatBGRA32 = PixelFormatBGRA8888
+		PixelFormatABGR32 = PixelFormatABGR8888
+		PixelFormatRGBX32 = PixelFormatRGBX8888
+		PixelFormatXRGB32 = PixelFormatXRGB8888
+		PixelFormatBGRX32 = PixelFormatBGRX8888
+		PixelFormatXBGR32 = PixelFormatXBGR8888
 	}
 }
 
@@ -759,9 +759,9 @@ func init() {
 type ColorType int32
 
 const (
-	CT_Unknown ColorType = 0
-	CT_RGB     ColorType = 1
-	CT_YCBCR   ColorType = 2
+	ColorTypeUnknown ColorType = 0
+	ColorTypeRGB     ColorType = 1
+	ColorTypeYCBCR   ColorType = 2
 )
 
 /**
@@ -773,9 +773,9 @@ const (
 type ColorRange int32
 
 const (
-	CR_Unknown ColorRange = 0
-	CR_Limited ColorRange = 1 /**< Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma */
-	CR_Full    ColorRange = 2 /**< Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma */
+	ColorRangeUnknown ColorRange = 0
+	ColorRangeLimited ColorRange = 1 /**< Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma */
+	ColorRangeFull    ColorRange = 2 /**< Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma */
 )
 
 /**
@@ -787,20 +787,20 @@ const (
 type ColorPrimaries int32
 
 const (
-	CP_Unknown     ColorPrimaries = 0
-	CP_BT709       ColorPrimaries = 1 /**< ITU-R BT.709-6 */
-	CP_Unspecified ColorPrimaries = 2
-	CP_BT470M      ColorPrimaries = 4  /**< ITU-R BT.470-6 System M */
-	CP_BT470BG     ColorPrimaries = 5  /**< ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625 */
-	CP_BT601       ColorPrimaries = 6  /**< ITU-R BT.601-7 525, SMPTE 170M */
-	CP_SMPTE240    ColorPrimaries = 7  /**< SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601 */
-	CP_GenericFilm ColorPrimaries = 8  /**< Generic film (color filters using Illuminant C) */
-	CP_BT2020      ColorPrimaries = 9  /**< ITU-R BT.2020-2 / ITU-R BT.2100-0 */
-	CP_XYZ         ColorPrimaries = 10 /**< SMPTE ST 428-1 */
-	CP_SMPTE431    ColorPrimaries = 11 /**< SMPTE RP 431-2 */
-	CP_SMPTE432    ColorPrimaries = 12 /**< SMPTE EG 432-1 / DCI P3 */
-	CP_EBU3213     ColorPrimaries = 22 /**< EBU Tech. 3213-E */
-	CP_Custom      ColorPrimaries = 31
+	ColorPrimariesUnknown     ColorPrimaries = 0
+	ColorPrimariesBT709       ColorPrimaries = 1 /**< ITU-R BT.709-6 */
+	ColorPrimariesUnspecified ColorPrimaries = 2
+	ColorPrimariesBT470M      ColorPrimaries = 4  /**< ITU-R BT.470-6 System M */
+	ColorPrimariesBT470BG     ColorPrimaries = 5  /**< ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625 */
+	ColorPrimariesBT601       ColorPrimaries = 6  /**< ITU-R BT.601-7 525, SMPTE 170M */
+	ColorPrimariesSMPTE240    ColorPrimaries = 7  /**< SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601 */
+	ColorPrimariesGenericFilm ColorPrimaries = 8  /**< Generic film (color filters using Illuminant C) */
+	ColorPrimariesBT2020      ColorPrimaries = 9  /**< ITU-R BT.2020-2 / ITU-R BT.2100-0 */
+	ColorPrimariesXYZ         ColorPrimaries = 10 /**< SMPTE ST 428-1 */
+	ColorPrimariesSMPTE431    ColorPrimaries = 11 /**< SMPTE RP 431-2 */
+	ColorPrimariesSMPTE432    ColorPrimaries = 12 /**< SMPTE EG 432-1 / DCI P3 */
+	ColorPrimariesEBU3213     ColorPrimaries = 22 /**< EBU Tech. 3213-E */
+	ColorPrimariesCustom      ColorPrimaries = 31
 )
 
 /**
@@ -813,25 +813,25 @@ const (
 type TransferCharacteristics int32
 
 const (
-	TC_Unknown       TransferCharacteristics = 0
-	TC_BT709         TransferCharacteristics = 1 /**< Rec. ITU-R BT.709-6 / ITU-R BT1361 */
-	TC_Unspecified   TransferCharacteristics = 2
-	TC_Gamma22       TransferCharacteristics = 4 /**< ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM */
-	TC_Gamma28       TransferCharacteristics = 5 /**< ITU-R BT.470-6 System B, G */
-	TC_BT601         TransferCharacteristics = 6 /**< SMPTE ST 170M / ITU-R BT.601-7 525 or 625 */
-	TC_SMPTE240      TransferCharacteristics = 7 /**< SMPTE ST 240M */
-	TC_Linear        TransferCharacteristics = 8
-	TC_Log100        TransferCharacteristics = 9
-	TC_Log100_Sqrt10 TransferCharacteristics = 10
-	TC_IEC61966      TransferCharacteristics = 11 /**< IEC 61966-2-4 */
-	TC_BT1361        TransferCharacteristics = 12 /**< ITU-R BT1361 Extended Colour Gamut */
-	TC_SRGB          TransferCharacteristics = 13 /**< IEC 61966-2-1 (sRGB or sYCC) */
-	TC_BT2020_10Bit  TransferCharacteristics = 14 /**< ITU-R BT2020 for 10-bit system */
-	TC_BT2020_12Bit  TransferCharacteristics = 15 /**< ITU-R BT2020 for 12-bit system */
-	TC_PQ            TransferCharacteristics = 16 /**< SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems */
-	TC_SMPTE428      TransferCharacteristics = 17 /**< SMPTE ST 428-1 */
-	TC_HLG           TransferCharacteristics = 18 /**< ARIB STD-B67, known as "hybrid log-gamma" (HLG) */
-	TC_Custom        TransferCharacteristics = 31
+	TransferCharacteristicsUnknown       TransferCharacteristics = 0
+	TransferCharacteristicsBT709         TransferCharacteristics = 1 /**< Rec. ITU-R BT.709-6 / ITU-R BT1361 */
+	TransferCharacteristicsUnspecified   TransferCharacteristics = 2
+	TransferCharacteristicsGamma22       TransferCharacteristics = 4 /**< ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM */
+	TransferCharacteristicsGamma28       TransferCharacteristics = 5 /**< ITU-R BT.470-6 System B, G */
+	TransferCharacteristicsBT601         TransferCharacteristics = 6 /**< SMPTE ST 170M / ITU-R BT.601-7 525 or 625 */
+	TransferCharacteristicsSMPTE240      TransferCharacteristics = 7 /**< SMPTE ST 240M */
+	TransferCharacteristicsLinear        TransferCharacteristics = 8
+	TransferCharacteristicsLog100        TransferCharacteristics = 9
+	TransferCharacteristicsLog100_Sqrt10 TransferCharacteristics = 10
+	TransferCharacteristicsIEC61966      TransferCharacteristics = 11 /**< IEC 61966-2-4 */
+	TransferCharacteristicsBT1361        TransferCharacteristics = 12 /**< ITU-R BT1361 Extended Colour Gamut */
+	TransferCharacteristicsSRGB          TransferCharacteristics = 13 /**< IEC 61966-2-1 (sRGB or sYCC) */
+	TransferCharacteristicsBT2020_10Bit  TransferCharacteristics = 14 /**< ITU-R BT2020 for 10-bit system */
+	TransferCharacteristicsBT2020_12Bit  TransferCharacteristics = 15 /**< ITU-R BT2020 for 12-bit system */
+	TransferCharacteristicsPQ            TransferCharacteristics = 16 /**< SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems */
+	TransferCharacteristicsSMPTE428      TransferCharacteristics = 17 /**< SMPTE ST 428-1 */
+	TransferCharacteristicsHLG           TransferCharacteristics = 18 /**< ARIB STD-B67, known as "hybrid log-gamma" (HLG) */
+	TransferCharacteristicsCustom        TransferCharacteristics = 31
 )
 
 /**
@@ -844,21 +844,21 @@ const (
 type MatrixCoefficients int32
 
 const (
-	MC_Identity          MatrixCoefficients = 0
-	MC_BT709             MatrixCoefficients = 1 /**< ITU-R BT.709-6 */
-	MC_Unspecified       MatrixCoefficients = 2
-	MC_FCC               MatrixCoefficients = 4 /**< US FCC Title 47 */
-	MC_BT470BG           MatrixCoefficients = 5 /**< ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as SDL_MATRIX_COEFFICIENTS_BT601 */
-	MC_BT601             MatrixCoefficients = 6 /**< ITU-R BT.601-7 525 */
-	MC_SMPTE240          MatrixCoefficients = 7 /**< SMPTE 240M */
-	MC_YCGCO             MatrixCoefficients = 8
-	MC_BT2020_NCL        MatrixCoefficients = 9  /**< ITU-R BT.2020-2 non-constant luminance */
-	MC_BT2020_CL         MatrixCoefficients = 10 /**< ITU-R BT.2020-2 constant luminance */
-	MC_SMPTE2085         MatrixCoefficients = 11 /**< SMPTE ST 2085 */
-	MC_ChromaDerived_NCL MatrixCoefficients = 12
-	MC_ChromaDerived_CL  MatrixCoefficients = 13
-	MC_ICTCP             MatrixCoefficients = 14 /**< ITU-R BT.2100-0 ICTCP */
-	MC_Custom            MatrixCoefficients = 31
+	MatrixCoefficientsIdentity         MatrixCoefficients = 0
+	MatrixCoefficientsBT709            MatrixCoefficients = 1 /**< ITU-R BT.709-6 */
+	MatrixCoefficientsUnspecified      MatrixCoefficients = 2
+	MatrixCoefficientsFCC              MatrixCoefficients = 4 /**< US FCC Title 47 */
+	MatrixCoefficientsBT470BG          MatrixCoefficients = 5 /**< ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as SDL_MATRIX_COEFFICIENTS_BT601 */
+	MatrixCoefficientsBT601            MatrixCoefficients = 6 /**< ITU-R BT.601-7 525 */
+	MatrixCoefficientsSMPTE240         MatrixCoefficients = 7 /**< SMPTE 240M */
+	MatrixCoefficientsYCGCO            MatrixCoefficients = 8
+	MatrixCoefficientsBT2020NCL        MatrixCoefficients = 9  /**< ITU-R BT.2020-2 non-constant luminance */
+	MatrixCoefficientsBT2020CL         MatrixCoefficients = 10 /**< ITU-R BT.2020-2 constant luminance */
+	MatrixCoefficientsSMPTE2085        MatrixCoefficients = 11 /**< SMPTE ST 2085 */
+	MatrixCoefficientsChromaDerivedNCL MatrixCoefficients = 12
+	MatrixCoefficientsChromaDerivedCL  MatrixCoefficients = 13
+	MatrixCoefficientsICTCP            MatrixCoefficients = 14 /**< ITU-R BT.2100-0 ICTCP */
+	MatrixCoefficientsCustom           MatrixCoefficients = 31
 )
 
 /**
@@ -869,10 +869,10 @@ const (
 type ChromaLocation int32
 
 const (
-	CL_None    ChromaLocation = 0 /**< RGB, no chroma sampling */
-	CL_Left    ChromaLocation = 1 /**< In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge of the 2x2 square. In other words, they have the same horizontal location as the top-left pixel, but is shifted one-half pixel down vertically. */
-	CL_Center  ChromaLocation = 2 /**< In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2 square. In other words, they are offset one-half pixel to the right and one-half pixel down compared to the top-left pixel. */
-	CL_TopLeft ChromaLocation = 3 /**< In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and Cr are sampled at the same location as the group's top-left Y pixel ("co-sited", "co-located"). */
+	ChromaLocationNone    ChromaLocation = 0 /**< RGB, no chroma sampling */
+	ChromaLocationLeft    ChromaLocation = 1 /**< In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge of the 2x2 square. In other words, they have the same horizontal location as the top-left pixel, but is shifted one-half pixel down vertically. */
+	ChromaLocationCenter  ChromaLocation = 2 /**< In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2 square. In other words, they are offset one-half pixel to the right and one-half pixel down compared to the top-left pixel. */
+	ChromaLocationTopLeft ChromaLocation = 3 /**< In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and Cr are sampled at the same location as the group's top-left Y pixel ("co-sited", "co-located"). */
 )
 
 /* Colorspace definition */
@@ -1013,7 +1013,7 @@ func COLORSPACEMATRIX(cspace Colorspace) MatrixCoefficients {
 * \since This macro is available since SDL 3.2.0.
  */
 func ISCOLORSPACE_MATRIX_BT601(cspace Colorspace) bool {
-	return COLORSPACEMATRIX(cspace) == MC_BT601 || COLORSPACEMATRIX(cspace) == MC_BT470BG
+	return COLORSPACEMATRIX(cspace) == MatrixCoefficientsBT601 || COLORSPACEMATRIX(cspace) == MatrixCoefficientsBT470BG
 }
 
 /**
@@ -1027,7 +1027,7 @@ func ISCOLORSPACE_MATRIX_BT601(cspace Colorspace) bool {
 * \since This macro is available since SDL 3.2.0.
  */
 func ISCOLORSPACE_MATRIX_BT709(cspace Colorspace) bool {
-	return COLORSPACEMATRIX(cspace) == MC_BT709
+	return COLORSPACEMATRIX(cspace) == MatrixCoefficientsBT709
 }
 
 /**
@@ -1042,7 +1042,7 @@ func ISCOLORSPACE_MATRIX_BT709(cspace Colorspace) bool {
 * \since This macro is available since SDL 3.2.0.
  */
 func ISCOLORSPACE_MATRIX_BT2020_NCL(cspace Colorspace) bool {
-	return COLORSPACEMATRIX(cspace) == MC_BT2020_NCL
+	return COLORSPACEMATRIX(cspace) == MatrixCoefficientsBT2020NCL
 }
 
 /**
@@ -1056,7 +1056,7 @@ func ISCOLORSPACE_MATRIX_BT2020_NCL(cspace Colorspace) bool {
 * \since This macro is available since SDL 3.2.0.
  */
 func ISCOLORSPACE_LIMITED_RANGE(cspace Colorspace) bool {
-	return COLORSPACERANGE(cspace) != CR_Full
+	return COLORSPACERANGE(cspace) != ColorRangeFull
 }
 
 /**
@@ -1070,7 +1070,7 @@ func ISCOLORSPACE_LIMITED_RANGE(cspace Colorspace) bool {
 * \since This macro is available since SDL 3.2.0.
  */
 func ISCOLORSPACE_FULL_RANGE(cspace Colorspace) bool {
-	return COLORSPACERANGE(cspace) == CR_Full
+	return COLORSPACERANGE(cspace) == ColorRangeFull
 }
 
 /**
@@ -1091,10 +1091,10 @@ func ISCOLORSPACE_FULL_RANGE(cspace Colorspace) bool {
 type Colorspace int32
 
 const (
-	CS_Unknown Colorspace = 0
+	ColorspaceUnknown Colorspace = 0
 
 	/* sRGB is a gamma corrected colorspace, and the default colorspace for SDL rendering and 8-bit RGB surfaces */
-	CS_SRGB Colorspace = 0x120005a0 /**< Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709 */
+	ColorspaceSRGB Colorspace = 0x120005a0 /**< Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709 */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_RGB,
 	SDL_COLOR_RANGE_FULL,
 	SDL_COLOR_PRIMARIES_BT709,
@@ -1103,7 +1103,7 @@ const (
 	SDL_CHROMA_LOCATION_NONE), */
 
 	/* This is a linear colorspace and the default colorspace for floating point surfaces. On Windows this is the scRGB colorspace, and on Apple platforms this is kCGColorSpaceExtendedLinearSRGB for EDR content */
-	CS_SRGB_Linear Colorspace = 0x12000500 /**< Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709  */
+	ColorspaceSRGBLinear Colorspace = 0x12000500 /**< Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709  */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_RGB,
 	SDL_COLOR_RANGE_FULL,
 	SDL_COLOR_PRIMARIES_BT709,
@@ -1112,7 +1112,7 @@ const (
 	SDL_CHROMA_LOCATION_NONE), */
 
 	/* HDR10 is a non-linear HDR colorspace and the default colorspace for 10-bit surfaces */
-	CS_HDR10 Colorspace = 0x12002600 /**< Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020  */
+	ColorspaceHDR10 Colorspace = 0x12002600 /**< Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020  */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_RGB,
 	SDL_COLOR_RANGE_FULL,
 	SDL_COLOR_PRIMARIES_BT2020,
@@ -1120,7 +1120,7 @@ const (
 	SDL_MATRIX_COEFFICIENTS_IDENTITY,
 	SDL_CHROMA_LOCATION_NONE), */
 
-	CS_JPEG Colorspace = 0x220004c6 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601 */
+	ColorspaceJPEG Colorspace = 0x220004c6 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601 */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_YCBCR,
 	SDL_COLOR_RANGE_FULL,
 	SDL_COLOR_PRIMARIES_BT709,
@@ -1128,7 +1128,7 @@ const (
 	SDL_MATRIX_COEFFICIENTS_BT601,
 	SDL_CHROMA_LOCATION_NONE), */
 
-	CS_BT601_Limited Colorspace = 0x211018c6 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601 */
+	ColorspaceBT601Limited Colorspace = 0x211018c6 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601 */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_YCBCR,
 	SDL_COLOR_RANGE_LIMITED,
 	SDL_COLOR_PRIMARIES_BT601,
@@ -1136,7 +1136,7 @@ const (
 	SDL_MATRIX_COEFFICIENTS_BT601,
 	SDL_CHROMA_LOCATION_LEFT), */
 
-	CS_BT601_Full Colorspace = 0x221018c6 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601 */
+	ColorspaceBT601Full Colorspace = 0x221018c6 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601 */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_YCBCR,
 	SDL_COLOR_RANGE_FULL,
 	SDL_COLOR_PRIMARIES_BT601,
@@ -1144,7 +1144,7 @@ const (
 	SDL_MATRIX_COEFFICIENTS_BT601,
 	SDL_CHROMA_LOCATION_LEFT), */
 
-	CS_BT709_Limited Colorspace = 0x21100421 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709 */
+	ColorspaceBT709Limited Colorspace = 0x21100421 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709 */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_YCBCR,
 	SDL_COLOR_RANGE_LIMITED,
 	SDL_COLOR_PRIMARIES_BT709,
@@ -1152,7 +1152,7 @@ const (
 	SDL_MATRIX_COEFFICIENTS_BT709,
 	SDL_CHROMA_LOCATION_LEFT), */
 
-	CS_BT709_Full Colorspace = 0x22100421 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709 */
+	ColorspaceBT709Full Colorspace = 0x22100421 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709 */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_YCBCR,
 	SDL_COLOR_RANGE_FULL,
 	SDL_COLOR_PRIMARIES_BT709,
@@ -1160,7 +1160,7 @@ const (
 	SDL_MATRIX_COEFFICIENTS_BT709,
 	SDL_CHROMA_LOCATION_LEFT), */
 
-	CS_BT2020_Limited Colorspace = 0x21102609 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020 */
+	ColorspaceBT2020Limited Colorspace = 0x21102609 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020 */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_YCBCR,
 	SDL_COLOR_RANGE_LIMITED,
 	SDL_COLOR_PRIMARIES_BT2020,
@@ -1168,7 +1168,7 @@ const (
 	SDL_MATRIX_COEFFICIENTS_BT2020_NCL,
 	SDL_CHROMA_LOCATION_LEFT), */
 
-	CS_BT2020_Full Colorspace = 0x22102609 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020 */
+	ColorspaceBT2020Full Colorspace = 0x22102609 /**< Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020 */
 	/* SDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_YCBCR,
 	SDL_COLOR_RANGE_FULL,
 	SDL_COLOR_PRIMARIES_BT2020,
@@ -1176,8 +1176,8 @@ const (
 	SDL_MATRIX_COEFFICIENTS_BT2020_NCL,
 	SDL_CHROMA_LOCATION_LEFT), */
 
-	CS_RGB_Default Colorspace = CS_SRGB /**< The default colorspace for RGB surfaces if no colorspace is specified */
-	CS_YUV_Default Colorspace = CS_JPEG /**< The default colorspace for YUV surfaces if no colorspace is specified */
+	ColorspaceRGBDefault Colorspace = ColorspaceSRGB /**< The default colorspace for RGB surfaces if no colorspace is specified */
+	ColorspaceYUVDefault Colorspace = ColorspaceJPEG /**< The default colorspace for YUV surfaces if no colorspace is specified */
 )
 
 /**

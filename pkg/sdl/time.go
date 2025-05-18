@@ -63,9 +63,9 @@ type DateTime struct {
 type DateFormat int32
 
 const (
-	DF_YYYYMMDD DateFormat = 0 /**< Year/Month/Day */
-	DF_DDMMYYYY DateFormat = 1 /**< Day/Month/Year */
-	DF_MMDDYYYY DateFormat = 2 /**< Month/Day/Year */
+	DateFormatYYYYMMDD DateFormat = 0 /**< Year/Month/Day */
+	DateFormatDDMMYYYY DateFormat = 1 /**< Day/Month/Year */
+	DateFormatMMDDYYYY DateFormat = 2 /**< Month/Day/Year */
 )
 
 /**
@@ -78,8 +78,8 @@ const (
 type TimeFormat int32
 
 const (
-	TF_24Hr TimeFormat = 0 /**< 24 hour time */
-	TF_12Hr TimeFormat = 1 /**< 12 hour time */
+	TimeFormat24Hr TimeFormat = 0 /**< 24 hour time */
+	TimeFormat12Hr TimeFormat = 1 /**< 12 hour time */
 )
 
 /**
