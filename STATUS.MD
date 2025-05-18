@@ -7,7 +7,7 @@
   - [ ] bits
   - [x] blendmode
   - [x] camera
-  - [ ] clipboard
+  - [x] clipboard
   - [ ] cpuinfo
   - [ ] dialog
   - [ ] endian
