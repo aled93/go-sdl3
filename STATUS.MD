@@ -30,7 +30,7 @@
   - [ ] log
   - [ ] messagebox
   - [ ] metal
-  - [ ] misc
+  - [x] misc
   - [x] mouse
   - [ ] mutex
   - [x] pen
