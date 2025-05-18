@@ -49,7 +49,7 @@
   - [ ] thread
   - [x] time
   - [x] timer
-  - [ ] tray
+  - [x] tray
   - [x] touch
   - [x] version
   - [x] video
