@@ -1065,18 +1065,20 @@ var GetJoystickBall func(joystick Joystick, ball int, dx, dy *int) bool
  * \sa SDL_GetNumJoystickHats
  */
 //go:sdl3extern
-var GetJoystickHat func(joystick Joystick, hat int) uint8
+var GetJoystickHat func(joystick Joystick, hat Hat) uint8
+
+type Hat = int32
 
 const (
-	HAT_Centered  = 0x00
-	HAT_Up        = 0x01
-	HAT_Right     = 0x02
-	HAT_Down      = 0x04
-	HAT_Left      = 0x08
-	HAT_RightUp   = HAT_Right | HAT_Up
-	HAT_RightDown = HAT_Right | HAT_Down
-	HAT_LeftUp    = HAT_Left | HAT_Up
-	HAT_LeftDown  = HAT_Left | HAT_Down
+	HAT_Centered  Hat = 0x00
+	HAT_Up        Hat = 0x01
+	HAT_Right     Hat = 0x02
+	HAT_Down      Hat = 0x04
+	HAT_Left      Hat = 0x08
+	HAT_RightUp   Hat = HAT_Right | HAT_Up
+	HAT_RightDown Hat = HAT_Right | HAT_Down
+	HAT_LeftUp    Hat = HAT_Left | HAT_Up
+	HAT_LeftDown  Hat = HAT_Left | HAT_Down
 )
 
 /**
