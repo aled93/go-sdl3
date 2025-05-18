@@ -483,11 +483,11 @@ const (
 var StartTextInputWithProperties func(window *Window, props PropertiesID) bool
 
 const (
-	PROP_TEXTINPUT_TYPE_NUMBER              = "SDL.textinput.type"
-	PROP_TEXTINPUT_CAPITALIZATION_NUMBER    = "SDL.textinput.capitalization"
-	PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN      = "SDL.textinput.autocorrect"
-	PROP_TEXTINPUT_MULTILINE_BOOLEAN        = "SDL.textinput.multiline"
-	PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER = "SDL.textinput.android.inputtype"
+	PROP_TEXTINPUT_TYPE_NUMBER              PropertyName = "SDL.textinput.type"
+	PROP_TEXTINPUT_CAPITALIZATION_NUMBER    PropertyName = "SDL.textinput.capitalization"
+	PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN      PropertyName = "SDL.textinput.autocorrect"
+	PROP_TEXTINPUT_MULTILINE_BOOLEAN        PropertyName = "SDL.textinput.multiline"
+	PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER PropertyName = "SDL.textinput.android.inputtype"
 )
 
 /**

@@ -463,13 +463,13 @@ var SetAppMetadata func(appname, appversion, appidentifier string) bool
 var SetAppMetadataProperty func(name, value string) bool
 
 const (
-	PROP_APP_METADATA_NAME_STRING       = "SDL.app.metadata.name"
-	PROP_APP_METADATA_VERSION_STRING    = "SDL.app.metadata.version"
-	PROP_APP_METADATA_IDENTIFIER_STRING = "SDL.app.metadata.identifier"
-	PROP_APP_METADATA_CREATOR_STRING    = "SDL.app.metadata.creator"
-	PROP_APP_METADATA_COPYRIGHT_STRING  = "SDL.app.metadata.copyright"
-	PROP_APP_METADATA_URL_STRING        = "SDL.app.metadata.url"
-	PROP_APP_METADATA_TYPE_STRING       = "SDL.app.metadata.type"
+	PROP_APP_METADATA_NAME_STRING       PropertyName = "SDL.app.metadata.name"
+	PROP_APP_METADATA_VERSION_STRING    PropertyName = "SDL.app.metadata.version"
+	PROP_APP_METADATA_IDENTIFIER_STRING PropertyName = "SDL.app.metadata.identifier"
+	PROP_APP_METADATA_CREATOR_STRING    PropertyName = "SDL.app.metadata.creator"
+	PROP_APP_METADATA_COPYRIGHT_STRING  PropertyName = "SDL.app.metadata.copyright"
+	PROP_APP_METADATA_URL_STRING        PropertyName = "SDL.app.metadata.url"
+	PROP_APP_METADATA_TYPE_STRING       PropertyName = "SDL.app.metadata.type"
 )
 
 /**

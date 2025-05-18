@@ -59,6 +59,8 @@ package sdl
  */
 type PropertiesID uint32
 
+type PropertyName string
+
 /**
 * SDL property type
 *

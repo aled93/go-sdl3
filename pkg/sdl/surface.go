@@ -236,11 +236,11 @@ var DestroySurface func(surface *Surface)
 var GetSurfaceProperties func(surface *Surface) PropertiesID
 
 const (
-	PROP_SURFACE_SDR_WHITE_POINT_FLOAT   = "SDL.surface.SDR_white_point"
-	PROP_SURFACE_HDR_HEADROOM_FLOAT      = "SDL.surface.HDR_headroom"
-	PROP_SURFACE_TONEMAP_OPERATOR_STRING = "SDL.surface.tonemap"
-	PROP_SURFACE_HOTSPOT_X_NUMBER        = "SDL.surface.hotspot.x"
-	PROP_SURFACE_HOTSPOT_Y_NUMBER        = "SDL.surface.hotspot.y"
+	PROP_SURFACE_SDR_WHITE_POINT_FLOAT   PropertyName = "SDL.surface.SDR_white_point"
+	PROP_SURFACE_HDR_HEADROOM_FLOAT      PropertyName = "SDL.surface.HDR_headroom"
+	PROP_SURFACE_TONEMAP_OPERATOR_STRING PropertyName = "SDL.surface.tonemap"
+	PROP_SURFACE_HOTSPOT_X_NUMBER        PropertyName = "SDL.surface.hotspot.x"
+	PROP_SURFACE_HOTSPOT_Y_NUMBER        PropertyName = "SDL.surface.hotspot.y"
 )
 
 /**

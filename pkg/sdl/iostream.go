@@ -252,10 +252,10 @@ type IOStream uintptr
 var IOFromFile func(file, mode string) IOStream
 
 const (
-	PROP_IOSTREAM_WINDOWS_HANDLE_POINTER = "SDL.iostream.windows.handle"
-	PROP_IOSTREAM_STDIO_FILE_POINTER     = "SDL.iostream.stdio.file"
-	PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER = "SDL.iostream.file_descriptor"
-	PROP_IOSTREAM_ANDROID_AASSET_POINTER = "SDL.iostream.android.aasset"
+	PROP_IOSTREAM_WINDOWS_HANDLE_POINTER PropertyName = "SDL.iostream.windows.handle"
+	PROP_IOSTREAM_STDIO_FILE_POINTER     PropertyName = "SDL.iostream.stdio.file"
+	PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER PropertyName = "SDL.iostream.file_descriptor"
+	PROP_IOSTREAM_ANDROID_AASSET_POINTER PropertyName = "SDL.iostream.android.aasset"
 )
 
 /**
@@ -301,8 +301,8 @@ const (
 var IOFromMem func(mem []byte, size size_t) IOStream
 
 const (
-	PROP_IOSTREAM_MEMORY_POINTER     = "SDL.iostream.memory.base"
-	PROP_IOSTREAM_MEMORY_SIZE_NUMBER = "SDL.iostream.memory.size"
+	PROP_IOSTREAM_MEMORY_POINTER     PropertyName = "SDL.iostream.memory.base"
+	PROP_IOSTREAM_MEMORY_SIZE_NUMBER PropertyName = "SDL.iostream.memory.size"
 )
 
 /**
@@ -379,8 +379,8 @@ var IOFromConstMem func(mem []byte, size size_t) IOStream
 var IOFromDynamicMem func() IOStream
 
 const (
-	PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER   = "SDL.iostream.dynamic.memory"
-	PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER = "SDL.iostream.dynamic.chunksize"
+	PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER   PropertyName = "SDL.iostream.dynamic.memory"
+	PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER PropertyName = "SDL.iostream.dynamic.chunksize"
 )
 
 /* @} */ /* IOFrom functions */
