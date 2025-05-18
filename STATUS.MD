@@ -14,7 +14,7 @@
   - [x] error
   - [x] events
   - [ ] filesystem
-  - [ ] gamepad
+  - [x] gamepad
   - [ ] gpu
   - [x] guid
   - [ ] haptic
