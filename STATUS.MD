@@ -18,7 +18,7 @@
   - [ ] gpu
   - [x] guid
   - [ ] haptic
-  - [ ] hidapi
+  - [x] hidapi
   - [x] hints
   - [x] init
   - [x] iostream
