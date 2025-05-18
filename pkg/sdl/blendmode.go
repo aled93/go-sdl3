@@ -87,16 +87,16 @@ const (
 type BlendFactor int32
 
 const (
-	BF_Zero             = 0x1 /**< 0, 0, 0, 0 */
-	BF_One              = 0x2 /**< 1, 1, 1, 1 */
-	BF_SrcColor         = 0x3 /**< srcR, srcG, srcB, srcA */
-	BF_OneMinusSrcColor = 0x4 /**< 1-srcR, 1-srcG, 1-srcB, 1-srcA */
-	BF_SrcAlpha         = 0x5 /**< srcA, srcA, srcA, srcA */
-	BF_OneMinusSrcAlpha = 0x6 /**< 1-srcA, 1-srcA, 1-srcA, 1-srcA */
-	BF_DstColor         = 0x7 /**< dstR, dstG, dstB, dstA */
-	BF_OneMinusDstColor = 0x8 /**< 1-dstR, 1-dstG, 1-dstB, 1-dstA */
-	BF_DstAlpha         = 0x9 /**< dstA, dstA, dstA, dstA */
-	BF_OneMinusDstAlpha = 0xA /**< 1-dstA, 1-dstA, 1-dstA, 1-dstA */
+	BF_Zero             BlendFactor = 0x1 /**< 0, 0, 0, 0 */
+	BF_One              BlendFactor = 0x2 /**< 1, 1, 1, 1 */
+	BF_SrcColor         BlendFactor = 0x3 /**< srcR, srcG, srcB, srcA */
+	BF_OneMinusSrcColor BlendFactor = 0x4 /**< 1-srcR, 1-srcG, 1-srcB, 1-srcA */
+	BF_SrcAlpha         BlendFactor = 0x5 /**< srcA, srcA, srcA, srcA */
+	BF_OneMinusSrcAlpha BlendFactor = 0x6 /**< 1-srcA, 1-srcA, 1-srcA, 1-srcA */
+	BF_DstColor         BlendFactor = 0x7 /**< dstR, dstG, dstB, dstA */
+	BF_OneMinusDstColor BlendFactor = 0x8 /**< 1-dstR, 1-dstG, 1-dstB, 1-dstA */
+	BF_DstAlpha         BlendFactor = 0x9 /**< dstA, dstA, dstA, dstA */
+	BF_OneMinusDstAlpha BlendFactor = 0xA /**< 1-dstA, 1-dstA, 1-dstA, 1-dstA */
 )
 
 /**
