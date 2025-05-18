@@ -2747,11 +2747,13 @@ var AddVulkanRenderSemaphores func(renderer *Renderer, wait_stage_mask uint32, w
  * \sa SDL_GetRenderVSync
  */
 //go:sdl3extern
-var SetRenderVSync func(renderer *Renderer, vsync int) bool
+var SetRenderVSync func(renderer *Renderer, vsync VSync) bool
+
+type VSync = int32
 
 const (
-	VSyncDisabled int = 0
-	VSyncAdaptive int = -1
+	VSyncDisabled VSync = 0
+	VSyncAdaptive VSync = -1
 )
 
 /**

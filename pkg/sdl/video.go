@@ -2451,12 +2451,7 @@ var GetWindowSurface func(window *Window) *Surface
 * \sa SDL_GetWindowSurfaceVSync
  */
 //go:sdl3extern
-var SetWindowSurfaceVSync func(window *Window, vsync int) bool
-
-const (
-	WINDOW_SURFACE_VSYNC_DISABLED = 0
-	WINDOW_SURFACE_VSYNC_ADAPTIVE = -1
-)
+var SetWindowSurfaceVSync func(window *Window, vsync VSync) bool
 
 /**
 * Get VSync for the window surface.
