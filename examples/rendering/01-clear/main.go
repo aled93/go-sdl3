@@ -31,6 +31,7 @@ func main() {
 		log.Printf("Couldn't initialize SDL: %s\n", sdl.GetError())
 		return
 	}
+	defer sdl.Quit()
 
 	if !sdl.CreateWindowAndRenderer("examples/renderer/clear", 640, 480, 0, &window, &renderer) {
 		log.Printf("Couldn't create window/renderer: %s\n", sdl.GetError())
@@ -42,8 +43,17 @@ main_loop:
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
-			if event.Type == sdl.ET_Quit {
+			switch event.Type {
+			case sdl.ET_Quit, sdl.ET_WindowCloseRequested:
 				break main_loop /* end the program, reporting success to the OS. */
+
+			case sdl.ET_KeyDown:
+				keyEv := event.AsKeyboardEvent()
+
+				switch keyEv.Scancode {
+				case sdl.SC_Escape:
+					break main_loop
+				}
 			}
 		}
 
