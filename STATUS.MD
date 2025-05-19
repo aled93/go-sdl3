@@ -17,7 +17,7 @@
   - [x] gamepad
   - [ ] gpu
   - [x] guid
-  - [ ] haptic
+  - [x] haptic
   - [x] hidapi
   - [x] hints
   - [x] init
