@@ -1,19 +1,19 @@
 - [ ] Modules
   - [x] stdinc // most functions and consts already present in go std packages
-  - [ ] assert
-  - [ ] asyncio
-  - [ ] atomic
+  - [-] assert // not applicable for golang
+  - [-] asyncio // do io operations in goroutines instead
+  - [-] atomic // import "sync/atomic"
   - [x] audio
-  - [ ] bits
+  - [-] bits // import "math/bits"
   - [x] blendmode
   - [x] camera
   - [x] clipboard
   - [x] cpuinfo
   - [ ] dialog
-  - [ ] endian
+  - [-] endian // encoding/binary
   - [x] error
   - [x] events
-  - [ ] filesystem
+  - [-] filesystem // import "os"
   - [x] gamepad
   - [ ] gpu
   - [x] guid
@@ -25,19 +25,19 @@
   - [x] joystick
   - [x] keyboard
   - [x] keycode
-  - [ ] loadso
+  - [-] loadso // import "github.com/ebitengine/purego"
   - [ ] locale
-  - [ ] log
+  - [-] log // import "log"
   - [ ] messagebox
   - [ ] metal
   - [x] misc
   - [x] mouse
-  - [ ] mutex
+  - [~] mutex // import "sync"
   - [x] pen
   - [x] pixels
-  - [ ] platform
+  - [-] platform // SDL_GetPlatform == runtime.GOOS
   - [x] power
-  - [ ] process
+  - [-] process // import "os/exec"
   - [x] properties
   - [x] rect
   - [x] render
@@ -46,12 +46,12 @@
   - [ ] storage
   - [x] surface
   - [x] system
-  - [ ] thread
+  - [-] thread // not applicable for golang and moreover can interfere with runtime
   - [x] time
   - [x] timer
   - [x] tray
   - [x] touch
   - [x] version
   - [x] video
-  - [ ] oldnames
+  - [-] oldnames // say no to legacy
 - [ ] Documentation (doxygen -> godoc)
