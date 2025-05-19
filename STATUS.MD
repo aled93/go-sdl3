@@ -26,7 +26,7 @@
   - [x] keyboard
   - [x] keycode
   - [-] loadso // import "github.com/ebitengine/purego"
-  - [ ] locale
+  - [x] locale
   - [-] log // import "log"
   - [ ] messagebox
   - [ ] metal
