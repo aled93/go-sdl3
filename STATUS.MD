@@ -28,7 +28,7 @@
   - [-] loadso // import "github.com/ebitengine/purego"
   - [x] locale
   - [-] log // import "log"
-  - [ ] messagebox
+  - [x] messagebox
   - [ ] metal
   - [x] misc
   - [x] mouse
