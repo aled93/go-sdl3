@@ -9,7 +9,7 @@
   - [x] camera
   - [x] clipboard
   - [x] cpuinfo
-  - [ ] dialog
+  - [x] dialog
   - [-] endian // encoding/binary
   - [x] error
   - [x] events
