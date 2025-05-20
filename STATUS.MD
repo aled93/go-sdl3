@@ -1,57 +1,59 @@
-- [ ] Modules
-  - [x] stdinc // most functions and consts already present in go std packages
-  - [-] assert // not applicable for golang
-  - [-] asyncio // do io operations in goroutines instead
-  - [-] atomic // import "sync/atomic"
-  - [x] audio
-  - [-] bits // import "math/bits"
-  - [x] blendmode
-  - [x] camera
-  - [x] clipboard
-  - [x] cpuinfo
-  - [x] dialog
-  - [-] endian // encoding/binary
-  - [x] error
-  - [x] events
-  - [-] filesystem // import "os"
-  - [x] gamepad
-  - [ ] gpu
-  - [x] guid
-  - [x] haptic
-  - [x] hidapi
-  - [x] hints
-  - [x] init
-  - [x] iostream
-  - [x] joystick
-  - [x] keyboard
-  - [x] keycode
-  - [-] loadso // import "github.com/ebitengine/purego"
-  - [x] locale
-  - [-] log // import "log"
-  - [x] messagebox
-  - [ ] metal
-  - [x] misc
-  - [x] mouse
-  - [~] mutex // import "sync"
-  - [x] pen
-  - [x] pixels
-  - [-] platform // SDL_GetPlatform == runtime.GOOS
-  - [x] power
-  - [-] process // import "os/exec"
-  - [x] properties
-  - [x] rect
-  - [x] render
-  - [x] scancode
-  - [x] sensor
-  - [ ] storage
-  - [x] surface
-  - [x] system
-  - [-] thread // not applicable for golang and moreover can interfere with runtime
-  - [x] time
-  - [x] timer
-  - [x] tray
-  - [x] touch
-  - [x] version
-  - [x] video
-  - [-] oldnames // say no to legacy
+- [ ] Translate modules
+  - [x] `stdinc` - partially, `import "math"`
+  - [x] `audio`
+  - [x] `blendmode`
+  - [x] `camera`
+  - [x] `clipboard`
+  - [x] `cpuinfo`
+  - [x] `dialog`
+  - [x] `error`
+  - [x] `events`
+  - [x] `gamepad`
+  - [ ] `gpu`
+  - [x] `guid`
+  - [x] `haptic`
+  - [x] `hidapi`
+  - [x] `hints`
+  - [x] `init`
+  - [x] `iostream`
+  - [x] `joystick`
+  - [x] `keyboard`
+  - [x] `keycode`
+  - [x] `locale`
+  - [x] `messagebox`
+  - [ ] `metal`
+  - [x] `misc`
+  - [x] `mouse`
+  - [x] `mutex` - partially, `import "sync"`
+  - [x] `pen`
+  - [x] `pixels`
+  - [x] `power`
+  - [x] `properties`
+  - [x] `rect`
+  - [x] `render`
+  - [x] `scancode`
+  - [x] `sensor`
+  - [ ] `storage`
+  - [x] `surface`
+  - [x] `system`
+  - [x] `time`
+  - [x] `timer`
+  - [x] `tray`
+  - [x] `touch`
+  - [x] `version`
+  - [x] `video`
 - [ ] Documentation (doxygen -> godoc)
+
+- Will not be translated:
+  - `assert` - not applicable for golang directly
+  - `asyncio` - do io operations in goroutines instead
+  - `atomic` - `import "sync/atomic"`
+  - `bits` - `import "math/bits"`
+  - `endian` - `import "encoding/binary"`
+  - `filesystem` - `import "os"`
+  - `loadso` - `import "github.com/ebitengine/purego"`
+  - `log` - `import "log"`
+  - `platform` - `SDL_GetPlatform == runtime.GOOS`
+  - `process` - `import "os/exec"`
+  - `thread` - not applicable for golang and moreover can interfere with runtime
+  - `oldnames` - say no to legacy
