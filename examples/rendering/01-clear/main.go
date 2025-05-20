@@ -15,8 +15,8 @@ import (
 )
 
 /* We will use this renderer to draw into this window every frame. */
-var window *sdl.Window
-var renderer *sdl.Renderer
+var window sdl.Window
+var renderer sdl.Renderer
 
 func main() {
 	runtime.LockOSThread()

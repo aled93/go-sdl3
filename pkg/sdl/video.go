@@ -161,7 +161,7 @@ const (
 *
 * \sa SDL_CreateWindow
  */
-type Window struct{}
+type Window uintptr
 
 /**
 * The flags on a window.
@@ -939,7 +939,7 @@ var GetDisplayForRect func(rect *Rect) DisplayID
 * \sa SDL_GetDisplays
  */
 //go:sdl3extern
-var GetDisplayForWindow func(window *Window) DisplayID
+var GetDisplayForWindow func(window Window) DisplayID
 
 /**
 * Get the pixel density of a window.
@@ -959,7 +959,7 @@ var GetDisplayForWindow func(window *Window) DisplayID
 * \sa SDL_GetWindowDisplayScale
  */
 //go:sdl3extern
-var GetWindowPixelDensity func(window *Window) float32
+var GetWindowPixelDensity func(window Window) float32
 
 /**
 * Get the content display scale relative to a window's pixel size.
@@ -984,7 +984,7 @@ var GetWindowPixelDensity func(window *Window) float32
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetWindowDisplayScale func(window *Window) float32
+var GetWindowDisplayScale func(window Window) float32
 
 /**
 * Set the display mode to use when a window is visible and fullscreen.
@@ -1020,7 +1020,7 @@ var GetWindowDisplayScale func(window *Window) float32
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var SetWindowFullscreenMode func(window *Window, mode *DisplayMode) bool
+var SetWindowFullscreenMode func(window Window, mode *DisplayMode) bool
 
 /**
 * Query the display mode to use when a window is visible at fullscreen.
@@ -1037,7 +1037,7 @@ var SetWindowFullscreenMode func(window *Window, mode *DisplayMode) bool
 * \sa SDL_SetWindowFullscreen
  */
 //go:sdl3extern
-var GetWindowFullscreenMode func(window *Window) *DisplayMode
+var GetWindowFullscreenMode func(window Window) *DisplayMode
 
 /**
 * Get the raw ICC profile data for the screen the window is currently on.
@@ -1053,7 +1053,7 @@ var GetWindowFullscreenMode func(window *Window) *DisplayMode
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetWindowICCProfile func(window *Window, size *uint) uintptr
+var GetWindowICCProfile func(window Window, size *uint) uintptr
 
 /**
 * Get the pixel format associated with the window.
@@ -1068,7 +1068,7 @@ var GetWindowICCProfile func(window *Window, size *uint) uintptr
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetWindowPixelFormat func(window *Window) PixelFormat
+var GetWindowPixelFormat func(window Window) PixelFormat
 
 /**
 * Get a list of valid windows.
@@ -1085,7 +1085,7 @@ var GetWindowPixelFormat func(window *Window) PixelFormat
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetWindows func(count *int32) **Window
+var GetWindows func(count *int32) *Window
 
 /**
 * Create a window with the specified dimensions and flags.
@@ -1176,7 +1176,7 @@ var GetWindows func(count *int32) **Window
 * \sa SDL_DestroyWindow
  */
 //go:sdl3extern
-var CreateWindow func(title *byte, w, h int32, flags WindowFlags) *Window
+var CreateWindow func(title *byte, w, h int32, flags WindowFlags) Window
 
 /**
 * Create a child popup window of the specified parent window.
@@ -1253,7 +1253,7 @@ var CreateWindow func(title *byte, w, h int32, flags WindowFlags) *Window
 * \sa SDL_GetWindowParent
  */
 //go:sdl3extern
-var CreatePopupWindow func(parent *Window, offset_x, offset_y, w, h int32, flags WindowFlags) *Window
+var CreatePopupWindow func(parent Window, offset_x, offset_y, w, h int32, flags WindowFlags) Window
 
 /**
 * Create a window with the specified properties.
@@ -1397,7 +1397,7 @@ var CreatePopupWindow func(parent *Window, offset_x, offset_y, w, h int32, flags
 * \sa SDL_DestroyWindow
  */
 //go:sdl3extern
-var CreateWindowWithProperties func(props PropertiesID) *Window
+var CreateWindowWithProperties func(props PropertiesID) Window
 
 const (
 	PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN               PropertyName = "SDL.window.create.always_on_top"
@@ -1456,7 +1456,7 @@ const (
 * \sa SDL_GetWindowFromID
  */
 //go:sdl3extern
-var GetWindowID func(window *Window) WindowID
+var GetWindowID func(window Window) WindowID
 
 /**
 * Get a window from a stored ID.
@@ -1475,7 +1475,7 @@ var GetWindowID func(window *Window) WindowID
 * \sa SDL_GetWindowID
  */
 //go:sdl3extern
-var GetWindowFromID func(id WindowID) *Window
+var GetWindowFromID func(id WindowID) Window
 
 /**
 * Get parent of a window.
@@ -1491,7 +1491,7 @@ var GetWindowFromID func(id WindowID) *Window
 * \sa SDL_CreatePopupWindow
  */
 //go:sdl3extern
-var GetWindowParent func(window *Window) *Window
+var GetWindowParent func(window Window) Window
 
 /**
 * Get the properties associated with a window.
@@ -1621,7 +1621,7 @@ var GetWindowParent func(window *Window) *Window
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetWindowProperties func(window *Window) PropertiesID
+var GetWindowProperties func(window Window) PropertiesID
 
 const (
 	PROP_WINDOW_SHAPE_POINTER                             PropertyName = "SDL.window.shape"
@@ -1682,7 +1682,7 @@ const (
 * \sa SDL_ShowWindow
  */
 //go:sdl3extern
-var GetWindowFlags func(window *Window) WindowFlags
+var GetWindowFlags func(window Window) WindowFlags
 
 /**
 * Set the title of a window.
@@ -1701,7 +1701,7 @@ var GetWindowFlags func(window *Window) WindowFlags
 * \sa SDL_GetWindowTitle
  */
 //go:sdl3extern
-var SetWindowTitle func(window *Window, title *byte) bool
+var SetWindowTitle func(window Window, title *byte) bool
 
 /**
 * Get the title of a window.
@@ -1717,7 +1717,7 @@ var SetWindowTitle func(window *Window, title *byte) bool
 * \sa SDL_SetWindowTitle
  */
 //go:sdl3extern
-var GetWindowTitle func(window *Window) *byte
+var GetWindowTitle func(window Window) *byte
 
 /**
 * Set the icon for a window.
@@ -1742,7 +1742,7 @@ var GetWindowTitle func(window *Window) *byte
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetWindowIcon func(window *Window, icon *Surface) bool
+var SetWindowIcon func(window Window, icon *Surface) bool
 
 /**
 * Request that the window's position be set.
@@ -1784,7 +1784,7 @@ var SetWindowIcon func(window *Window, icon *Surface) bool
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var SetWindowPosition func(window *Window, x, y int32) bool
+var SetWindowPosition func(window Window, x, y int32) bool
 
 /**
 * Get the position of a window.
@@ -1810,7 +1810,7 @@ var SetWindowPosition func(window *Window, x, y int32) bool
 * \sa SDL_SetWindowPosition
  */
 //go:sdl3extern
-var GetWindowPosition func(window *Window, x, y *int32) bool
+var GetWindowPosition func(window Window, x, y *int32) bool
 
 /**
 * Request that the size of a window's client area be set.
@@ -1848,7 +1848,7 @@ var GetWindowPosition func(window *Window, x, y *int32) bool
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var SetWindowSize func(window *Window, w, h int32) bool
+var SetWindowSize func(window Window, w, h int32) bool
 
 /**
 * Get the size of a window's client area.
@@ -1872,7 +1872,7 @@ var SetWindowSize func(window *Window, w, h int32) bool
 * \sa SDL_SetWindowSize
  */
 //go:sdl3extern
-var GetWindowSize func(window *Window, w, h *int32) bool
+var GetWindowSize func(window Window, w, h *int32) bool
 
 /**
 * Get the safe area for this window.
@@ -1895,7 +1895,7 @@ var GetWindowSize func(window *Window, w, h *int32) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetWindowSafeArea func(window *Window, SDL_Rect *Rect) bool
+var GetWindowSafeArea func(window Window, SDL_Rect *Rect) bool
 
 /**
 * Request that the aspect ratio of a window's client area be set.
@@ -1937,7 +1937,7 @@ var GetWindowSafeArea func(window *Window, SDL_Rect *Rect) bool
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var SetWindowAspectRatio func(window *Window, min_aspect, max_aspect float32) bool
+var SetWindowAspectRatio func(window Window, min_aspect, max_aspect float32) bool
 
 /**
 * Get the size of a window's client area.
@@ -1957,7 +1957,7 @@ var SetWindowAspectRatio func(window *Window, min_aspect, max_aspect float32) bo
 * \sa SDL_SetWindowAspectRatio
  */
 //go:sdl3extern
-var GetWindowAspectRatio func(window *Window, min_aspect, max_aspect *float32) bool
+var GetWindowAspectRatio func(window Window, min_aspect, max_aspect *float32) bool
 
 /**
 * Get the size of a window's borders (decorations) around the client area.
@@ -1995,7 +1995,7 @@ var GetWindowAspectRatio func(window *Window, min_aspect, max_aspect *float32) b
 * \sa SDL_GetWindowSize
  */
 //go:sdl3extern
-var GetWindowBordersSize func(window *Window, top, left, bottom, right *int32) bool
+var GetWindowBordersSize func(window Window, top, left, bottom, right *int32) bool
 
 /**
 * Get the size of a window's client area, in pixels.
@@ -2016,7 +2016,7 @@ var GetWindowBordersSize func(window *Window, top, left, bottom, right *int32) b
 * \sa SDL_GetWindowSize
  */
 //go:sdl3extern
-var GetWindowSizeInPixels func(window *Window, w, h *int32) bool
+var GetWindowSizeInPixels func(window Window, w, h *int32) bool
 
 /**
 * Set the minimum size of a window's client area.
@@ -2035,7 +2035,7 @@ var GetWindowSizeInPixels func(window *Window, w, h *int32) bool
 * \sa SDL_SetWindowMaximumSize
  */
 //go:sdl3extern
-var SetWindowMinimumSize func(window *Window, min_w, min_h int32) bool
+var SetWindowMinimumSize func(window Window, min_w, min_h int32) bool
 
 /**
 * Get the minimum size of a window's client area.
@@ -2056,7 +2056,7 @@ var SetWindowMinimumSize func(window *Window, min_w, min_h int32) bool
 * \sa SDL_SetWindowMinimumSize
  */
 //go:sdl3extern
-var GetWindowMinimumSize func(window *Window, w, h *int32) bool
+var GetWindowMinimumSize func(window Window, w, h *int32) bool
 
 /**
 * Set the maximum size of a window's client area.
@@ -2075,7 +2075,7 @@ var GetWindowMinimumSize func(window *Window, w, h *int32) bool
 * \sa SDL_SetWindowMinimumSize
  */
 //go:sdl3extern
-var SetWindowMaximumSize func(window *Window, max_w, max_h int32) bool
+var SetWindowMaximumSize func(window Window, max_w, max_h int32) bool
 
 /**
 * Get the maximum size of a window's client area.
@@ -2096,7 +2096,7 @@ var SetWindowMaximumSize func(window *Window, max_w, max_h int32) bool
 * \sa SDL_SetWindowMaximumSize
  */
 //go:sdl3extern
-var GetWindowMaximumSize func(window *Window, w, h *int32) bool
+var GetWindowMaximumSize func(window Window, w, h *int32) bool
 
 /**
 * Set the border state of a window.
@@ -2119,7 +2119,7 @@ var GetWindowMaximumSize func(window *Window, w, h *int32) bool
 * \sa SDL_GetWindowFlags
  */
 //go:sdl3extern
-var SetWindowBordered func(window *Window, bordered bool) bool
+var SetWindowBordered func(window Window, bordered bool) bool
 
 /**
 * Set the user-resizable state of a window.
@@ -2142,7 +2142,7 @@ var SetWindowBordered func(window *Window, bordered bool) bool
 * \sa SDL_GetWindowFlags
  */
 //go:sdl3extern
-var SetWindowResizable func(window *Window, resizable bool) bool
+var SetWindowResizable func(window Window, resizable bool) bool
 
 /**
 * Set the window to always be above the others.
@@ -2162,7 +2162,7 @@ var SetWindowResizable func(window *Window, resizable bool) bool
 * \sa SDL_GetWindowFlags
  */
 //go:sdl3extern
-var SetWindowAlwaysOnTop func(window *Window, on_top bool) bool
+var SetWindowAlwaysOnTop func(window Window, on_top bool) bool
 
 /**
 * Show a window.
@@ -2179,7 +2179,7 @@ var SetWindowAlwaysOnTop func(window *Window, on_top bool) bool
 * \sa SDL_RaiseWindow
  */
 //go:sdl3extern
-var ShowWindow func(window *Window) bool
+var ShowWindow func(window Window) bool
 
 /**
 * Hide a window.
@@ -2196,7 +2196,7 @@ var ShowWindow func(window *Window) bool
 * \sa SDL_WINDOW_HIDDEN
  */
 //go:sdl3extern
-var HideWindow func(window *Window) bool
+var HideWindow func(window Window) bool
 
 /**
 * Request that a window be raised above other windows and gain the input
@@ -2217,7 +2217,7 @@ var HideWindow func(window *Window) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var RaiseWindow func(window *Window) bool
+var RaiseWindow func(window Window) bool
 
 /**
 * Request that the window be made as large as possible.
@@ -2252,7 +2252,7 @@ var RaiseWindow func(window *Window) bool
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var MaximizeWindow func(window *Window) bool
+var MaximizeWindow func(window Window) bool
 
 /**
 * Request that the window be minimized to an iconic representation.
@@ -2282,7 +2282,7 @@ var MaximizeWindow func(window *Window) bool
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var MinimizeWindow func(window *Window) bool
+var MinimizeWindow func(window Window) bool
 
 /**
 * Request that the size and position of a minimized or maximized window be
@@ -2313,7 +2313,7 @@ var MinimizeWindow func(window *Window) bool
 * \sa SDL_SyncWindow
  */
 //go:sdl3extern
-var RestoreWindow func(window *Window) bool
+var RestoreWindow func(window Window) bool
 
 /**
 * Request that the window's fullscreen state be changed.
@@ -2346,7 +2346,7 @@ var RestoreWindow func(window *Window) bool
 * \sa SDL_WINDOW_FULLSCREEN
  */
 //go:sdl3extern
-var SetWindowFullscreen func(window *Window, fullscreen bool) bool
+var SetWindowFullscreen func(window Window, fullscreen bool) bool
 
 /**
 * Block until any pending window state is finalized.
@@ -2378,7 +2378,7 @@ var SetWindowFullscreen func(window *Window, fullscreen bool) bool
 * \sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
  */
 //go:sdl3extern
-var SyncWindow func(window *Window) bool
+var SyncWindow func(window Window) bool
 
 /**
 * Return whether the window has a surface associated with it.
@@ -2394,7 +2394,7 @@ var SyncWindow func(window *Window) bool
 * \sa SDL_GetWindowSurface
  */
 //go:sdl3extern
-var WindowHasSurface func(window *Window) bool
+var WindowHasSurface func(window Window) bool
 
 /**
 * Get the SDL surface associated with the window.
@@ -2424,7 +2424,7 @@ var WindowHasSurface func(window *Window) bool
 * \sa SDL_UpdateWindowSurfaceRects
  */
 //go:sdl3extern
-var GetWindowSurface func(window *Window) *Surface
+var GetWindowSurface func(window Window) *Surface
 
 /**
 * Toggle VSync for the window surface.
@@ -2451,7 +2451,7 @@ var GetWindowSurface func(window *Window) *Surface
 * \sa SDL_GetWindowSurfaceVSync
  */
 //go:sdl3extern
-var SetWindowSurfaceVSync func(window *Window, vsync VSync) bool
+var SetWindowSurfaceVSync func(window Window, vsync VSync) bool
 
 /**
 * Get VSync for the window surface.
@@ -2469,7 +2469,7 @@ var SetWindowSurfaceVSync func(window *Window, vsync VSync) bool
 * \sa SDL_SetWindowSurfaceVSync
  */
 //go:sdl3extern
-var GetWindowSurfaceVSync func(window *Window, vsync *VSync) bool
+var GetWindowSurfaceVSync func(window Window, vsync *VSync) bool
 
 /**
 * Copy the window surface to the screen.
@@ -2491,7 +2491,7 @@ var GetWindowSurfaceVSync func(window *Window, vsync *VSync) bool
 * \sa SDL_UpdateWindowSurfaceRects
  */
 //go:sdl3extern
-var UpdateWindowSurface func(window *Window) bool
+var UpdateWindowSurface func(window Window) bool
 
 /**
 * Copy areas of the window surface to the screen.
@@ -2521,7 +2521,7 @@ var UpdateWindowSurface func(window *Window) bool
 * \sa SDL_UpdateWindowSurface
  */
 //go:sdl3extern
-var UpdateWindowSurfaceRects func(window *Window, rects *Rect, numrects int32) bool
+var UpdateWindowSurfaceRects func(window Window, rects *Rect, numrects int32) bool
 
 /**
 * Destroy the surface associated with the window.
@@ -2538,7 +2538,7 @@ var UpdateWindowSurfaceRects func(window *Window, rects *Rect, numrects int32) b
 * \sa SDL_WindowHasSurface
  */
 //go:sdl3extern
-var DestroyWindowSurface func(window *Window) bool
+var DestroyWindowSurface func(window Window) bool
 
 /**
 * Set a window's keyboard grab mode.
@@ -2572,7 +2572,7 @@ var DestroyWindowSurface func(window *Window) bool
 * \sa SDL_SetWindowMouseGrab
  */
 //go:sdl3extern
-var SetWindowKeyboardGrab func(window *Window, grabbed bool) bool
+var SetWindowKeyboardGrab func(window Window, grabbed bool) bool
 
 /**
 * Set a window's mouse grab mode.
@@ -2593,7 +2593,7 @@ var SetWindowKeyboardGrab func(window *Window, grabbed bool) bool
 * \sa SDL_SetWindowKeyboardGrab
  */
 //go:sdl3extern
-var SetWindowMouseGrab func(window *Window, grabbed bool) bool
+var SetWindowMouseGrab func(window Window, grabbed bool) bool
 
 /**
 * Get a window's keyboard grab mode.
@@ -2608,7 +2608,7 @@ var SetWindowMouseGrab func(window *Window, grabbed bool) bool
 * \sa SDL_SetWindowKeyboardGrab
  */
 //go:sdl3extern
-var GetWindowKeyboardGrab func(window *Window) bool
+var GetWindowKeyboardGrab func(window Window) bool
 
 /**
 * Get a window's mouse grab mode.
@@ -2626,7 +2626,7 @@ var GetWindowKeyboardGrab func(window *Window) bool
 * \sa SDL_SetWindowKeyboardGrab
  */
 //go:sdl3extern
-var GetWindowMouseGrab func(window *Window) bool
+var GetWindowMouseGrab func(window Window) bool
 
 /**
 * Get the window that currently has an input grab enabled.
@@ -2641,7 +2641,7 @@ var GetWindowMouseGrab func(window *Window) bool
 * \sa SDL_SetWindowKeyboardGrab
  */
 //go:sdl3extern
-var GetGrabbedWindow func() *Window
+var GetGrabbedWindow func() Window
 
 /**
 * Confines the cursor to the specified area of a window.
@@ -2664,7 +2664,7 @@ var GetGrabbedWindow func() *Window
 * \sa SDL_SetWindowMouseGrab
  */
 //go:sdl3extern
-var SetWindowMouseRect func(window *Window, rect *Rect) bool
+var SetWindowMouseRect func(window Window, rect *Rect) bool
 
 /**
 * Get the mouse confinement rectangle of a window.
@@ -2682,7 +2682,7 @@ var SetWindowMouseRect func(window *Window, rect *Rect) bool
 * \sa SDL_SetWindowMouseGrab
  */
 //go:sdl3extern
-var GetWindowMouseRect func(window *Window) *Rect
+var GetWindowMouseRect func(window Window) *Rect
 
 /**
 * Set the opacity for a window.
@@ -2704,7 +2704,7 @@ var GetWindowMouseRect func(window *Window) *Rect
 * \sa SDL_GetWindowOpacity
  */
 //go:sdl3extern
-var SetWindowOpacity func(window *Window, opacity float32) bool
+var SetWindowOpacity func(window Window, opacity float32) bool
 
 /**
 * Get the opacity of a window.
@@ -2723,7 +2723,7 @@ var SetWindowOpacity func(window *Window, opacity float32) bool
 * \sa SDL_SetWindowOpacity
  */
 //go:sdl3extern
-var GetWindowOpacity func(window *Window) float32
+var GetWindowOpacity func(window Window) float32
 
 /**
 * Set the window as a child of a parent window.
@@ -2758,7 +2758,7 @@ var GetWindowOpacity func(window *Window) float32
 * \sa SDL_SetWindowModal
  */
 //go:sdl3extern
-var SetWindowParent func(window *Window, parent *Window) bool
+var SetWindowParent func(window Window, parent Window) bool
 
 /**
 * Toggle the state of the window as modal.
@@ -2779,7 +2779,7 @@ var SetWindowParent func(window *Window, parent *Window) bool
 * \sa SDL_WINDOW_MODAL
  */
 //go:sdl3extern
-var SetWindowModal func(window *Window, modal bool) bool
+var SetWindowModal func(window Window, modal bool) bool
 
 /**
 * Set whether the window may have input focus.
@@ -2794,7 +2794,7 @@ var SetWindowModal func(window *Window, modal bool) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetWindowFocusable func(window *Window, focusable bool) bool
+var SetWindowFocusable func(window Window, focusable bool) bool
 
 /**
 * Display the system-level window menu.
@@ -2820,7 +2820,7 @@ var SetWindowFocusable func(window *Window, focusable bool) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var ShowWindowSystemMenu func(window *Window, x, y int32) bool
+var ShowWindowSystemMenu func(window Window, x, y int32) bool
 
 /**
 * Possible return values from the SDL_HitTest callback.
@@ -2856,7 +2856,7 @@ const (
 *
 * \sa SDL_SetWindowHitTest
  */
-type HitTest func(win *Window, area *Point, data uintptr) HitTestResult
+type HitTest func(win Window, area *Point, data uintptr) HitTestResult
 
 /**
 * Provide a callback that decides if a window region has special properties.
@@ -2901,7 +2901,7 @@ type HitTest func(win *Window, area *Point, data uintptr) HitTestResult
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetWindowHitTest func(window *Window, callback HitTest, callback_data uintptr) bool
+var SetWindowHitTest func(window Window, callback HitTest, callback_data uintptr) bool
 
 /**
 * Set the shape of a transparent window.
@@ -2930,7 +2930,7 @@ var SetWindowHitTest func(window *Window, callback HitTest, callback_data uintpt
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var SetWindowShape func(window *Window, shape *Surface) bool
+var SetWindowShape func(window Window, shape *Surface) bool
 
 /**
 * Request a window to demand attention from the user.
@@ -2945,7 +2945,7 @@ var SetWindowShape func(window *Window, shape *Surface) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var FlashWindow func(window *Window, operation FlashOperation) bool
+var FlashWindow func(window Window, operation FlashOperation) bool
 
 /**
 * Sets the state of the progress bar for the given window’s taskbar icon.
@@ -2961,7 +2961,7 @@ var FlashWindow func(window *Window, operation FlashOperation) bool
 * \since This function is available since SDL 3.4.0.
  */
 //go:sdl3extern
-var SetWindowProgressState func(window *Window, state ProgressState) bool
+var SetWindowProgressState func(window Window, state ProgressState) bool
 
 /**
 * Get the state of the progress bar for the given window’s taskbar icon.
@@ -2975,7 +2975,7 @@ var SetWindowProgressState func(window *Window, state ProgressState) bool
 * \since This function is available since SDL 3.4.0.
  */
 //go:sdl3extern
-var GetWindowProgressState func(window *Window) ProgressState
+var GetWindowProgressState func(window Window) ProgressState
 
 /**
 * Sets the value of the progress bar for the given window’s taskbar icon.
@@ -2991,7 +2991,7 @@ var GetWindowProgressState func(window *Window) ProgressState
 * \since This function is available since SDL 3.4.0.
  */
 //go:sdl3extern
-var SetWindowProgressValue func(window *Window, value float32) bool
+var SetWindowProgressValue func(window Window, value float32) bool
 
 /**
 * Get the value of the progress bar for the given window’s taskbar icon.
@@ -3005,7 +3005,7 @@ var SetWindowProgressValue func(window *Window, value float32) bool
 * \since This function is available since SDL 3.4.0.
  */
 //go:sdl3extern
-var GetWindowProgressValue func(window *Window) float32
+var GetWindowProgressValue func(window Window) float32
 
 /**
 * Destroy a window.
@@ -3028,7 +3028,7 @@ var GetWindowProgressValue func(window *Window) float32
 * \sa SDL_CreateWindowWithProperties
  */
 //go:sdl3extern
-var DestroyWindow func(window *Window)
+var DestroyWindow func(window Window)
 
 /**
 * Check whether the screensaver is currently enabled.
@@ -3308,7 +3308,7 @@ var GL_GetAttribute func(attr GLAttr, value *int32) bool
 * \sa SDL_GL_MakeCurrent
  */
 //go:sdl3extern
-var GL_CreateContext func(window *Window) GLContext
+var GL_CreateContext func(window Window) GLContext
 
 /**
 * Set up an OpenGL context for rendering into an OpenGL window.
@@ -3327,7 +3327,7 @@ var GL_CreateContext func(window *Window) GLContext
 * \sa SDL_GL_CreateContext
  */
 //go:sdl3extern
-var GL_MakeCurrent func(window *Window, context GLContext) bool
+var GL_MakeCurrent func(window Window, context GLContext) bool
 
 /**
 * Get the currently active OpenGL window.
@@ -3340,7 +3340,7 @@ var GL_MakeCurrent func(window *Window, context GLContext) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GL_GetCurrentWindow func() *Window
+var GL_GetCurrentWindow func() Window
 
 /**
 * Get the currently active OpenGL context.
@@ -3395,7 +3395,7 @@ var EGL_GetCurrentConfig func() EGLConfig
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var EGL_GetWindowSurface func(window *Window) EGLSurface
+var EGL_GetWindowSurface func(window Window) EGLSurface
 
 /**
 * Sets the callbacks for defining custom EGLAttrib arrays for EGL
@@ -3497,7 +3497,7 @@ var GL_GetSwapInterval func(interval *int32) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GL_SwapWindow func(window *Window) bool
+var GL_SwapWindow func(window Window) bool
 
 /**
 * Delete an OpenGL context.

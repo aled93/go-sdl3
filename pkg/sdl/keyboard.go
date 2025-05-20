@@ -117,7 +117,7 @@ var GetKeyboardNameForID func(instance_id KeyboardID) string
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetKeyboardFocus func() *Window
+var GetKeyboardFocus func() Window
 
 /**
  * Get a snapshot of the current state of the keyboard.
@@ -382,7 +382,7 @@ var GetKeyFromName func(name string) Keycode
  * \sa SDL_TextInputActive
  */
 //go:sdl3extern
-var StartTextInput func(window *Window) bool
+var StartTextInput func(window Window) bool
 
 /**
  * Text input type.
@@ -480,7 +480,7 @@ const (
  * \sa SDL_TextInputActive
  */
 //go:sdl3extern
-var StartTextInputWithProperties func(window *Window, props PropertiesID) bool
+var StartTextInputWithProperties func(window Window, props PropertiesID) bool
 
 const (
 	PROP_TEXTINPUT_TYPE_NUMBER              PropertyName = "SDL.textinput.type"
@@ -503,7 +503,7 @@ const (
  * \sa SDL_StartTextInput
  */
 //go:sdl3extern
-var TextInputActive func(window *Window) bool
+var TextInputActive func(window Window) bool
 
 /**
  * Stop receiving any text input events in a window.
@@ -522,7 +522,7 @@ var TextInputActive func(window *Window) bool
  * \sa SDL_StartTextInput
  */
 //go:sdl3extern
-var StopTextInput func(window *Window) bool
+var StopTextInput func(window Window) bool
 
 /**
  * Dismiss the composition window/IME without disabling the subsystem.
@@ -539,7 +539,7 @@ var StopTextInput func(window *Window) bool
  * \sa SDL_StopTextInput
  */
 //go:sdl3extern
-var ClearComposition func(window *Window) bool
+var ClearComposition func(window Window) bool
 
 /**
  * Set the area used to type Unicode text input.
@@ -563,7 +563,7 @@ var ClearComposition func(window *Window) bool
  * \sa SDL_StartTextInput
  */
 //go:sdl3extern
-var SetTextInputArea func(window *Window, rect *Rect, cursor int32) bool
+var SetTextInputArea func(window Window, rect *Rect, cursor int32) bool
 
 /**
  * Get the area used to type Unicode text input.
@@ -585,7 +585,7 @@ var SetTextInputArea func(window *Window, rect *Rect, cursor int32) bool
  * \sa SDL_SetTextInputArea
  */
 //go:sdl3extern
-var GetTextInputArea func(window *Window, rect *Rect, cursor *int32) bool
+var GetTextInputArea func(window Window, rect *Rect, cursor *int32) bool
 
 /**
  * Check whether the platform has screen keyboard support.
@@ -616,4 +616,4 @@ var HasScreenKeyboardSupport func() bool
  * \sa SDL_HasScreenKeyboardSupport
  */
 //go:sdl3extern
-var ScreenKeyboardShown func(window *Window) bool
+var ScreenKeyboardShown func(window Window) bool

@@ -3963,7 +3963,7 @@ var BlitGPUTexture func(
 //go:sdl3extern
 var WindowSupportsGPUSwapchainComposition func(
 	device GPUDevice,
-	window *Window,
+	window Window,
 	swapchain_composition GPUSwapchainComposition) bool
 
 /**
@@ -3983,7 +3983,7 @@ var WindowSupportsGPUSwapchainComposition func(
 //go:sdl3extern
 var WindowSupportsGPUPresentMode func(
 	device GPUDevice,
-	window *Window,
+	window Window,
 	present_mode GPUPresentMode) bool
 
 /**
@@ -4016,7 +4016,7 @@ var WindowSupportsGPUPresentMode func(
 //go:sdl3extern
 var ClaimWindowForGPUDevice func(
 	device GPUDevice,
-	window *Window) bool
+	window Window) bool
 
 /**
  * Unclaims a window, destroying its swapchain structure.
@@ -4031,7 +4031,7 @@ var ClaimWindowForGPUDevice func(
 //go:sdl3extern
 var ReleaseWindowFromGPUDevice func(
 	device GPUDevice,
-	window *Window)
+	window Window)
 
 /**
  * Changes the swapchain parameters for the given claimed window.
@@ -4059,7 +4059,7 @@ var ReleaseWindowFromGPUDevice func(
 //go:sdl3extern
 var SetGPUSwapchainParameters func(
 	device GPUDevice,
-	window *Window,
+	window Window,
 	swapchain_composition GPUSwapchainComposition,
 	present_mode GPUPresentMode) bool
 
@@ -4107,7 +4107,7 @@ var SetGPUAllowedFramesInFlight func(
 //go:sdl3extern
 var GetGPUSwapchainTextureFormat func(
 	device GPUDevice,
-	window *Window) GPUTextureFormat
+	window Window) GPUTextureFormat
 
 /**
  * Acquire a texture to use in presentation.
@@ -4160,7 +4160,7 @@ var GetGPUSwapchainTextureFormat func(
 //go:sdl3extern
 var AcquireGPUSwapchainTexture func(
 	command_buffer GPUCommandBuffer,
-	window *Window,
+	window Window,
 	swapchain_texture GPUTexture,
 	swapchain_texture_width *uint32,
 	swapchain_texture_height *uint32) bool
@@ -4185,7 +4185,7 @@ var AcquireGPUSwapchainTexture func(
 //go:sdl3extern
 var WaitForGPUSwapchain func(
 	device GPUDevice,
-	window *Window) bool
+	window Window) bool
 
 /**
  * Blocks the thread until a swapchain texture is available to be acquired,
@@ -4232,7 +4232,7 @@ var WaitForGPUSwapchain func(
 //go:sdl3extern
 var WaitAndAcquireGPUSwapchainTexture func(
 	command_buffer GPUCommandBuffer,
-	window *Window,
+	window Window,
 	swapchain_texture GPUTexture,
 	swapchain_texture_width *uint32,
 	swapchain_texture_height *uint32) bool

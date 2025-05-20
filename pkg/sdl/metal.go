@@ -67,7 +67,7 @@ type MetalView uintptr
  * \sa SDL_Metal_GetLayer
  */
 //go:sdl3extern
-var Metal_CreateView func(window *Window) MetalView
+var Metal_CreateView func(window Window) MetalView
 
 /**
  * Destroy an existing SDL_MetalView object.

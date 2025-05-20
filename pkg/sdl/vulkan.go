@@ -203,7 +203,7 @@ var Vulkan_GetInstanceExtensions func(count *uint32) *string
  * \sa SDL_Vulkan_DestroySurface
  */
 //go:sdl3extern
-var Vulkan_CreateSurface func(window *Window, instance VkInstance, allocator VkAllocationCallbacks, surface *VkSurfaceKHR) bool
+var Vulkan_CreateSurface func(window Window, instance VkInstance, allocator VkAllocationCallbacks, surface *VkSurfaceKHR) bool
 
 /**
  * Destroy the Vulkan rendering surface of a window.

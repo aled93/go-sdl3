@@ -154,7 +154,7 @@ type DialogFileCallback func(userdata uintptr, filelist **byte, filter int32)
  * \sa SDL_ShowFileDialogWithProperties
  */
 //go:sdl3extern
-var ShowOpenFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters []DialogFileFilter, nfilters int32, default_location string, allow_many bool)
+var ShowOpenFileDialog func(callback DialogFileCallback, userdata uintptr, window Window, filters []DialogFileFilter, nfilters int32, default_location string, allow_many bool)
 
 /**
  * Displays a dialog that lets the user choose a new or existing file on their
@@ -204,7 +204,7 @@ var ShowOpenFileDialog func(callback DialogFileCallback, userdata uintptr, windo
  * \sa SDL_ShowFileDialogWithProperties
  */
 //go:sdl3extern
-var ShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters []DialogFileFilter, nfilters int32, default_location string)
+var ShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, window Window, filters []DialogFileFilter, nfilters int32, default_location string)
 
 /**
  * Displays a dialog that lets the user select a folder on their filesystem.
@@ -250,7 +250,7 @@ var ShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, windo
  * \sa SDL_ShowFileDialogWithProperties
  */
 //go:sdl3extern
-var ShowOpenFolderDialog func(callback DialogFileCallback, userdata uintptr, window *Window, default_location string, allow_many bool)
+var ShowOpenFolderDialog func(callback DialogFileCallback, userdata uintptr, window Window, default_location string, allow_many bool)
 
 /**
  * Various types of file dialogs.

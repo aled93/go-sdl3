@@ -1643,7 +1643,7 @@ var RegisterEvents func(numevents int32) uint32
  * \sa SDL_WaitEventTimeout
  */
 //go:sdl3extern
-var GetWindowFromEvent func(event *Event) *Window
+var GetWindowFromEvent func(event *Event) Window
 
 /**
  * Generate a human-readable description of an event.

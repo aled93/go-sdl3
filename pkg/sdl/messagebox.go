@@ -123,9 +123,9 @@ type MessageBoxColorScheme struct {
  */
 type MessageBoxData struct {
 	Flags   MessageBoxFlags
-	Window  *Window /**< Parent window, can be NULL */
-	Title   string  /**< UTF-8 title */
-	Message string  /**< UTF-8 message text */
+	Window  Window /**< Parent window, can be NULL */
+	Title   string /**< UTF-8 title */
+	Message string /**< UTF-8 message text */
 
 	NumButtons int32
 	Buttons    *MessageBoxButtonData
@@ -211,4 +211,4 @@ var ShowMessageBox func(messageboxdata *MessageBoxData, buttonid *int32) bool
  * \sa SDL_ShowMessageBox
  */
 //go:sdl3extern
-var ShowSimpleMessageBox func(flags MessageBoxFlags, title, message string, window *Window) bool
+var ShowSimpleMessageBox func(flags MessageBoxFlags, title, message string, window Window) bool

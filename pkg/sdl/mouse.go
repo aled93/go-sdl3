@@ -197,7 +197,7 @@ const (
 type MouseMotionTransformCallback func(
 	userdata uintptr,
 	timestamp uint64,
-	window *Window,
+	window Window,
 	mouseID MouseID,
 	x, y *float32,
 )
@@ -270,7 +270,7 @@ var GetMouseNameForID func(instance_id MouseID) string
  * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var GetMouseFocus func() *Window
+var GetMouseFocus func() Window
 
 /**
  * Query SDL's cache for the synchronous mouse button state and the
@@ -402,7 +402,7 @@ var GetRelativeMouseState func(x, y *float32) MouseButtonFlags
  * \sa SDL_WarpMouseGlobal
  */
 //go:sdl3extern
-var WarpMouseInWindow func(window *Window, x, y float32)
+var WarpMouseInWindow func(window Window, x, y float32)
 
 /**
  * Move the mouse to the given position in global screen space.
@@ -475,7 +475,7 @@ var SetRelativeMouseTransform func(callback MouseMotionTransformCallback, userda
  * \sa SDL_GetWindowRelativeMouseMode
  */
 //go:sdl3extern
-var SetWindowRelativeMouseMode func(window *Window, enabled bool) bool
+var SetWindowRelativeMouseMode func(window Window, enabled bool) bool
 
 /**
  * Query whether relative mouse mode is enabled for a window.
@@ -490,7 +490,7 @@ var SetWindowRelativeMouseMode func(window *Window, enabled bool) bool
  * \sa SDL_SetWindowRelativeMouseMode
  */
 //go:sdl3extern
-var GetWindowRelativeMouseMode func(window *Window) bool
+var GetWindowRelativeMouseMode func(window Window) bool
 
 /**
  * Capture the mouse and to track input outside an SDL window.
