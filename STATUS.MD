@@ -8,6 +8,7 @@
   - [x] `dialog`
   - [x] `error`
   - [x] `events`
+  - [x] `filesystem` - `import "os"` 
   - [x] `gamepad`
   - [ ] `gpu`
   - [x] `guid`
@@ -33,7 +34,7 @@
   - [x] `render`
   - [x] `scancode`
   - [x] `sensor`
-  - [ ] `storage`
+  - [x] `storage`
   - [x] `surface`
   - [x] `system`
   - [x] `time`
@@ -51,7 +52,6 @@
   - `atomic` - `import "sync/atomic"`
   - `bits` - `import "math/bits"`
   - `endian` - `import "encoding/binary"`
-  - `filesystem` - `import "os"`
   - `loadso` - `import "github.com/ebitengine/purego"`
   - `log` - `import "log"`
   - `platform` - `SDL_GetPlatform == runtime.GOOS`
