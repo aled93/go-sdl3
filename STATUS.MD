@@ -42,6 +42,7 @@
   - [x] `touch`
   - [x] `version`
   - [x] `video`
+  - [x] `vulkan`
 - [ ] Documentation (doxygen -> godoc)
 
 - Will not be translated:
