@@ -18,7 +18,11 @@ func LoadLibrary() error {
 		return errors.New("unsupported os")
 	}
 
-	lib, err := loadLib(libname)
+	return LoadLibraryFromFile(libname)
+}
+
+func LoadLibraryFromFile(libpath string) error {
+	lib, err := loadLib(libpath)
 	if err != nil {
 		return err
 	}
