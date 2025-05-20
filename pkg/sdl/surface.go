@@ -528,7 +528,7 @@ var LoadBMP_IO func(src *IOStream, closeio bool) *Surface
 * \sa SDL_SaveBMP
  */
 //go:sdl3extern
-var LoadBMP func(file uintptr) *Surface
+var LoadBMP func(file string) *Surface
 
 /**
 * Save a surface to a seekable SDL data stream in BMP format.
@@ -578,7 +578,7 @@ var SaveBMP_IO func(surface *Surface, dst *IOStream, closeio bool) bool
 * \sa SDL_SaveBMP_IO
  */
 //go:sdl3extern
-var SaveBMP func(surface *Surface, file uintptr) bool
+var SaveBMP func(surface *Surface, file string) bool
 
 /**
 * Set the RLE acceleration hint for a surface.
