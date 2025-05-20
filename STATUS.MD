@@ -22,7 +22,7 @@
   - [x] `keycode`
   - [x] `locale`
   - [x] `messagebox`
-  - [ ] `metal`
+  - [x] `metal`
   - [x] `misc`
   - [x] `mouse`
   - [x] `mutex` - partially, `import "sync"`
