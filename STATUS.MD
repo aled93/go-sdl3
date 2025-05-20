@@ -1,4 +1,4 @@
-- [ ] Translate modules
+- [x] Translate modules
   - [x] `stdinc` - partially, `import "math"`
   - [x] `audio`
   - [x] `blendmode`
@@ -10,7 +10,7 @@
   - [x] `events`
   - [x] `filesystem` - `import "os"` 
   - [x] `gamepad`
-  - [ ] `gpu`
+  - [x] `gpu`
   - [x] `guid`
   - [x] `haptic`
   - [x] `hidapi`
