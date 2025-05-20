@@ -3191,7 +3191,7 @@ var SetGPUScissor func(
 //go:sdl3extern
 var SetGPUBlendConstants func(
 	render_pass GPURenderPass,
-	blend_constants FColor)
+	blend_constants *FColor)
 
 /**
  * Sets the current stencil reference value on a command buffer.
