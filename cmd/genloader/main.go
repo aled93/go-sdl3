@@ -2,6 +2,8 @@ package main
 
 import (
 	_ "embed"
+	"flag"
+	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -19,9 +21,13 @@ var (
 	//go:embed loader.tmpl
 	loaderTmplSrc string
 	loaderTmpl    = template.Must(template.New("loader").Parse(loaderTmplSrc))
+
+	optVerbose = flag.Bool("verbose", false, "Print to stdout progress")
 )
 
 func main() {
+	flag.Parse()
+
 	fset := token.NewFileSet()
 	rootDir := os.DirFS("./pkg/sdl")
 	goFiles, err := fs.Glob(rootDir, "**.go")
@@ -33,6 +39,10 @@ func main() {
 	var files []*ast.File
 	for _, fname := range goFiles {
 		if strings.HasSuffix(strings.ToLower(fname), ".gen.go") {
+			if *optVerbose {
+				fmt.Printf("Ignored generated file \"%s\"\n", path.Join("./pkg/sdl", fname))
+			}
+
 			continue
 		}
 
@@ -54,6 +64,10 @@ func main() {
 		origFilePath := filesPath[i]
 		origFileName := path.Base(origFilePath)
 		origBaseName := strings.TrimSuffix(origFileName, path.Ext(origFileName))
+
+		if *optVerbose {
+			fmt.Printf("Processing \"%s\"\n", origFilePath)
+		}
 
 		tmplData := templateData{
 			Pkg:      file.Name.Name,
