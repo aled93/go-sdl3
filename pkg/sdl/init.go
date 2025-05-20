@@ -460,7 +460,7 @@ var SetAppMetadata func(appname, appversion, appidentifier string) bool
  * \sa SDL_SetAppMetadata
  */
 //go:sdl3extern
-var SetAppMetadataProperty func(name, value string) bool
+var SetAppMetadataProperty func(name PropertyName, value string) bool
 
 const (
 	PROP_APP_METADATA_NAME_STRING       PropertyName = "SDL.app.metadata.name"
@@ -494,4 +494,4 @@ const (
  * \sa SDL_SetAppMetadataProperty
  */
 //go:sdl3extern
-var GetAppMetadataProperty func(name string) string
+var GetAppMetadataProperty func(name PropertyName) string
