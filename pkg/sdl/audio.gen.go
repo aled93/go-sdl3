@@ -1,67 +1,66 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&GetNumAudioDrivers, lib, "SDL_GetNumAudioDrivers")
-        purego.RegisterLibFunc(&GetAudioDriver, lib, "SDL_GetAudioDriver")
-        purego.RegisterLibFunc(&GetCurrentAudioDriver, lib, "SDL_GetCurrentAudioDriver")
-        purego.RegisterLibFunc(&GetAudioPlaybackDevices, lib, "SDL_GetAudioPlaybackDevices")
-        purego.RegisterLibFunc(&GetAudioRecordingDevices, lib, "SDL_GetAudioRecordingDevices")
-        purego.RegisterLibFunc(&GetAudioDeviceName, lib, "SDL_GetAudioDeviceName")
-        purego.RegisterLibFunc(&GetAudioDeviceFormat, lib, "SDL_GetAudioDeviceFormat")
-        purego.RegisterLibFunc(&GetAudioDeviceChannelMap, lib, "SDL_GetAudioDeviceChannelMap")
-        purego.RegisterLibFunc(&OpenAudioDevice, lib, "SDL_OpenAudioDevice")
-        purego.RegisterLibFunc(&IsAudioDevicePhysical, lib, "SDL_IsAudioDevicePhysical")
-        purego.RegisterLibFunc(&IsAudioDevicePlayback, lib, "SDL_IsAudioDevicePlayback")
-        purego.RegisterLibFunc(&PauseAudioDevice, lib, "SDL_PauseAudioDevice")
-        purego.RegisterLibFunc(&ResumeAudioDevice, lib, "SDL_ResumeAudioDevice")
-        purego.RegisterLibFunc(&AudioDevicePaused, lib, "SDL_AudioDevicePaused")
-        purego.RegisterLibFunc(&GetAudioDeviceGain, lib, "SDL_GetAudioDeviceGain")
-        purego.RegisterLibFunc(&SetAudioDeviceGain, lib, "SDL_SetAudioDeviceGain")
-        purego.RegisterLibFunc(&CloseAudioDevice, lib, "SDL_CloseAudioDevice")
-        purego.RegisterLibFunc(&BindAudioStreams, lib, "SDL_BindAudioStreams")
-        purego.RegisterLibFunc(&BindAudioStream, lib, "SDL_BindAudioStream")
-        purego.RegisterLibFunc(&UnbindAudioStreams, lib, "SDL_UnbindAudioStreams")
-        purego.RegisterLibFunc(&UnbindAudioStream, lib, "SDL_UnbindAudioStream")
-        purego.RegisterLibFunc(&GetAudioStreamDevice, lib, "SDL_GetAudioStreamDevice")
-        purego.RegisterLibFunc(&CreateAudioStream, lib, "SDL_CreateAudioStream")
-        purego.RegisterLibFunc(&GetAudioStreamProperties, lib, "SDL_GetAudioStreamProperties")
-        purego.RegisterLibFunc(&GetAudioStreamFormat, lib, "SDL_GetAudioStreamFormat")
-        purego.RegisterLibFunc(&SetAudioStreamFormat, lib, "SDL_SetAudioStreamFormat")
-        purego.RegisterLibFunc(&GetAudioStreamFrequencyRatio, lib, "SDL_GetAudioStreamFrequencyRatio")
-        purego.RegisterLibFunc(&SetAudioStreamFrequencyRatio, lib, "SDL_SetAudioStreamFrequencyRatio")
-        purego.RegisterLibFunc(&GetAudioStreamGain, lib, "SDL_GetAudioStreamGain")
-        purego.RegisterLibFunc(&SetAudioStreamGain, lib, "SDL_SetAudioStreamGain")
-        purego.RegisterLibFunc(&GetAudioStreamInputChannelMap, lib, "SDL_GetAudioStreamInputChannelMap")
-        purego.RegisterLibFunc(&GetAudioStreamOutputChannelMap, lib, "SDL_GetAudioStreamOutputChannelMap")
-        purego.RegisterLibFunc(&SetAudioStreamInputChannelMap, lib, "SDL_SetAudioStreamInputChannelMap")
-        purego.RegisterLibFunc(&SetAudioStreamOutputChannelMap, lib, "SDL_SetAudioStreamOutputChannelMap")
-        purego.RegisterLibFunc(&PutAudioStreamData, lib, "SDL_PutAudioStreamData")
-        purego.RegisterLibFunc(&PutAudioStreamPlanarData, lib, "SDL_PutAudioStreamPlanarData")
-        purego.RegisterLibFunc(&GetAudioStreamData, lib, "SDL_GetAudioStreamData")
-        purego.RegisterLibFunc(&GetAudioStreamAvailable, lib, "SDL_GetAudioStreamAvailable")
-        purego.RegisterLibFunc(&GetAudioStreamQueued, lib, "SDL_GetAudioStreamQueued")
-        purego.RegisterLibFunc(&FlushAudioStream, lib, "SDL_FlushAudioStream")
-        purego.RegisterLibFunc(&ClearAudioStream, lib, "SDL_ClearAudioStream")
-        purego.RegisterLibFunc(&PauseAudioStreamDevice, lib, "SDL_PauseAudioStreamDevice")
-        purego.RegisterLibFunc(&ResumeAudioStreamDevice, lib, "SDL_ResumeAudioStreamDevice")
-        purego.RegisterLibFunc(&AudioStreamDevicePaused, lib, "SDL_AudioStreamDevicePaused")
-        purego.RegisterLibFunc(&LockAudioStream, lib, "SDL_LockAudioStream")
-        purego.RegisterLibFunc(&UnlockAudioStream, lib, "SDL_UnlockAudioStream")
-        purego.RegisterLibFunc(&SetAudioStreamGetCallback, lib, "SDL_SetAudioStreamGetCallback")
-        purego.RegisterLibFunc(&SetAudioStreamPutCallback, lib, "SDL_SetAudioStreamPutCallback")
-        purego.RegisterLibFunc(&DestroyAudioStream, lib, "SDL_DestroyAudioStream")
-        purego.RegisterLibFunc(&OpenAudioDeviceStream, lib, "SDL_OpenAudioDeviceStream")
-        purego.RegisterLibFunc(&SetAudioIterationCallbacks, lib, "SDL_SetAudioIterationCallbacks")
-        purego.RegisterLibFunc(&SetAudioPostmixCallback, lib, "SDL_SetAudioPostmixCallback")
-        purego.RegisterLibFunc(&LoadWAV_IO, lib, "SDL_LoadWAV_IO")
-        purego.RegisterLibFunc(&LoadWAV, lib, "SDL_LoadWAV")
-        purego.RegisterLibFunc(&MixAudio, lib, "SDL_MixAudio")
-        purego.RegisterLibFunc(&ConvertAudioSamples, lib, "SDL_ConvertAudioSamples")
-        purego.RegisterLibFunc(&GetAudioFormatName, lib, "SDL_GetAudioFormatName")
-        purego.RegisterLibFunc(&GetSilenceValueForFormat, lib, "SDL_GetSilenceValueForFormat")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &GetNumAudioDrivers, "SDL_GetNumAudioDrivers" },
+            { &GetAudioDriver, "SDL_GetAudioDriver" },
+            { &GetCurrentAudioDriver, "SDL_GetCurrentAudioDriver" },
+            { &GetAudioPlaybackDevices, "SDL_GetAudioPlaybackDevices" },
+            { &GetAudioRecordingDevices, "SDL_GetAudioRecordingDevices" },
+            { &GetAudioDeviceName, "SDL_GetAudioDeviceName" },
+            { &GetAudioDeviceFormat, "SDL_GetAudioDeviceFormat" },
+            { &GetAudioDeviceChannelMap, "SDL_GetAudioDeviceChannelMap" },
+            { &OpenAudioDevice, "SDL_OpenAudioDevice" },
+            { &IsAudioDevicePhysical, "SDL_IsAudioDevicePhysical" },
+            { &IsAudioDevicePlayback, "SDL_IsAudioDevicePlayback" },
+            { &PauseAudioDevice, "SDL_PauseAudioDevice" },
+            { &ResumeAudioDevice, "SDL_ResumeAudioDevice" },
+            { &AudioDevicePaused, "SDL_AudioDevicePaused" },
+            { &GetAudioDeviceGain, "SDL_GetAudioDeviceGain" },
+            { &SetAudioDeviceGain, "SDL_SetAudioDeviceGain" },
+            { &CloseAudioDevice, "SDL_CloseAudioDevice" },
+            { &BindAudioStreams, "SDL_BindAudioStreams" },
+            { &BindAudioStream, "SDL_BindAudioStream" },
+            { &UnbindAudioStreams, "SDL_UnbindAudioStreams" },
+            { &UnbindAudioStream, "SDL_UnbindAudioStream" },
+            { &GetAudioStreamDevice, "SDL_GetAudioStreamDevice" },
+            { &CreateAudioStream, "SDL_CreateAudioStream" },
+            { &GetAudioStreamProperties, "SDL_GetAudioStreamProperties" },
+            { &GetAudioStreamFormat, "SDL_GetAudioStreamFormat" },
+            { &SetAudioStreamFormat, "SDL_SetAudioStreamFormat" },
+            { &GetAudioStreamFrequencyRatio, "SDL_GetAudioStreamFrequencyRatio" },
+            { &SetAudioStreamFrequencyRatio, "SDL_SetAudioStreamFrequencyRatio" },
+            { &GetAudioStreamGain, "SDL_GetAudioStreamGain" },
+            { &SetAudioStreamGain, "SDL_SetAudioStreamGain" },
+            { &GetAudioStreamInputChannelMap, "SDL_GetAudioStreamInputChannelMap" },
+            { &GetAudioStreamOutputChannelMap, "SDL_GetAudioStreamOutputChannelMap" },
+            { &SetAudioStreamInputChannelMap, "SDL_SetAudioStreamInputChannelMap" },
+            { &SetAudioStreamOutputChannelMap, "SDL_SetAudioStreamOutputChannelMap" },
+            { &PutAudioStreamData, "SDL_PutAudioStreamData" },
+            { &PutAudioStreamPlanarData, "SDL_PutAudioStreamPlanarData" },
+            { &GetAudioStreamData, "SDL_GetAudioStreamData" },
+            { &GetAudioStreamAvailable, "SDL_GetAudioStreamAvailable" },
+            { &GetAudioStreamQueued, "SDL_GetAudioStreamQueued" },
+            { &FlushAudioStream, "SDL_FlushAudioStream" },
+            { &ClearAudioStream, "SDL_ClearAudioStream" },
+            { &PauseAudioStreamDevice, "SDL_PauseAudioStreamDevice" },
+            { &ResumeAudioStreamDevice, "SDL_ResumeAudioStreamDevice" },
+            { &AudioStreamDevicePaused, "SDL_AudioStreamDevicePaused" },
+            { &LockAudioStream, "SDL_LockAudioStream" },
+            { &UnlockAudioStream, "SDL_UnlockAudioStream" },
+            { &SetAudioStreamGetCallback, "SDL_SetAudioStreamGetCallback" },
+            { &SetAudioStreamPutCallback, "SDL_SetAudioStreamPutCallback" },
+            { &DestroyAudioStream, "SDL_DestroyAudioStream" },
+            { &OpenAudioDeviceStream, "SDL_OpenAudioDeviceStream" },
+            { &SetAudioIterationCallbacks, "SDL_SetAudioIterationCallbacks" },
+            { &SetAudioPostmixCallback, "SDL_SetAudioPostmixCallback" },
+            { &LoadWAV_IO, "SDL_LoadWAV_IO" },
+            { &LoadWAV, "SDL_LoadWAV" },
+            { &MixAudio, "SDL_MixAudio" },
+            { &ConvertAudioSamples, "SDL_ConvertAudioSamples" },
+            { &GetAudioFormatName, "SDL_GetAudioFormatName" },
+            { &GetSilenceValueForFormat, "SDL_GetSilenceValueForFormat" },
+        }
     })
 }

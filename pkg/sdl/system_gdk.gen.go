@@ -1,12 +1,11 @@
 //go:build GDK
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&GetGDKTaskQueue, lib, "SDL_GetGDKTaskQueue")
-        purego.RegisterLibFunc(&GetGDKDefaultUser, lib, "SDL_GetGDKDefaultUser")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &GetGDKTaskQueue, "SDL_GetGDKTaskQueue" },
+            { &GetGDKDefaultUser, "SDL_GetGDKDefaultUser" },
+        }
     })
 }

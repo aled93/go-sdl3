@@ -1,29 +1,28 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&PumpEvents, lib, "SDL_PumpEvents")
-        purego.RegisterLibFunc(&PeepEvents, lib, "SDL_PeepEvents")
-        purego.RegisterLibFunc(&HasEvent, lib, "SDL_HasEvent")
-        purego.RegisterLibFunc(&HasEvents, lib, "SDL_HasEvents")
-        purego.RegisterLibFunc(&FlushEvent, lib, "SDL_FlushEvent")
-        purego.RegisterLibFunc(&FlushEvents, lib, "SDL_FlushEvents")
-        purego.RegisterLibFunc(&PollEvent, lib, "SDL_PollEvent")
-        purego.RegisterLibFunc(&WaitEvent, lib, "SDL_WaitEvent")
-        purego.RegisterLibFunc(&WaitEventTimeout, lib, "SDL_WaitEventTimeout")
-        purego.RegisterLibFunc(&PushEvent, lib, "SDL_PushEvent")
-        purego.RegisterLibFunc(&SetEventFilter, lib, "SDL_SetEventFilter")
-        purego.RegisterLibFunc(&GetEventFilter, lib, "SDL_GetEventFilter")
-        purego.RegisterLibFunc(&AddEventWatch, lib, "SDL_AddEventWatch")
-        purego.RegisterLibFunc(&RemoveEventWatch, lib, "SDL_RemoveEventWatch")
-        purego.RegisterLibFunc(&FilterEvents, lib, "SDL_FilterEvents")
-        purego.RegisterLibFunc(&SetEventEnabled, lib, "SDL_SetEventEnabled")
-        purego.RegisterLibFunc(&EventEnabled, lib, "SDL_EventEnabled")
-        purego.RegisterLibFunc(&RegisterEvents, lib, "SDL_RegisterEvents")
-        purego.RegisterLibFunc(&GetWindowFromEvent, lib, "SDL_GetWindowFromEvent")
-        purego.RegisterLibFunc(&GetEventDescription, lib, "SDL_GetEventDescription")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &PumpEvents, "SDL_PumpEvents" },
+            { &PeepEvents, "SDL_PeepEvents" },
+            { &HasEvent, "SDL_HasEvent" },
+            { &HasEvents, "SDL_HasEvents" },
+            { &FlushEvent, "SDL_FlushEvent" },
+            { &FlushEvents, "SDL_FlushEvents" },
+            { &PollEvent, "SDL_PollEvent" },
+            { &WaitEvent, "SDL_WaitEvent" },
+            { &WaitEventTimeout, "SDL_WaitEventTimeout" },
+            { &PushEvent, "SDL_PushEvent" },
+            { &SetEventFilter, "SDL_SetEventFilter" },
+            { &GetEventFilter, "SDL_GetEventFilter" },
+            { &AddEventWatch, "SDL_AddEventWatch" },
+            { &RemoveEventWatch, "SDL_RemoveEventWatch" },
+            { &FilterEvents, "SDL_FilterEvents" },
+            { &SetEventEnabled, "SDL_SetEventEnabled" },
+            { &EventEnabled, "SDL_EventEnabled" },
+            { &RegisterEvents, "SDL_RegisterEvents" },
+            { &GetWindowFromEvent, "SDL_GetWindowFromEvent" },
+            { &GetEventDescription, "SDL_GetEventDescription" },
+        }
     })
 }

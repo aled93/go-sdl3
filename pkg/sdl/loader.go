@@ -28,14 +28,26 @@ func LoadLibraryFromFile(libpath string) error {
 	}
 
 	for _, ldr := range loaderFuncs {
-		ldr(lib)
+		externs := ldr()
+		for _, extern := range externs {
+			lib.BindProc(extern.Func, extern.Name)
+		}
 	}
 
 	return nil
 }
 
-var loaderFuncs []func(uintptr)
+type externFunc struct {
+	Func any
+	Name string
+}
 
-func registerLoaderFunc(f func(uintptr)) {
+var loaderFuncs []func() []externFunc
+
+func registerLoaderFunc(f func() []externFunc) {
 	loaderFuncs = append(loaderFuncs, f)
+}
+
+type library interface {
+	BindProc(fn any, name string)
 }

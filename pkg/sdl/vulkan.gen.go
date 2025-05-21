@@ -1,16 +1,15 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&Vulkan_LoadLibrary, lib, "SDL_Vulkan_LoadLibrary")
-        purego.RegisterLibFunc(&Vulkan_GetVkGetInstanceProcAddr, lib, "SDL_Vulkan_GetVkGetInstanceProcAddr")
-        purego.RegisterLibFunc(&Vulkan_UnloadLibrary, lib, "SDL_Vulkan_UnloadLibrary")
-        purego.RegisterLibFunc(&Vulkan_GetInstanceExtensions, lib, "SDL_Vulkan_GetInstanceExtensions")
-        purego.RegisterLibFunc(&Vulkan_CreateSurface, lib, "SDL_Vulkan_CreateSurface")
-        purego.RegisterLibFunc(&Vulkan_DestroySurface, lib, "SDL_Vulkan_DestroySurface")
-        purego.RegisterLibFunc(&Vulkan_GetPresentationSupport, lib, "SDL_Vulkan_GetPresentationSupport")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &Vulkan_LoadLibrary, "SDL_Vulkan_LoadLibrary" },
+            { &Vulkan_GetVkGetInstanceProcAddr, "SDL_Vulkan_GetVkGetInstanceProcAddr" },
+            { &Vulkan_UnloadLibrary, "SDL_Vulkan_UnloadLibrary" },
+            { &Vulkan_GetInstanceExtensions, "SDL_Vulkan_GetInstanceExtensions" },
+            { &Vulkan_CreateSurface, "SDL_Vulkan_CreateSurface" },
+            { &Vulkan_DestroySurface, "SDL_Vulkan_DestroySurface" },
+            { &Vulkan_GetPresentationSupport, "SDL_Vulkan_GetPresentationSupport" },
+        }
     })
 }

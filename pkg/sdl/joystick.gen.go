@@ -1,67 +1,66 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&LockJoysticks, lib, "SDL_LockJoysticks")
-        purego.RegisterLibFunc(&UnlockJoysticks, lib, "SDL_UnlockJoysticks")
-        purego.RegisterLibFunc(&HasJoystick, lib, "SDL_HasJoystick")
-        purego.RegisterLibFunc(&GetJoysticks, lib, "SDL_GetJoysticks")
-        purego.RegisterLibFunc(&GetJoystickNameForID, lib, "SDL_GetJoystickNameForID")
-        purego.RegisterLibFunc(&GetJoystickPathForID, lib, "SDL_GetJoystickPathForID")
-        purego.RegisterLibFunc(&GetJoystickPlayerIndexForID, lib, "SDL_GetJoystickPlayerIndexForID")
-        purego.RegisterLibFunc(&GetJoystickGUIDForID, lib, "SDL_GetJoystickGUIDForID")
-        purego.RegisterLibFunc(&GetJoystickVendorForID, lib, "SDL_GetJoystickVendorForID")
-        purego.RegisterLibFunc(&GetJoystickProductForID, lib, "SDL_GetJoystickProductForID")
-        purego.RegisterLibFunc(&GetJoystickProductVersionForID, lib, "SDL_GetJoystickProductVersionForID")
-        purego.RegisterLibFunc(&GetJoystickTypeForID, lib, "SDL_GetJoystickTypeForID")
-        purego.RegisterLibFunc(&OpenJoystick, lib, "SDL_OpenJoystick")
-        purego.RegisterLibFunc(&GetJoystickFromID, lib, "SDL_GetJoystickFromID")
-        purego.RegisterLibFunc(&GetJoystickFromPlayerIndex, lib, "SDL_GetJoystickFromPlayerIndex")
-        purego.RegisterLibFunc(&AttachVirtualJoystick, lib, "SDL_AttachVirtualJoystick")
-        purego.RegisterLibFunc(&DetachVirtualJoystick, lib, "SDL_DetachVirtualJoystick")
-        purego.RegisterLibFunc(&IsJoystickVirtual, lib, "SDL_IsJoystickVirtual")
-        purego.RegisterLibFunc(&SetJoystickVirtualAxis, lib, "SDL_SetJoystickVirtualAxis")
-        purego.RegisterLibFunc(&SetJoystickVirtualBall, lib, "SDL_SetJoystickVirtualBall")
-        purego.RegisterLibFunc(&SetJoystickVirtualButton, lib, "SDL_SetJoystickVirtualButton")
-        purego.RegisterLibFunc(&SetJoystickVirtualHat, lib, "SDL_SetJoystickVirtualHat")
-        purego.RegisterLibFunc(&SetJoystickVirtualTouchpad, lib, "SDL_SetJoystickVirtualTouchpad")
-        purego.RegisterLibFunc(&SendJoystickVirtualSensorData, lib, "SDL_SendJoystickVirtualSensorData")
-        purego.RegisterLibFunc(&GetJoystickProperties, lib, "SDL_GetJoystickProperties")
-        purego.RegisterLibFunc(&GetJoystickName, lib, "SDL_GetJoystickName")
-        purego.RegisterLibFunc(&GetJoystickPath, lib, "SDL_GetJoystickPath")
-        purego.RegisterLibFunc(&GetJoystickPlayerIndex, lib, "SDL_GetJoystickPlayerIndex")
-        purego.RegisterLibFunc(&SetJoystickPlayerIndex, lib, "SDL_SetJoystickPlayerIndex")
-        purego.RegisterLibFunc(&GetJoystickGUID, lib, "SDL_GetJoystickGUID")
-        purego.RegisterLibFunc(&GetJoystickVendor, lib, "SDL_GetJoystickVendor")
-        purego.RegisterLibFunc(&GetJoystickProduct, lib, "SDL_GetJoystickProduct")
-        purego.RegisterLibFunc(&GetJoystickProductVersion, lib, "SDL_GetJoystickProductVersion")
-        purego.RegisterLibFunc(&GetJoystickFirmwareVersion, lib, "SDL_GetJoystickFirmwareVersion")
-        purego.RegisterLibFunc(&GetJoystickSerial, lib, "SDL_GetJoystickSerial")
-        purego.RegisterLibFunc(&GetJoystickType, lib, "SDL_GetJoystickType")
-        purego.RegisterLibFunc(&GetJoystickGUIDInfo, lib, "SDL_GetJoystickGUIDInfo")
-        purego.RegisterLibFunc(&JoystickConnected, lib, "SDL_JoystickConnected")
-        purego.RegisterLibFunc(&GetJoystickID, lib, "SDL_GetJoystickID")
-        purego.RegisterLibFunc(&GetNumJoystickAxes, lib, "SDL_GetNumJoystickAxes")
-        purego.RegisterLibFunc(&GetNumJoystickBalls, lib, "SDL_GetNumJoystickBalls")
-        purego.RegisterLibFunc(&GetNumJoystickHats, lib, "SDL_GetNumJoystickHats")
-        purego.RegisterLibFunc(&GetNumJoystickButtons, lib, "SDL_GetNumJoystickButtons")
-        purego.RegisterLibFunc(&SetJoystickEventsEnabled, lib, "SDL_SetJoystickEventsEnabled")
-        purego.RegisterLibFunc(&JoystickEventsEnabled, lib, "SDL_JoystickEventsEnabled")
-        purego.RegisterLibFunc(&UpdateJoysticks, lib, "SDL_UpdateJoysticks")
-        purego.RegisterLibFunc(&GetJoystickAxis, lib, "SDL_GetJoystickAxis")
-        purego.RegisterLibFunc(&GetJoystickAxisInitialState, lib, "SDL_GetJoystickAxisInitialState")
-        purego.RegisterLibFunc(&GetJoystickBall, lib, "SDL_GetJoystickBall")
-        purego.RegisterLibFunc(&GetJoystickHat, lib, "SDL_GetJoystickHat")
-        purego.RegisterLibFunc(&GetJoystickButton, lib, "SDL_GetJoystickButton")
-        purego.RegisterLibFunc(&RumbleJoystick, lib, "SDL_RumbleJoystick")
-        purego.RegisterLibFunc(&RumbleJoystickTriggers, lib, "SDL_RumbleJoystickTriggers")
-        purego.RegisterLibFunc(&SetJoystickLED, lib, "SDL_SetJoystickLED")
-        purego.RegisterLibFunc(&SendJoystickEffect, lib, "SDL_SendJoystickEffect")
-        purego.RegisterLibFunc(&CloseJoystick, lib, "SDL_CloseJoystick")
-        purego.RegisterLibFunc(&GetJoystickConnectionState, lib, "SDL_GetJoystickConnectionState")
-        purego.RegisterLibFunc(&GetJoystickPowerInfo, lib, "SDL_GetJoystickPowerInfo")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &LockJoysticks, "SDL_LockJoysticks" },
+            { &UnlockJoysticks, "SDL_UnlockJoysticks" },
+            { &HasJoystick, "SDL_HasJoystick" },
+            { &GetJoysticks, "SDL_GetJoysticks" },
+            { &GetJoystickNameForID, "SDL_GetJoystickNameForID" },
+            { &GetJoystickPathForID, "SDL_GetJoystickPathForID" },
+            { &GetJoystickPlayerIndexForID, "SDL_GetJoystickPlayerIndexForID" },
+            { &GetJoystickGUIDForID, "SDL_GetJoystickGUIDForID" },
+            { &GetJoystickVendorForID, "SDL_GetJoystickVendorForID" },
+            { &GetJoystickProductForID, "SDL_GetJoystickProductForID" },
+            { &GetJoystickProductVersionForID, "SDL_GetJoystickProductVersionForID" },
+            { &GetJoystickTypeForID, "SDL_GetJoystickTypeForID" },
+            { &OpenJoystick, "SDL_OpenJoystick" },
+            { &GetJoystickFromID, "SDL_GetJoystickFromID" },
+            { &GetJoystickFromPlayerIndex, "SDL_GetJoystickFromPlayerIndex" },
+            { &AttachVirtualJoystick, "SDL_AttachVirtualJoystick" },
+            { &DetachVirtualJoystick, "SDL_DetachVirtualJoystick" },
+            { &IsJoystickVirtual, "SDL_IsJoystickVirtual" },
+            { &SetJoystickVirtualAxis, "SDL_SetJoystickVirtualAxis" },
+            { &SetJoystickVirtualBall, "SDL_SetJoystickVirtualBall" },
+            { &SetJoystickVirtualButton, "SDL_SetJoystickVirtualButton" },
+            { &SetJoystickVirtualHat, "SDL_SetJoystickVirtualHat" },
+            { &SetJoystickVirtualTouchpad, "SDL_SetJoystickVirtualTouchpad" },
+            { &SendJoystickVirtualSensorData, "SDL_SendJoystickVirtualSensorData" },
+            { &GetJoystickProperties, "SDL_GetJoystickProperties" },
+            { &GetJoystickName, "SDL_GetJoystickName" },
+            { &GetJoystickPath, "SDL_GetJoystickPath" },
+            { &GetJoystickPlayerIndex, "SDL_GetJoystickPlayerIndex" },
+            { &SetJoystickPlayerIndex, "SDL_SetJoystickPlayerIndex" },
+            { &GetJoystickGUID, "SDL_GetJoystickGUID" },
+            { &GetJoystickVendor, "SDL_GetJoystickVendor" },
+            { &GetJoystickProduct, "SDL_GetJoystickProduct" },
+            { &GetJoystickProductVersion, "SDL_GetJoystickProductVersion" },
+            { &GetJoystickFirmwareVersion, "SDL_GetJoystickFirmwareVersion" },
+            { &GetJoystickSerial, "SDL_GetJoystickSerial" },
+            { &GetJoystickType, "SDL_GetJoystickType" },
+            { &GetJoystickGUIDInfo, "SDL_GetJoystickGUIDInfo" },
+            { &JoystickConnected, "SDL_JoystickConnected" },
+            { &GetJoystickID, "SDL_GetJoystickID" },
+            { &GetNumJoystickAxes, "SDL_GetNumJoystickAxes" },
+            { &GetNumJoystickBalls, "SDL_GetNumJoystickBalls" },
+            { &GetNumJoystickHats, "SDL_GetNumJoystickHats" },
+            { &GetNumJoystickButtons, "SDL_GetNumJoystickButtons" },
+            { &SetJoystickEventsEnabled, "SDL_SetJoystickEventsEnabled" },
+            { &JoystickEventsEnabled, "SDL_JoystickEventsEnabled" },
+            { &UpdateJoysticks, "SDL_UpdateJoysticks" },
+            { &GetJoystickAxis, "SDL_GetJoystickAxis" },
+            { &GetJoystickAxisInitialState, "SDL_GetJoystickAxisInitialState" },
+            { &GetJoystickBall, "SDL_GetJoystickBall" },
+            { &GetJoystickHat, "SDL_GetJoystickHat" },
+            { &GetJoystickButton, "SDL_GetJoystickButton" },
+            { &RumbleJoystick, "SDL_RumbleJoystick" },
+            { &RumbleJoystickTriggers, "SDL_RumbleJoystickTriggers" },
+            { &SetJoystickLED, "SDL_SetJoystickLED" },
+            { &SendJoystickEffect, "SDL_SendJoystickEffect" },
+            { &CloseJoystick, "SDL_CloseJoystick" },
+            { &GetJoystickConnectionState, "SDL_GetJoystickConnectionState" },
+            { &GetJoystickPowerInfo, "SDL_GetJoystickPowerInfo" },
+        }
     })
 }

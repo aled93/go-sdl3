@@ -3,12 +3,11 @@
 {{end -}}
 package {{.Pkg}}
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        {{range .Sdl3Externs -}}
-        purego.RegisterLibFunc(&{{.FuncPath}}, lib, "{{.FuncOrigName}}")
-        {{end}}
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+        {{range .Sdl3Externs}}    { &{{.FuncPath}}, "{{.FuncOrigName}}" },
+        {{end -}}
+        }
     })
 }

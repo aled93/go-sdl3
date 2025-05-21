@@ -1,82 +1,81 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&AddGamepadMapping, lib, "SDL_AddGamepadMapping")
-        purego.RegisterLibFunc(&AddGamepadMappingsFromIO, lib, "SDL_AddGamepadMappingsFromIO")
-        purego.RegisterLibFunc(&AddGamepadMappingsFromFile, lib, "SDL_AddGamepadMappingsFromFile")
-        purego.RegisterLibFunc(&ReloadGamepadMappings, lib, "SDL_ReloadGamepadMappings")
-        purego.RegisterLibFunc(&GetGamepadMappings, lib, "SDL_GetGamepadMappings")
-        purego.RegisterLibFunc(&GetGamepadMappingForGUID, lib, "SDL_GetGamepadMappingForGUID")
-        purego.RegisterLibFunc(&GetGamepadMapping, lib, "SDL_GetGamepadMapping")
-        purego.RegisterLibFunc(&SetGamepadMapping, lib, "SDL_SetGamepadMapping")
-        purego.RegisterLibFunc(&HasGamepad, lib, "SDL_HasGamepad")
-        purego.RegisterLibFunc(&GetGamepads, lib, "SDL_GetGamepads")
-        purego.RegisterLibFunc(&IsGamepad, lib, "SDL_IsGamepad")
-        purego.RegisterLibFunc(&GetGamepadNameForID, lib, "SDL_GetGamepadNameForID")
-        purego.RegisterLibFunc(&GetGamepadPathForID, lib, "SDL_GetGamepadPathForID")
-        purego.RegisterLibFunc(&GetGamepadPlayerIndexForID, lib, "SDL_GetGamepadPlayerIndexForID")
-        purego.RegisterLibFunc(&GetGamepadGUIDForID, lib, "SDL_GetGamepadGUIDForID")
-        purego.RegisterLibFunc(&GetGamepadVendorForID, lib, "SDL_GetGamepadVendorForID")
-        purego.RegisterLibFunc(&GetGamepadProductForID, lib, "SDL_GetGamepadProductForID")
-        purego.RegisterLibFunc(&GetGamepadProductVersionForID, lib, "SDL_GetGamepadProductVersionForID")
-        purego.RegisterLibFunc(&GetGamepadTypeForID, lib, "SDL_GetGamepadTypeForID")
-        purego.RegisterLibFunc(&GetRealGamepadTypeForID, lib, "SDL_GetRealGamepadTypeForID")
-        purego.RegisterLibFunc(&GetGamepadMappingForID, lib, "SDL_GetGamepadMappingForID")
-        purego.RegisterLibFunc(&OpenGamepad, lib, "SDL_OpenGamepad")
-        purego.RegisterLibFunc(&GetGamepadFromID, lib, "SDL_GetGamepadFromID")
-        purego.RegisterLibFunc(&GetGamepadFromPlayerIndex, lib, "SDL_GetGamepadFromPlayerIndex")
-        purego.RegisterLibFunc(&GetGamepadProperties, lib, "SDL_GetGamepadProperties")
-        purego.RegisterLibFunc(&GetGamepadID, lib, "SDL_GetGamepadID")
-        purego.RegisterLibFunc(&GetGamepadName, lib, "SDL_GetGamepadName")
-        purego.RegisterLibFunc(&GetGamepadPath, lib, "SDL_GetGamepadPath")
-        purego.RegisterLibFunc(&GetGamepadType, lib, "SDL_GetGamepadType")
-        purego.RegisterLibFunc(&GetRealGamepadType, lib, "SDL_GetRealGamepadType")
-        purego.RegisterLibFunc(&GetGamepadPlayerIndex, lib, "SDL_GetGamepadPlayerIndex")
-        purego.RegisterLibFunc(&SetGamepadPlayerIndex, lib, "SDL_SetGamepadPlayerIndex")
-        purego.RegisterLibFunc(&GetGamepadVendor, lib, "SDL_GetGamepadVendor")
-        purego.RegisterLibFunc(&GetGamepadProduct, lib, "SDL_GetGamepadProduct")
-        purego.RegisterLibFunc(&GetGamepadProductVersion, lib, "SDL_GetGamepadProductVersion")
-        purego.RegisterLibFunc(&GetGamepadFirmwareVersion, lib, "SDL_GetGamepadFirmwareVersion")
-        purego.RegisterLibFunc(&GetGamepadSerial, lib, "SDL_GetGamepadSerial")
-        purego.RegisterLibFunc(&GetGamepadSteamHandle, lib, "SDL_GetGamepadSteamHandle")
-        purego.RegisterLibFunc(&GetGamepadConnectionState, lib, "SDL_GetGamepadConnectionState")
-        purego.RegisterLibFunc(&GetGamepadPowerInfo, lib, "SDL_GetGamepadPowerInfo")
-        purego.RegisterLibFunc(&GamepadConnected, lib, "SDL_GamepadConnected")
-        purego.RegisterLibFunc(&GetGamepadJoystick, lib, "SDL_GetGamepadJoystick")
-        purego.RegisterLibFunc(&SetGamepadEventsEnabled, lib, "SDL_SetGamepadEventsEnabled")
-        purego.RegisterLibFunc(&GamepadEventsEnabled, lib, "SDL_GamepadEventsEnabled")
-        purego.RegisterLibFunc(&GetGamepadBindings, lib, "SDL_GetGamepadBindings")
-        purego.RegisterLibFunc(&UpdateGamepads, lib, "SDL_UpdateGamepads")
-        purego.RegisterLibFunc(&GetGamepadTypeFromString, lib, "SDL_GetGamepadTypeFromString")
-        purego.RegisterLibFunc(&GetGamepadStringForType, lib, "SDL_GetGamepadStringForType")
-        purego.RegisterLibFunc(&GetGamepadAxisFromString, lib, "SDL_GetGamepadAxisFromString")
-        purego.RegisterLibFunc(&GetGamepadStringForAxis, lib, "SDL_GetGamepadStringForAxis")
-        purego.RegisterLibFunc(&GamepadHasAxis, lib, "SDL_GamepadHasAxis")
-        purego.RegisterLibFunc(&GetGamepadAxis, lib, "SDL_GetGamepadAxis")
-        purego.RegisterLibFunc(&GetGamepadButtonFromString, lib, "SDL_GetGamepadButtonFromString")
-        purego.RegisterLibFunc(&GetGamepadStringForButton, lib, "SDL_GetGamepadStringForButton")
-        purego.RegisterLibFunc(&GamepadHasButton, lib, "SDL_GamepadHasButton")
-        purego.RegisterLibFunc(&GetGamepadButton, lib, "SDL_GetGamepadButton")
-        purego.RegisterLibFunc(&GetGamepadButtonLabelForType, lib, "SDL_GetGamepadButtonLabelForType")
-        purego.RegisterLibFunc(&GetGamepadButtonLabel, lib, "SDL_GetGamepadButtonLabel")
-        purego.RegisterLibFunc(&GetNumGamepadTouchpads, lib, "SDL_GetNumGamepadTouchpads")
-        purego.RegisterLibFunc(&GetNumGamepadTouchpadFingers, lib, "SDL_GetNumGamepadTouchpadFingers")
-        purego.RegisterLibFunc(&GetGamepadTouchpadFinger, lib, "SDL_GetGamepadTouchpadFinger")
-        purego.RegisterLibFunc(&GamepadHasSensor, lib, "SDL_GamepadHasSensor")
-        purego.RegisterLibFunc(&SetGamepadSensorEnabled, lib, "SDL_SetGamepadSensorEnabled")
-        purego.RegisterLibFunc(&GamepadSensorEnabled, lib, "SDL_GamepadSensorEnabled")
-        purego.RegisterLibFunc(&GetGamepadSensorDataRate, lib, "SDL_GetGamepadSensorDataRate")
-        purego.RegisterLibFunc(&GetGamepadSensorData, lib, "SDL_GetGamepadSensorData")
-        purego.RegisterLibFunc(&RumbleGamepad, lib, "SDL_RumbleGamepad")
-        purego.RegisterLibFunc(&RumbleGamepadTriggers, lib, "SDL_RumbleGamepadTriggers")
-        purego.RegisterLibFunc(&SetGamepadLED, lib, "SDL_SetGamepadLED")
-        purego.RegisterLibFunc(&SendGamepadEffect, lib, "SDL_SendGamepadEffect")
-        purego.RegisterLibFunc(&CloseGamepad, lib, "SDL_CloseGamepad")
-        purego.RegisterLibFunc(&GetGamepadAppleSFSymbolsNameForButton, lib, "SDL_GetGamepadAppleSFSymbolsNameForButton")
-        purego.RegisterLibFunc(&GetGamepadAppleSFSymbolsNameForAxis, lib, "SDL_GetGamepadAppleSFSymbolsNameForAxis")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &AddGamepadMapping, "SDL_AddGamepadMapping" },
+            { &AddGamepadMappingsFromIO, "SDL_AddGamepadMappingsFromIO" },
+            { &AddGamepadMappingsFromFile, "SDL_AddGamepadMappingsFromFile" },
+            { &ReloadGamepadMappings, "SDL_ReloadGamepadMappings" },
+            { &GetGamepadMappings, "SDL_GetGamepadMappings" },
+            { &GetGamepadMappingForGUID, "SDL_GetGamepadMappingForGUID" },
+            { &GetGamepadMapping, "SDL_GetGamepadMapping" },
+            { &SetGamepadMapping, "SDL_SetGamepadMapping" },
+            { &HasGamepad, "SDL_HasGamepad" },
+            { &GetGamepads, "SDL_GetGamepads" },
+            { &IsGamepad, "SDL_IsGamepad" },
+            { &GetGamepadNameForID, "SDL_GetGamepadNameForID" },
+            { &GetGamepadPathForID, "SDL_GetGamepadPathForID" },
+            { &GetGamepadPlayerIndexForID, "SDL_GetGamepadPlayerIndexForID" },
+            { &GetGamepadGUIDForID, "SDL_GetGamepadGUIDForID" },
+            { &GetGamepadVendorForID, "SDL_GetGamepadVendorForID" },
+            { &GetGamepadProductForID, "SDL_GetGamepadProductForID" },
+            { &GetGamepadProductVersionForID, "SDL_GetGamepadProductVersionForID" },
+            { &GetGamepadTypeForID, "SDL_GetGamepadTypeForID" },
+            { &GetRealGamepadTypeForID, "SDL_GetRealGamepadTypeForID" },
+            { &GetGamepadMappingForID, "SDL_GetGamepadMappingForID" },
+            { &OpenGamepad, "SDL_OpenGamepad" },
+            { &GetGamepadFromID, "SDL_GetGamepadFromID" },
+            { &GetGamepadFromPlayerIndex, "SDL_GetGamepadFromPlayerIndex" },
+            { &GetGamepadProperties, "SDL_GetGamepadProperties" },
+            { &GetGamepadID, "SDL_GetGamepadID" },
+            { &GetGamepadName, "SDL_GetGamepadName" },
+            { &GetGamepadPath, "SDL_GetGamepadPath" },
+            { &GetGamepadType, "SDL_GetGamepadType" },
+            { &GetRealGamepadType, "SDL_GetRealGamepadType" },
+            { &GetGamepadPlayerIndex, "SDL_GetGamepadPlayerIndex" },
+            { &SetGamepadPlayerIndex, "SDL_SetGamepadPlayerIndex" },
+            { &GetGamepadVendor, "SDL_GetGamepadVendor" },
+            { &GetGamepadProduct, "SDL_GetGamepadProduct" },
+            { &GetGamepadProductVersion, "SDL_GetGamepadProductVersion" },
+            { &GetGamepadFirmwareVersion, "SDL_GetGamepadFirmwareVersion" },
+            { &GetGamepadSerial, "SDL_GetGamepadSerial" },
+            { &GetGamepadSteamHandle, "SDL_GetGamepadSteamHandle" },
+            { &GetGamepadConnectionState, "SDL_GetGamepadConnectionState" },
+            { &GetGamepadPowerInfo, "SDL_GetGamepadPowerInfo" },
+            { &GamepadConnected, "SDL_GamepadConnected" },
+            { &GetGamepadJoystick, "SDL_GetGamepadJoystick" },
+            { &SetGamepadEventsEnabled, "SDL_SetGamepadEventsEnabled" },
+            { &GamepadEventsEnabled, "SDL_GamepadEventsEnabled" },
+            { &GetGamepadBindings, "SDL_GetGamepadBindings" },
+            { &UpdateGamepads, "SDL_UpdateGamepads" },
+            { &GetGamepadTypeFromString, "SDL_GetGamepadTypeFromString" },
+            { &GetGamepadStringForType, "SDL_GetGamepadStringForType" },
+            { &GetGamepadAxisFromString, "SDL_GetGamepadAxisFromString" },
+            { &GetGamepadStringForAxis, "SDL_GetGamepadStringForAxis" },
+            { &GamepadHasAxis, "SDL_GamepadHasAxis" },
+            { &GetGamepadAxis, "SDL_GetGamepadAxis" },
+            { &GetGamepadButtonFromString, "SDL_GetGamepadButtonFromString" },
+            { &GetGamepadStringForButton, "SDL_GetGamepadStringForButton" },
+            { &GamepadHasButton, "SDL_GamepadHasButton" },
+            { &GetGamepadButton, "SDL_GetGamepadButton" },
+            { &GetGamepadButtonLabelForType, "SDL_GetGamepadButtonLabelForType" },
+            { &GetGamepadButtonLabel, "SDL_GetGamepadButtonLabel" },
+            { &GetNumGamepadTouchpads, "SDL_GetNumGamepadTouchpads" },
+            { &GetNumGamepadTouchpadFingers, "SDL_GetNumGamepadTouchpadFingers" },
+            { &GetGamepadTouchpadFinger, "SDL_GetGamepadTouchpadFinger" },
+            { &GamepadHasSensor, "SDL_GamepadHasSensor" },
+            { &SetGamepadSensorEnabled, "SDL_SetGamepadSensorEnabled" },
+            { &GamepadSensorEnabled, "SDL_GamepadSensorEnabled" },
+            { &GetGamepadSensorDataRate, "SDL_GetGamepadSensorDataRate" },
+            { &GetGamepadSensorData, "SDL_GetGamepadSensorData" },
+            { &RumbleGamepad, "SDL_RumbleGamepad" },
+            { &RumbleGamepadTriggers, "SDL_RumbleGamepadTriggers" },
+            { &SetGamepadLED, "SDL_SetGamepadLED" },
+            { &SendGamepadEffect, "SDL_SendGamepadEffect" },
+            { &CloseGamepad, "SDL_CloseGamepad" },
+            { &GetGamepadAppleSFSymbolsNameForButton, "SDL_GetGamepadAppleSFSymbolsNameForButton" },
+            { &GetGamepadAppleSFSymbolsNameForAxis, "SDL_GetGamepadAppleSFSymbolsNameForAxis" },
+        }
     })
 }

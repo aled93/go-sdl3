@@ -1,55 +1,54 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&IOFromFile, lib, "SDL_IOFromFile")
-        purego.RegisterLibFunc(&IOFromMem, lib, "SDL_IOFromMem")
-        purego.RegisterLibFunc(&IOFromConstMem, lib, "SDL_IOFromConstMem")
-        purego.RegisterLibFunc(&IOFromDynamicMem, lib, "SDL_IOFromDynamicMem")
-        purego.RegisterLibFunc(&OpenIO, lib, "SDL_OpenIO")
-        purego.RegisterLibFunc(&CloseIO, lib, "SDL_CloseIO")
-        purego.RegisterLibFunc(&GetIOProperties, lib, "SDL_GetIOProperties")
-        purego.RegisterLibFunc(&GetIOStatus, lib, "SDL_GetIOStatus")
-        purego.RegisterLibFunc(&GetIOSize, lib, "SDL_GetIOSize")
-        purego.RegisterLibFunc(&SeekIO, lib, "SDL_SeekIO")
-        purego.RegisterLibFunc(&TellIO, lib, "SDL_TellIO")
-        purego.RegisterLibFunc(&ReadIO, lib, "SDL_ReadIO")
-        purego.RegisterLibFunc(&WriteIO, lib, "SDL_WriteIO")
-        purego.RegisterLibFunc(&FlushIO, lib, "SDL_FlushIO")
-        purego.RegisterLibFunc(&LoadFile_IO, lib, "SDL_LoadFile_IO")
-        purego.RegisterLibFunc(&LoadFile, lib, "SDL_LoadFile")
-        purego.RegisterLibFunc(&SaveFile_IO, lib, "SDL_SaveFile_IO")
-        purego.RegisterLibFunc(&SaveFile, lib, "SDL_SaveFile")
-        purego.RegisterLibFunc(&ReadU8, lib, "SDL_ReadU8")
-        purego.RegisterLibFunc(&ReadS8, lib, "SDL_ReadS8")
-        purego.RegisterLibFunc(&ReadU16LE, lib, "SDL_ReadU16LE")
-        purego.RegisterLibFunc(&ReadS16LE, lib, "SDL_ReadS16LE")
-        purego.RegisterLibFunc(&ReadU16BE, lib, "SDL_ReadU16BE")
-        purego.RegisterLibFunc(&ReadS16BE, lib, "SDL_ReadS16BE")
-        purego.RegisterLibFunc(&ReadU32LE, lib, "SDL_ReadU32LE")
-        purego.RegisterLibFunc(&ReadS32LE, lib, "SDL_ReadS32LE")
-        purego.RegisterLibFunc(&ReadU32BE, lib, "SDL_ReadU32BE")
-        purego.RegisterLibFunc(&ReadS32BE, lib, "SDL_ReadS32BE")
-        purego.RegisterLibFunc(&ReadU64LE, lib, "SDL_ReadU64LE")
-        purego.RegisterLibFunc(&ReadS64LE, lib, "SDL_ReadS64LE")
-        purego.RegisterLibFunc(&ReadU64BE, lib, "SDL_ReadU64BE")
-        purego.RegisterLibFunc(&ReadS64BE, lib, "SDL_ReadS64BE")
-        purego.RegisterLibFunc(&WriteU8, lib, "SDL_WriteU8")
-        purego.RegisterLibFunc(&WriteS8, lib, "SDL_WriteS8")
-        purego.RegisterLibFunc(&WriteU16LE, lib, "SDL_WriteU16LE")
-        purego.RegisterLibFunc(&WriteS16LE, lib, "SDL_WriteS16LE")
-        purego.RegisterLibFunc(&WriteU16BE, lib, "SDL_WriteU16BE")
-        purego.RegisterLibFunc(&WriteS16BE, lib, "SDL_WriteS16BE")
-        purego.RegisterLibFunc(&WriteU32LE, lib, "SDL_WriteU32LE")
-        purego.RegisterLibFunc(&WriteS32LE, lib, "SDL_WriteS32LE")
-        purego.RegisterLibFunc(&WriteU32BE, lib, "SDL_WriteU32BE")
-        purego.RegisterLibFunc(&WriteS32BE, lib, "SDL_WriteS32BE")
-        purego.RegisterLibFunc(&WriteU64LE, lib, "SDL_WriteU64LE")
-        purego.RegisterLibFunc(&WriteS64LE, lib, "SDL_WriteS64LE")
-        purego.RegisterLibFunc(&WriteU64BE, lib, "SDL_WriteU64BE")
-        purego.RegisterLibFunc(&WriteS64BE, lib, "SDL_WriteS64BE")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &IOFromFile, "SDL_IOFromFile" },
+            { &IOFromMem, "SDL_IOFromMem" },
+            { &IOFromConstMem, "SDL_IOFromConstMem" },
+            { &IOFromDynamicMem, "SDL_IOFromDynamicMem" },
+            { &OpenIO, "SDL_OpenIO" },
+            { &CloseIO, "SDL_CloseIO" },
+            { &GetIOProperties, "SDL_GetIOProperties" },
+            { &GetIOStatus, "SDL_GetIOStatus" },
+            { &GetIOSize, "SDL_GetIOSize" },
+            { &SeekIO, "SDL_SeekIO" },
+            { &TellIO, "SDL_TellIO" },
+            { &ReadIO, "SDL_ReadIO" },
+            { &WriteIO, "SDL_WriteIO" },
+            { &FlushIO, "SDL_FlushIO" },
+            { &LoadFile_IO, "SDL_LoadFile_IO" },
+            { &LoadFile, "SDL_LoadFile" },
+            { &SaveFile_IO, "SDL_SaveFile_IO" },
+            { &SaveFile, "SDL_SaveFile" },
+            { &ReadU8, "SDL_ReadU8" },
+            { &ReadS8, "SDL_ReadS8" },
+            { &ReadU16LE, "SDL_ReadU16LE" },
+            { &ReadS16LE, "SDL_ReadS16LE" },
+            { &ReadU16BE, "SDL_ReadU16BE" },
+            { &ReadS16BE, "SDL_ReadS16BE" },
+            { &ReadU32LE, "SDL_ReadU32LE" },
+            { &ReadS32LE, "SDL_ReadS32LE" },
+            { &ReadU32BE, "SDL_ReadU32BE" },
+            { &ReadS32BE, "SDL_ReadS32BE" },
+            { &ReadU64LE, "SDL_ReadU64LE" },
+            { &ReadS64LE, "SDL_ReadS64LE" },
+            { &ReadU64BE, "SDL_ReadU64BE" },
+            { &ReadS64BE, "SDL_ReadS64BE" },
+            { &WriteU8, "SDL_WriteU8" },
+            { &WriteS8, "SDL_WriteS8" },
+            { &WriteU16LE, "SDL_WriteU16LE" },
+            { &WriteS16LE, "SDL_WriteS16LE" },
+            { &WriteU16BE, "SDL_WriteU16BE" },
+            { &WriteS16BE, "SDL_WriteS16BE" },
+            { &WriteU32LE, "SDL_WriteU32LE" },
+            { &WriteS32LE, "SDL_WriteS32LE" },
+            { &WriteU32BE, "SDL_WriteU32BE" },
+            { &WriteS32BE, "SDL_WriteS32BE" },
+            { &WriteU64LE, "SDL_WriteU64LE" },
+            { &WriteS64LE, "SDL_WriteS64LE" },
+            { &WriteU64BE, "SDL_WriteU64BE" },
+            { &WriteS64BE, "SDL_WriteS64BE" },
+        }
     })
 }

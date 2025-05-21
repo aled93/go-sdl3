@@ -1,106 +1,105 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&GetNumRenderDrivers, lib, "SDL_GetNumRenderDrivers")
-        purego.RegisterLibFunc(&GetRenderDriver, lib, "SDL_GetRenderDriver")
-        purego.RegisterLibFunc(&CreateWindowAndRenderer, lib, "SDL_CreateWindowAndRenderer")
-        purego.RegisterLibFunc(&CreateRenderer, lib, "SDL_CreateRenderer")
-        purego.RegisterLibFunc(&CreateRendererWithProperties, lib, "SDL_CreateRendererWithProperties")
-        purego.RegisterLibFunc(&CreateSoftwareRenderer, lib, "SDL_CreateSoftwareRenderer")
-        purego.RegisterLibFunc(&GetRenderer, lib, "SDL_GetRenderer")
-        purego.RegisterLibFunc(&GetRenderWindow, lib, "SDL_GetRenderWindow")
-        purego.RegisterLibFunc(&GetRendererName, lib, "SDL_GetRendererName")
-        purego.RegisterLibFunc(&GetRendererProperties, lib, "SDL_GetRendererProperties")
-        purego.RegisterLibFunc(&GetRenderOutputSize, lib, "SDL_GetRenderOutputSize")
-        purego.RegisterLibFunc(&GetCurrentRenderOutputSize, lib, "SDL_GetCurrentRenderOutputSize")
-        purego.RegisterLibFunc(&CreateTexture, lib, "SDL_CreateTexture")
-        purego.RegisterLibFunc(&CreateTextureFromSurface, lib, "SDL_CreateTextureFromSurface")
-        purego.RegisterLibFunc(&CreateTextureWithProperties, lib, "SDL_CreateTextureWithProperties")
-        purego.RegisterLibFunc(&GetTextureProperties, lib, "SDL_GetTextureProperties")
-        purego.RegisterLibFunc(&GetRendererFromTexture, lib, "SDL_GetRendererFromTexture")
-        purego.RegisterLibFunc(&GetTextureSize, lib, "SDL_GetTextureSize")
-        purego.RegisterLibFunc(&SetTextureColorMod, lib, "SDL_SetTextureColorMod")
-        purego.RegisterLibFunc(&SetTextureColorModFloat, lib, "SDL_SetTextureColorModFloat")
-        purego.RegisterLibFunc(&GetTextureColorMod, lib, "SDL_GetTextureColorMod")
-        purego.RegisterLibFunc(&GetTextureColorModFloat, lib, "SDL_GetTextureColorModFloat")
-        purego.RegisterLibFunc(&SetTextureAlphaMod, lib, "SDL_SetTextureAlphaMod")
-        purego.RegisterLibFunc(&SetTextureAlphaModFloat, lib, "SDL_SetTextureAlphaModFloat")
-        purego.RegisterLibFunc(&GetTextureAlphaMod, lib, "SDL_GetTextureAlphaMod")
-        purego.RegisterLibFunc(&GetTextureAlphaModFloat, lib, "SDL_GetTextureAlphaModFloat")
-        purego.RegisterLibFunc(&SetTextureBlendMode, lib, "SDL_SetTextureBlendMode")
-        purego.RegisterLibFunc(&GetTextureBlendMode, lib, "SDL_GetTextureBlendMode")
-        purego.RegisterLibFunc(&SetTextureScaleMode, lib, "SDL_SetTextureScaleMode")
-        purego.RegisterLibFunc(&GetTextureScaleMode, lib, "SDL_GetTextureScaleMode")
-        purego.RegisterLibFunc(&UpdateTexture, lib, "SDL_UpdateTexture")
-        purego.RegisterLibFunc(&UpdateYUVTexture, lib, "SDL_UpdateYUVTexture")
-        purego.RegisterLibFunc(&UpdateNVTexture, lib, "SDL_UpdateNVTexture")
-        purego.RegisterLibFunc(&LockTexture, lib, "SDL_LockTexture")
-        purego.RegisterLibFunc(&LockTextureToSurface, lib, "SDL_LockTextureToSurface")
-        purego.RegisterLibFunc(&UnlockTexture, lib, "SDL_UnlockTexture")
-        purego.RegisterLibFunc(&SetRenderTarget, lib, "SDL_SetRenderTarget")
-        purego.RegisterLibFunc(&GetRenderTarget, lib, "SDL_GetRenderTarget")
-        purego.RegisterLibFunc(&SetRenderLogicalPresentation, lib, "SDL_SetRenderLogicalPresentation")
-        purego.RegisterLibFunc(&GetRenderLogicalPresentation, lib, "SDL_GetRenderLogicalPresentation")
-        purego.RegisterLibFunc(&GetRenderLogicalPresentationRect, lib, "SDL_GetRenderLogicalPresentationRect")
-        purego.RegisterLibFunc(&RenderCoordinatesFromWindow, lib, "SDL_RenderCoordinatesFromWindow")
-        purego.RegisterLibFunc(&RenderCoordinatesToWindow, lib, "SDL_RenderCoordinatesToWindow")
-        purego.RegisterLibFunc(&ConvertEventToRenderCoordinates, lib, "SDL_ConvertEventToRenderCoordinates")
-        purego.RegisterLibFunc(&SetRenderViewport, lib, "SDL_SetRenderViewport")
-        purego.RegisterLibFunc(&GetRenderViewport, lib, "SDL_GetRenderViewport")
-        purego.RegisterLibFunc(&RenderViewportSet, lib, "SDL_RenderViewportSet")
-        purego.RegisterLibFunc(&GetRenderSafeArea, lib, "SDL_GetRenderSafeArea")
-        purego.RegisterLibFunc(&SetRenderClipRect, lib, "SDL_SetRenderClipRect")
-        purego.RegisterLibFunc(&GetRenderClipRect, lib, "SDL_GetRenderClipRect")
-        purego.RegisterLibFunc(&RenderClipEnabled, lib, "SDL_RenderClipEnabled")
-        purego.RegisterLibFunc(&SetRenderScale, lib, "SDL_SetRenderScale")
-        purego.RegisterLibFunc(&GetRenderScale, lib, "SDL_GetRenderScale")
-        purego.RegisterLibFunc(&SetRenderDrawColor, lib, "SDL_SetRenderDrawColor")
-        purego.RegisterLibFunc(&SetRenderDrawColorFloat, lib, "SDL_SetRenderDrawColorFloat")
-        purego.RegisterLibFunc(&GetRenderDrawColor, lib, "SDL_GetRenderDrawColor")
-        purego.RegisterLibFunc(&GetRenderDrawColorFloat, lib, "SDL_GetRenderDrawColorFloat")
-        purego.RegisterLibFunc(&SetRenderColorScale, lib, "SDL_SetRenderColorScale")
-        purego.RegisterLibFunc(&GetRenderColorScale, lib, "SDL_GetRenderColorScale")
-        purego.RegisterLibFunc(&SetRenderDrawBlendMode, lib, "SDL_SetRenderDrawBlendMode")
-        purego.RegisterLibFunc(&GetRenderDrawBlendMode, lib, "SDL_GetRenderDrawBlendMode")
-        purego.RegisterLibFunc(&RenderClear, lib, "SDL_RenderClear")
-        purego.RegisterLibFunc(&RenderPoint, lib, "SDL_RenderPoint")
-        purego.RegisterLibFunc(&RenderPoints, lib, "SDL_RenderPoints")
-        purego.RegisterLibFunc(&RenderLine, lib, "SDL_RenderLine")
-        purego.RegisterLibFunc(&RenderLines, lib, "SDL_RenderLines")
-        purego.RegisterLibFunc(&RenderRect, lib, "SDL_RenderRect")
-        purego.RegisterLibFunc(&RenderRects, lib, "SDL_RenderRects")
-        purego.RegisterLibFunc(&RenderFillRect, lib, "SDL_RenderFillRect")
-        purego.RegisterLibFunc(&RenderFillRects, lib, "SDL_RenderFillRects")
-        purego.RegisterLibFunc(&RenderTexture, lib, "SDL_RenderTexture")
-        purego.RegisterLibFunc(&RenderTextureRotated, lib, "SDL_RenderTextureRotated")
-        purego.RegisterLibFunc(&RenderTextureAffine, lib, "SDL_RenderTextureAffine")
-        purego.RegisterLibFunc(&RenderTextureTiled, lib, "SDL_RenderTextureTiled")
-        purego.RegisterLibFunc(&RenderTexture9Grid, lib, "SDL_RenderTexture9Grid")
-        purego.RegisterLibFunc(&RenderTexture9GridTiled, lib, "SDL_RenderTexture9GridTiled")
-        purego.RegisterLibFunc(&RenderGeometry, lib, "SDL_RenderGeometry")
-        purego.RegisterLibFunc(&RenderGeometryRaw, lib, "SDL_RenderGeometryRaw")
-        purego.RegisterLibFunc(&SetRenderTextureAddressMode, lib, "SDL_SetRenderTextureAddressMode")
-        purego.RegisterLibFunc(&GetRenderTextureAddressMode, lib, "SDL_GetRenderTextureAddressMode")
-        purego.RegisterLibFunc(&RenderReadPixels, lib, "SDL_RenderReadPixels")
-        purego.RegisterLibFunc(&RenderPresent, lib, "SDL_RenderPresent")
-        purego.RegisterLibFunc(&DestroyTexture, lib, "SDL_DestroyTexture")
-        purego.RegisterLibFunc(&DestroyRenderer, lib, "SDL_DestroyRenderer")
-        purego.RegisterLibFunc(&FlushRenderer, lib, "SDL_FlushRenderer")
-        purego.RegisterLibFunc(&GetRenderMetalLayer, lib, "SDL_GetRenderMetalLayer")
-        purego.RegisterLibFunc(&GetRenderMetalCommandEncoder, lib, "SDL_GetRenderMetalCommandEncoder")
-        purego.RegisterLibFunc(&AddVulkanRenderSemaphores, lib, "SDL_AddVulkanRenderSemaphores")
-        purego.RegisterLibFunc(&SetRenderVSync, lib, "SDL_SetRenderVSync")
-        purego.RegisterLibFunc(&GetRenderVSync, lib, "SDL_GetRenderVSync")
-        purego.RegisterLibFunc(&RenderDebugText, lib, "SDL_RenderDebugText")
-        purego.RegisterLibFunc(&SetDefaultTextureScaleMode, lib, "SDL_SetDefaultTextureScaleMode")
-        purego.RegisterLibFunc(&GetDefaultTextureScaleMode, lib, "SDL_GetDefaultTextureScaleMode")
-        purego.RegisterLibFunc(&CreateGPURenderState, lib, "SDL_CreateGPURenderState")
-        purego.RegisterLibFunc(&SetGPURenderStateFragmentUniforms, lib, "SDL_SetGPURenderStateFragmentUniforms")
-        purego.RegisterLibFunc(&SetRenderGPUState, lib, "SDL_SetRenderGPUState")
-        purego.RegisterLibFunc(&DestroyGPURenderState, lib, "SDL_DestroyGPURenderState")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &GetNumRenderDrivers, "SDL_GetNumRenderDrivers" },
+            { &GetRenderDriver, "SDL_GetRenderDriver" },
+            { &CreateWindowAndRenderer, "SDL_CreateWindowAndRenderer" },
+            { &CreateRenderer, "SDL_CreateRenderer" },
+            { &CreateRendererWithProperties, "SDL_CreateRendererWithProperties" },
+            { &CreateSoftwareRenderer, "SDL_CreateSoftwareRenderer" },
+            { &GetRenderer, "SDL_GetRenderer" },
+            { &GetRenderWindow, "SDL_GetRenderWindow" },
+            { &GetRendererName, "SDL_GetRendererName" },
+            { &GetRendererProperties, "SDL_GetRendererProperties" },
+            { &GetRenderOutputSize, "SDL_GetRenderOutputSize" },
+            { &GetCurrentRenderOutputSize, "SDL_GetCurrentRenderOutputSize" },
+            { &CreateTexture, "SDL_CreateTexture" },
+            { &CreateTextureFromSurface, "SDL_CreateTextureFromSurface" },
+            { &CreateTextureWithProperties, "SDL_CreateTextureWithProperties" },
+            { &GetTextureProperties, "SDL_GetTextureProperties" },
+            { &GetRendererFromTexture, "SDL_GetRendererFromTexture" },
+            { &GetTextureSize, "SDL_GetTextureSize" },
+            { &SetTextureColorMod, "SDL_SetTextureColorMod" },
+            { &SetTextureColorModFloat, "SDL_SetTextureColorModFloat" },
+            { &GetTextureColorMod, "SDL_GetTextureColorMod" },
+            { &GetTextureColorModFloat, "SDL_GetTextureColorModFloat" },
+            { &SetTextureAlphaMod, "SDL_SetTextureAlphaMod" },
+            { &SetTextureAlphaModFloat, "SDL_SetTextureAlphaModFloat" },
+            { &GetTextureAlphaMod, "SDL_GetTextureAlphaMod" },
+            { &GetTextureAlphaModFloat, "SDL_GetTextureAlphaModFloat" },
+            { &SetTextureBlendMode, "SDL_SetTextureBlendMode" },
+            { &GetTextureBlendMode, "SDL_GetTextureBlendMode" },
+            { &SetTextureScaleMode, "SDL_SetTextureScaleMode" },
+            { &GetTextureScaleMode, "SDL_GetTextureScaleMode" },
+            { &UpdateTexture, "SDL_UpdateTexture" },
+            { &UpdateYUVTexture, "SDL_UpdateYUVTexture" },
+            { &UpdateNVTexture, "SDL_UpdateNVTexture" },
+            { &LockTexture, "SDL_LockTexture" },
+            { &LockTextureToSurface, "SDL_LockTextureToSurface" },
+            { &UnlockTexture, "SDL_UnlockTexture" },
+            { &SetRenderTarget, "SDL_SetRenderTarget" },
+            { &GetRenderTarget, "SDL_GetRenderTarget" },
+            { &SetRenderLogicalPresentation, "SDL_SetRenderLogicalPresentation" },
+            { &GetRenderLogicalPresentation, "SDL_GetRenderLogicalPresentation" },
+            { &GetRenderLogicalPresentationRect, "SDL_GetRenderLogicalPresentationRect" },
+            { &RenderCoordinatesFromWindow, "SDL_RenderCoordinatesFromWindow" },
+            { &RenderCoordinatesToWindow, "SDL_RenderCoordinatesToWindow" },
+            { &ConvertEventToRenderCoordinates, "SDL_ConvertEventToRenderCoordinates" },
+            { &SetRenderViewport, "SDL_SetRenderViewport" },
+            { &GetRenderViewport, "SDL_GetRenderViewport" },
+            { &RenderViewportSet, "SDL_RenderViewportSet" },
+            { &GetRenderSafeArea, "SDL_GetRenderSafeArea" },
+            { &SetRenderClipRect, "SDL_SetRenderClipRect" },
+            { &GetRenderClipRect, "SDL_GetRenderClipRect" },
+            { &RenderClipEnabled, "SDL_RenderClipEnabled" },
+            { &SetRenderScale, "SDL_SetRenderScale" },
+            { &GetRenderScale, "SDL_GetRenderScale" },
+            { &SetRenderDrawColor, "SDL_SetRenderDrawColor" },
+            { &SetRenderDrawColorFloat, "SDL_SetRenderDrawColorFloat" },
+            { &GetRenderDrawColor, "SDL_GetRenderDrawColor" },
+            { &GetRenderDrawColorFloat, "SDL_GetRenderDrawColorFloat" },
+            { &SetRenderColorScale, "SDL_SetRenderColorScale" },
+            { &GetRenderColorScale, "SDL_GetRenderColorScale" },
+            { &SetRenderDrawBlendMode, "SDL_SetRenderDrawBlendMode" },
+            { &GetRenderDrawBlendMode, "SDL_GetRenderDrawBlendMode" },
+            { &RenderClear, "SDL_RenderClear" },
+            { &RenderPoint, "SDL_RenderPoint" },
+            { &RenderPoints, "SDL_RenderPoints" },
+            { &RenderLine, "SDL_RenderLine" },
+            { &RenderLines, "SDL_RenderLines" },
+            { &RenderRect, "SDL_RenderRect" },
+            { &RenderRects, "SDL_RenderRects" },
+            { &RenderFillRect, "SDL_RenderFillRect" },
+            { &RenderFillRects, "SDL_RenderFillRects" },
+            { &RenderTexture, "SDL_RenderTexture" },
+            { &RenderTextureRotated, "SDL_RenderTextureRotated" },
+            { &RenderTextureAffine, "SDL_RenderTextureAffine" },
+            { &RenderTextureTiled, "SDL_RenderTextureTiled" },
+            { &RenderTexture9Grid, "SDL_RenderTexture9Grid" },
+            { &RenderTexture9GridTiled, "SDL_RenderTexture9GridTiled" },
+            { &RenderGeometry, "SDL_RenderGeometry" },
+            { &RenderGeometryRaw, "SDL_RenderGeometryRaw" },
+            { &SetRenderTextureAddressMode, "SDL_SetRenderTextureAddressMode" },
+            { &GetRenderTextureAddressMode, "SDL_GetRenderTextureAddressMode" },
+            { &RenderReadPixels, "SDL_RenderReadPixels" },
+            { &RenderPresent, "SDL_RenderPresent" },
+            { &DestroyTexture, "SDL_DestroyTexture" },
+            { &DestroyRenderer, "SDL_DestroyRenderer" },
+            { &FlushRenderer, "SDL_FlushRenderer" },
+            { &GetRenderMetalLayer, "SDL_GetRenderMetalLayer" },
+            { &GetRenderMetalCommandEncoder, "SDL_GetRenderMetalCommandEncoder" },
+            { &AddVulkanRenderSemaphores, "SDL_AddVulkanRenderSemaphores" },
+            { &SetRenderVSync, "SDL_SetRenderVSync" },
+            { &GetRenderVSync, "SDL_GetRenderVSync" },
+            { &RenderDebugText, "SDL_RenderDebugText" },
+            { &SetDefaultTextureScaleMode, "SDL_SetDefaultTextureScaleMode" },
+            { &GetDefaultTextureScaleMode, "SDL_GetDefaultTextureScaleMode" },
+            { &CreateGPURenderState, "SDL_CreateGPURenderState" },
+            { &SetGPURenderStateFragmentUniforms, "SDL_SetGPURenderStateFragmentUniforms" },
+            { &SetRenderGPUState, "SDL_SetRenderGPUState" },
+            { &DestroyGPURenderState, "SDL_DestroyGPURenderState" },
+        }
     })
 }

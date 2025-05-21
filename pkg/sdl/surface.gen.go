@@ -1,66 +1,65 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&CreateSurface, lib, "SDL_CreateSurface")
-        purego.RegisterLibFunc(&CreateSurfaceFrom, lib, "SDL_CreateSurfaceFrom")
-        purego.RegisterLibFunc(&DestroySurface, lib, "SDL_DestroySurface")
-        purego.RegisterLibFunc(&GetSurfaceProperties, lib, "SDL_GetSurfaceProperties")
-        purego.RegisterLibFunc(&SetSurfaceColorspace, lib, "SDL_SetSurfaceColorspace")
-        purego.RegisterLibFunc(&GetSurfaceColorspace, lib, "SDL_GetSurfaceColorspace")
-        purego.RegisterLibFunc(&CreateSurfacePalette, lib, "SDL_CreateSurfacePalette")
-        purego.RegisterLibFunc(&SetSurfacePalette, lib, "SDL_SetSurfacePalette")
-        purego.RegisterLibFunc(&GetSurfacePalette, lib, "SDL_GetSurfacePalette")
-        purego.RegisterLibFunc(&AddSurfaceAlternateImage, lib, "SDL_AddSurfaceAlternateImage")
-        purego.RegisterLibFunc(&SurfaceHasAlternateImages, lib, "SDL_SurfaceHasAlternateImages")
-        purego.RegisterLibFunc(&RemoveSurfaceAlternateImages, lib, "SDL_RemoveSurfaceAlternateImages")
-        purego.RegisterLibFunc(&LockSurface, lib, "SDL_LockSurface")
-        purego.RegisterLibFunc(&UnlockSurface, lib, "SDL_UnlockSurface")
-        purego.RegisterLibFunc(&LoadBMP_IO, lib, "SDL_LoadBMP_IO")
-        purego.RegisterLibFunc(&LoadBMP, lib, "SDL_LoadBMP")
-        purego.RegisterLibFunc(&SaveBMP_IO, lib, "SDL_SaveBMP_IO")
-        purego.RegisterLibFunc(&SaveBMP, lib, "SDL_SaveBMP")
-        purego.RegisterLibFunc(&SetSurfaceRLE, lib, "SDL_SetSurfaceRLE")
-        purego.RegisterLibFunc(&SurfaceHasRLE, lib, "SDL_SurfaceHasRLE")
-        purego.RegisterLibFunc(&SetSurfaceColorKey, lib, "SDL_SetSurfaceColorKey")
-        purego.RegisterLibFunc(&SurfaceHasColorKey, lib, "SDL_SurfaceHasColorKey")
-        purego.RegisterLibFunc(&GetSurfaceColorKey, lib, "SDL_GetSurfaceColorKey")
-        purego.RegisterLibFunc(&SetSurfaceColorMod, lib, "SDL_SetSurfaceColorMod")
-        purego.RegisterLibFunc(&GetSurfaceColorMod, lib, "SDL_GetSurfaceColorMod")
-        purego.RegisterLibFunc(&SetSurfaceAlphaMod, lib, "SDL_SetSurfaceAlphaMod")
-        purego.RegisterLibFunc(&GetSurfaceAlphaMod, lib, "SDL_GetSurfaceAlphaMod")
-        purego.RegisterLibFunc(&SetSurfaceBlendMode, lib, "SDL_SetSurfaceBlendMode")
-        purego.RegisterLibFunc(&GetSurfaceBlendMode, lib, "SDL_GetSurfaceBlendMode")
-        purego.RegisterLibFunc(&SetSurfaceClipRect, lib, "SDL_SetSurfaceClipRect")
-        purego.RegisterLibFunc(&GetSurfaceClipRect, lib, "SDL_GetSurfaceClipRect")
-        purego.RegisterLibFunc(&FlipSurface, lib, "SDL_FlipSurface")
-        purego.RegisterLibFunc(&DuplicateSurface, lib, "SDL_DuplicateSurface")
-        purego.RegisterLibFunc(&ScaleSurface, lib, "SDL_ScaleSurface")
-        purego.RegisterLibFunc(&ConvertSurface, lib, "SDL_ConvertSurface")
-        purego.RegisterLibFunc(&ConvertSurfaceAndColorspace, lib, "SDL_ConvertSurfaceAndColorspace")
-        purego.RegisterLibFunc(&ConvertPixels, lib, "SDL_ConvertPixels")
-        purego.RegisterLibFunc(&ConvertPixelsAndColorspace, lib, "SDL_ConvertPixelsAndColorspace")
-        purego.RegisterLibFunc(&PremultiplyAlpha, lib, "SDL_PremultiplyAlpha")
-        purego.RegisterLibFunc(&PremultiplySurfaceAlpha, lib, "SDL_PremultiplySurfaceAlpha")
-        purego.RegisterLibFunc(&ClearSurface, lib, "SDL_ClearSurface")
-        purego.RegisterLibFunc(&FillSurfaceRect, lib, "SDL_FillSurfaceRect")
-        purego.RegisterLibFunc(&FillSurfaceRects, lib, "SDL_FillSurfaceRects")
-        purego.RegisterLibFunc(&BlitSurface, lib, "SDL_BlitSurface")
-        purego.RegisterLibFunc(&BlitSurfaceUnchecked, lib, "SDL_BlitSurfaceUnchecked")
-        purego.RegisterLibFunc(&BlitSurfaceScaled, lib, "SDL_BlitSurfaceScaled")
-        purego.RegisterLibFunc(&BlitSurfaceUncheckedScaled, lib, "SDL_BlitSurfaceUncheckedScaled")
-        purego.RegisterLibFunc(&StretchSurface, lib, "SDL_StretchSurface")
-        purego.RegisterLibFunc(&BlitSurfaceTiled, lib, "SDL_BlitSurfaceTiled")
-        purego.RegisterLibFunc(&BlitSurfaceTiledWithScale, lib, "SDL_BlitSurfaceTiledWithScale")
-        purego.RegisterLibFunc(&BlitSurface9Grid, lib, "SDL_BlitSurface9Grid")
-        purego.RegisterLibFunc(&MapSurfaceRGB, lib, "SDL_MapSurfaceRGB")
-        purego.RegisterLibFunc(&MapSurfaceRGBA, lib, "SDL_MapSurfaceRGBA")
-        purego.RegisterLibFunc(&ReadSurfacePixel, lib, "SDL_ReadSurfacePixel")
-        purego.RegisterLibFunc(&ReadSurfacePixelFloat, lib, "SDL_ReadSurfacePixelFloat")
-        purego.RegisterLibFunc(&WriteSurfacePixel, lib, "SDL_WriteSurfacePixel")
-        purego.RegisterLibFunc(&WriteSurfacePixelFloat, lib, "SDL_WriteSurfacePixelFloat")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &CreateSurface, "SDL_CreateSurface" },
+            { &CreateSurfaceFrom, "SDL_CreateSurfaceFrom" },
+            { &DestroySurface, "SDL_DestroySurface" },
+            { &GetSurfaceProperties, "SDL_GetSurfaceProperties" },
+            { &SetSurfaceColorspace, "SDL_SetSurfaceColorspace" },
+            { &GetSurfaceColorspace, "SDL_GetSurfaceColorspace" },
+            { &CreateSurfacePalette, "SDL_CreateSurfacePalette" },
+            { &SetSurfacePalette, "SDL_SetSurfacePalette" },
+            { &GetSurfacePalette, "SDL_GetSurfacePalette" },
+            { &AddSurfaceAlternateImage, "SDL_AddSurfaceAlternateImage" },
+            { &SurfaceHasAlternateImages, "SDL_SurfaceHasAlternateImages" },
+            { &RemoveSurfaceAlternateImages, "SDL_RemoveSurfaceAlternateImages" },
+            { &LockSurface, "SDL_LockSurface" },
+            { &UnlockSurface, "SDL_UnlockSurface" },
+            { &LoadBMP_IO, "SDL_LoadBMP_IO" },
+            { &LoadBMP, "SDL_LoadBMP" },
+            { &SaveBMP_IO, "SDL_SaveBMP_IO" },
+            { &SaveBMP, "SDL_SaveBMP" },
+            { &SetSurfaceRLE, "SDL_SetSurfaceRLE" },
+            { &SurfaceHasRLE, "SDL_SurfaceHasRLE" },
+            { &SetSurfaceColorKey, "SDL_SetSurfaceColorKey" },
+            { &SurfaceHasColorKey, "SDL_SurfaceHasColorKey" },
+            { &GetSurfaceColorKey, "SDL_GetSurfaceColorKey" },
+            { &SetSurfaceColorMod, "SDL_SetSurfaceColorMod" },
+            { &GetSurfaceColorMod, "SDL_GetSurfaceColorMod" },
+            { &SetSurfaceAlphaMod, "SDL_SetSurfaceAlphaMod" },
+            { &GetSurfaceAlphaMod, "SDL_GetSurfaceAlphaMod" },
+            { &SetSurfaceBlendMode, "SDL_SetSurfaceBlendMode" },
+            { &GetSurfaceBlendMode, "SDL_GetSurfaceBlendMode" },
+            { &SetSurfaceClipRect, "SDL_SetSurfaceClipRect" },
+            { &GetSurfaceClipRect, "SDL_GetSurfaceClipRect" },
+            { &FlipSurface, "SDL_FlipSurface" },
+            { &DuplicateSurface, "SDL_DuplicateSurface" },
+            { &ScaleSurface, "SDL_ScaleSurface" },
+            { &ConvertSurface, "SDL_ConvertSurface" },
+            { &ConvertSurfaceAndColorspace, "SDL_ConvertSurfaceAndColorspace" },
+            { &ConvertPixels, "SDL_ConvertPixels" },
+            { &ConvertPixelsAndColorspace, "SDL_ConvertPixelsAndColorspace" },
+            { &PremultiplyAlpha, "SDL_PremultiplyAlpha" },
+            { &PremultiplySurfaceAlpha, "SDL_PremultiplySurfaceAlpha" },
+            { &ClearSurface, "SDL_ClearSurface" },
+            { &FillSurfaceRect, "SDL_FillSurfaceRect" },
+            { &FillSurfaceRects, "SDL_FillSurfaceRects" },
+            { &BlitSurface, "SDL_BlitSurface" },
+            { &BlitSurfaceUnchecked, "SDL_BlitSurfaceUnchecked" },
+            { &BlitSurfaceScaled, "SDL_BlitSurfaceScaled" },
+            { &BlitSurfaceUncheckedScaled, "SDL_BlitSurfaceUncheckedScaled" },
+            { &StretchSurface, "SDL_StretchSurface" },
+            { &BlitSurfaceTiled, "SDL_BlitSurfaceTiled" },
+            { &BlitSurfaceTiledWithScale, "SDL_BlitSurfaceTiledWithScale" },
+            { &BlitSurface9Grid, "SDL_BlitSurface9Grid" },
+            { &MapSurfaceRGB, "SDL_MapSurfaceRGB" },
+            { &MapSurfaceRGBA, "SDL_MapSurfaceRGBA" },
+            { &ReadSurfacePixel, "SDL_ReadSurfacePixel" },
+            { &ReadSurfacePixelFloat, "SDL_ReadSurfacePixelFloat" },
+            { &WriteSurfacePixel, "SDL_WriteSurfacePixel" },
+            { &WriteSurfacePixelFloat, "SDL_WriteSurfacePixelFloat" },
+        }
     })
 }

@@ -1,12 +1,11 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&SetiOSAnimationCallback, lib, "SDL_SetiOSAnimationCallback")
-        purego.RegisterLibFunc(&SetiOSEventPump, lib, "SDL_SetiOSEventPump")
-        purego.RegisterLibFunc(&OnApplicationDidChangeStatusBarOrientation, lib, "SDL_OnApplicationDidChangeStatusBarOrientation")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &SetiOSAnimationCallback, "SDL_SetiOSAnimationCallback" },
+            { &SetiOSEventPump, "SDL_SetiOSEventPump" },
+            { &OnApplicationDidChangeStatusBarOrientation, "SDL_OnApplicationDidChangeStatusBarOrientation" },
+        }
     })
 }

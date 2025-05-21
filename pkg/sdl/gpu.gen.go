@@ -1,102 +1,101 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&GPUSupportsShaderFormats, lib, "SDL_GPUSupportsShaderFormats")
-        purego.RegisterLibFunc(&GPUSupportsProperties, lib, "SDL_GPUSupportsProperties")
-        purego.RegisterLibFunc(&CreateGPUDevice, lib, "SDL_CreateGPUDevice")
-        purego.RegisterLibFunc(&CreateGPUDeviceWithProperties, lib, "SDL_CreateGPUDeviceWithProperties")
-        purego.RegisterLibFunc(&DestroyGPUDevice, lib, "SDL_DestroyGPUDevice")
-        purego.RegisterLibFunc(&GetNumGPUDrivers, lib, "SDL_GetNumGPUDrivers")
-        purego.RegisterLibFunc(&GetGPUDriver, lib, "SDL_GetGPUDriver")
-        purego.RegisterLibFunc(&GetGPUDeviceDriver, lib, "SDL_GetGPUDeviceDriver")
-        purego.RegisterLibFunc(&GetGPUShaderFormats, lib, "SDL_GetGPUShaderFormats")
-        purego.RegisterLibFunc(&GetGPUDeviceProperties, lib, "SDL_GetGPUDeviceProperties")
-        purego.RegisterLibFunc(&CreateGPUComputePipeline, lib, "SDL_CreateGPUComputePipeline")
-        purego.RegisterLibFunc(&CreateGPUGraphicsPipeline, lib, "SDL_CreateGPUGraphicsPipeline")
-        purego.RegisterLibFunc(&CreateGPUSampler, lib, "SDL_CreateGPUSampler")
-        purego.RegisterLibFunc(&CreateGPUShader, lib, "SDL_CreateGPUShader")
-        purego.RegisterLibFunc(&CreateGPUTexture, lib, "SDL_CreateGPUTexture")
-        purego.RegisterLibFunc(&CreateGPUBuffer, lib, "SDL_CreateGPUBuffer")
-        purego.RegisterLibFunc(&CreateGPUTransferBuffer, lib, "SDL_CreateGPUTransferBuffer")
-        purego.RegisterLibFunc(&SetGPUBufferName, lib, "SDL_SetGPUBufferName")
-        purego.RegisterLibFunc(&SetGPUTextureName, lib, "SDL_SetGPUTextureName")
-        purego.RegisterLibFunc(&InsertGPUDebugLabel, lib, "SDL_InsertGPUDebugLabel")
-        purego.RegisterLibFunc(&PushGPUDebugGroup, lib, "SDL_PushGPUDebugGroup")
-        purego.RegisterLibFunc(&PopGPUDebugGroup, lib, "SDL_PopGPUDebugGroup")
-        purego.RegisterLibFunc(&ReleaseGPUTexture, lib, "SDL_ReleaseGPUTexture")
-        purego.RegisterLibFunc(&ReleaseGPUSampler, lib, "SDL_ReleaseGPUSampler")
-        purego.RegisterLibFunc(&ReleaseGPUBuffer, lib, "SDL_ReleaseGPUBuffer")
-        purego.RegisterLibFunc(&ReleaseGPUTransferBuffer, lib, "SDL_ReleaseGPUTransferBuffer")
-        purego.RegisterLibFunc(&ReleaseGPUComputePipeline, lib, "SDL_ReleaseGPUComputePipeline")
-        purego.RegisterLibFunc(&ReleaseGPUShader, lib, "SDL_ReleaseGPUShader")
-        purego.RegisterLibFunc(&ReleaseGPUGraphicsPipeline, lib, "SDL_ReleaseGPUGraphicsPipeline")
-        purego.RegisterLibFunc(&AcquireGPUCommandBuffer, lib, "SDL_AcquireGPUCommandBuffer")
-        purego.RegisterLibFunc(&PushGPUVertexUniformData, lib, "SDL_PushGPUVertexUniformData")
-        purego.RegisterLibFunc(&PushGPUFragmentUniformData, lib, "SDL_PushGPUFragmentUniformData")
-        purego.RegisterLibFunc(&PushGPUComputeUniformData, lib, "SDL_PushGPUComputeUniformData")
-        purego.RegisterLibFunc(&BeginGPURenderPass, lib, "SDL_BeginGPURenderPass")
-        purego.RegisterLibFunc(&BindGPUGraphicsPipeline, lib, "SDL_BindGPUGraphicsPipeline")
-        purego.RegisterLibFunc(&SetGPUViewport, lib, "SDL_SetGPUViewport")
-        purego.RegisterLibFunc(&SetGPUScissor, lib, "SDL_SetGPUScissor")
-        purego.RegisterLibFunc(&SetGPUBlendConstants, lib, "SDL_SetGPUBlendConstants")
-        purego.RegisterLibFunc(&SetGPUStencilReference, lib, "SDL_SetGPUStencilReference")
-        purego.RegisterLibFunc(&BindGPUVertexBuffers, lib, "SDL_BindGPUVertexBuffers")
-        purego.RegisterLibFunc(&BindGPUIndexBuffer, lib, "SDL_BindGPUIndexBuffer")
-        purego.RegisterLibFunc(&BindGPUVertexSamplers, lib, "SDL_BindGPUVertexSamplers")
-        purego.RegisterLibFunc(&BindGPUVertexStorageTextures, lib, "SDL_BindGPUVertexStorageTextures")
-        purego.RegisterLibFunc(&BindGPUVertexStorageBuffers, lib, "SDL_BindGPUVertexStorageBuffers")
-        purego.RegisterLibFunc(&BindGPUFragmentSamplers, lib, "SDL_BindGPUFragmentSamplers")
-        purego.RegisterLibFunc(&BindGPUFragmentStorageTextures, lib, "SDL_BindGPUFragmentStorageTextures")
-        purego.RegisterLibFunc(&BindGPUFragmentStorageBuffers, lib, "SDL_BindGPUFragmentStorageBuffers")
-        purego.RegisterLibFunc(&DrawGPUIndexedPrimitives, lib, "SDL_DrawGPUIndexedPrimitives")
-        purego.RegisterLibFunc(&DrawGPUPrimitives, lib, "SDL_DrawGPUPrimitives")
-        purego.RegisterLibFunc(&DrawGPUPrimitivesIndirect, lib, "SDL_DrawGPUPrimitivesIndirect")
-        purego.RegisterLibFunc(&DrawGPUIndexedPrimitivesIndirect, lib, "SDL_DrawGPUIndexedPrimitivesIndirect")
-        purego.RegisterLibFunc(&EndGPURenderPass, lib, "SDL_EndGPURenderPass")
-        purego.RegisterLibFunc(&BeginGPUComputePass, lib, "SDL_BeginGPUComputePass")
-        purego.RegisterLibFunc(&BindGPUComputePipeline, lib, "SDL_BindGPUComputePipeline")
-        purego.RegisterLibFunc(&BindGPUComputeSamplers, lib, "SDL_BindGPUComputeSamplers")
-        purego.RegisterLibFunc(&BindGPUComputeStorageTextures, lib, "SDL_BindGPUComputeStorageTextures")
-        purego.RegisterLibFunc(&BindGPUComputeStorageBuffers, lib, "SDL_BindGPUComputeStorageBuffers")
-        purego.RegisterLibFunc(&DispatchGPUCompute, lib, "SDL_DispatchGPUCompute")
-        purego.RegisterLibFunc(&DispatchGPUComputeIndirect, lib, "SDL_DispatchGPUComputeIndirect")
-        purego.RegisterLibFunc(&EndGPUComputePass, lib, "SDL_EndGPUComputePass")
-        purego.RegisterLibFunc(&MapGPUTransferBuffer, lib, "SDL_MapGPUTransferBuffer")
-        purego.RegisterLibFunc(&UnmapGPUTransferBuffer, lib, "SDL_UnmapGPUTransferBuffer")
-        purego.RegisterLibFunc(&BeginGPUCopyPass, lib, "SDL_BeginGPUCopyPass")
-        purego.RegisterLibFunc(&UploadToGPUTexture, lib, "SDL_UploadToGPUTexture")
-        purego.RegisterLibFunc(&UploadToGPUBuffer, lib, "SDL_UploadToGPUBuffer")
-        purego.RegisterLibFunc(&CopyGPUTextureToTexture, lib, "SDL_CopyGPUTextureToTexture")
-        purego.RegisterLibFunc(&CopyGPUBufferToBuffer, lib, "SDL_CopyGPUBufferToBuffer")
-        purego.RegisterLibFunc(&DownloadFromGPUTexture, lib, "SDL_DownloadFromGPUTexture")
-        purego.RegisterLibFunc(&DownloadFromGPUBuffer, lib, "SDL_DownloadFromGPUBuffer")
-        purego.RegisterLibFunc(&EndGPUCopyPass, lib, "SDL_EndGPUCopyPass")
-        purego.RegisterLibFunc(&GenerateMipmapsForGPUTexture, lib, "SDL_GenerateMipmapsForGPUTexture")
-        purego.RegisterLibFunc(&BlitGPUTexture, lib, "SDL_BlitGPUTexture")
-        purego.RegisterLibFunc(&WindowSupportsGPUSwapchainComposition, lib, "SDL_WindowSupportsGPUSwapchainComposition")
-        purego.RegisterLibFunc(&WindowSupportsGPUPresentMode, lib, "SDL_WindowSupportsGPUPresentMode")
-        purego.RegisterLibFunc(&ClaimWindowForGPUDevice, lib, "SDL_ClaimWindowForGPUDevice")
-        purego.RegisterLibFunc(&ReleaseWindowFromGPUDevice, lib, "SDL_ReleaseWindowFromGPUDevice")
-        purego.RegisterLibFunc(&SetGPUSwapchainParameters, lib, "SDL_SetGPUSwapchainParameters")
-        purego.RegisterLibFunc(&SetGPUAllowedFramesInFlight, lib, "SDL_SetGPUAllowedFramesInFlight")
-        purego.RegisterLibFunc(&GetGPUSwapchainTextureFormat, lib, "SDL_GetGPUSwapchainTextureFormat")
-        purego.RegisterLibFunc(&AcquireGPUSwapchainTexture, lib, "SDL_AcquireGPUSwapchainTexture")
-        purego.RegisterLibFunc(&WaitForGPUSwapchain, lib, "SDL_WaitForGPUSwapchain")
-        purego.RegisterLibFunc(&WaitAndAcquireGPUSwapchainTexture, lib, "SDL_WaitAndAcquireGPUSwapchainTexture")
-        purego.RegisterLibFunc(&SubmitGPUCommandBuffer, lib, "SDL_SubmitGPUCommandBuffer")
-        purego.RegisterLibFunc(&SubmitGPUCommandBufferAndAcquireFence, lib, "SDL_SubmitGPUCommandBufferAndAcquireFence")
-        purego.RegisterLibFunc(&CancelGPUCommandBuffer, lib, "SDL_CancelGPUCommandBuffer")
-        purego.RegisterLibFunc(&WaitForGPUIdle, lib, "SDL_WaitForGPUIdle")
-        purego.RegisterLibFunc(&WaitForGPUFences, lib, "SDL_WaitForGPUFences")
-        purego.RegisterLibFunc(&QueryGPUFence, lib, "SDL_QueryGPUFence")
-        purego.RegisterLibFunc(&ReleaseGPUFence, lib, "SDL_ReleaseGPUFence")
-        purego.RegisterLibFunc(&GPUTextureFormatTexelBlockSize, lib, "SDL_GPUTextureFormatTexelBlockSize")
-        purego.RegisterLibFunc(&GPUTextureSupportsFormat, lib, "SDL_GPUTextureSupportsFormat")
-        purego.RegisterLibFunc(&GPUTextureSupportsSampleCount, lib, "SDL_GPUTextureSupportsSampleCount")
-        purego.RegisterLibFunc(&CalculateGPUTextureFormatSize, lib, "SDL_CalculateGPUTextureFormatSize")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &GPUSupportsShaderFormats, "SDL_GPUSupportsShaderFormats" },
+            { &GPUSupportsProperties, "SDL_GPUSupportsProperties" },
+            { &CreateGPUDevice, "SDL_CreateGPUDevice" },
+            { &CreateGPUDeviceWithProperties, "SDL_CreateGPUDeviceWithProperties" },
+            { &DestroyGPUDevice, "SDL_DestroyGPUDevice" },
+            { &GetNumGPUDrivers, "SDL_GetNumGPUDrivers" },
+            { &GetGPUDriver, "SDL_GetGPUDriver" },
+            { &GetGPUDeviceDriver, "SDL_GetGPUDeviceDriver" },
+            { &GetGPUShaderFormats, "SDL_GetGPUShaderFormats" },
+            { &GetGPUDeviceProperties, "SDL_GetGPUDeviceProperties" },
+            { &CreateGPUComputePipeline, "SDL_CreateGPUComputePipeline" },
+            { &CreateGPUGraphicsPipeline, "SDL_CreateGPUGraphicsPipeline" },
+            { &CreateGPUSampler, "SDL_CreateGPUSampler" },
+            { &CreateGPUShader, "SDL_CreateGPUShader" },
+            { &CreateGPUTexture, "SDL_CreateGPUTexture" },
+            { &CreateGPUBuffer, "SDL_CreateGPUBuffer" },
+            { &CreateGPUTransferBuffer, "SDL_CreateGPUTransferBuffer" },
+            { &SetGPUBufferName, "SDL_SetGPUBufferName" },
+            { &SetGPUTextureName, "SDL_SetGPUTextureName" },
+            { &InsertGPUDebugLabel, "SDL_InsertGPUDebugLabel" },
+            { &PushGPUDebugGroup, "SDL_PushGPUDebugGroup" },
+            { &PopGPUDebugGroup, "SDL_PopGPUDebugGroup" },
+            { &ReleaseGPUTexture, "SDL_ReleaseGPUTexture" },
+            { &ReleaseGPUSampler, "SDL_ReleaseGPUSampler" },
+            { &ReleaseGPUBuffer, "SDL_ReleaseGPUBuffer" },
+            { &ReleaseGPUTransferBuffer, "SDL_ReleaseGPUTransferBuffer" },
+            { &ReleaseGPUComputePipeline, "SDL_ReleaseGPUComputePipeline" },
+            { &ReleaseGPUShader, "SDL_ReleaseGPUShader" },
+            { &ReleaseGPUGraphicsPipeline, "SDL_ReleaseGPUGraphicsPipeline" },
+            { &AcquireGPUCommandBuffer, "SDL_AcquireGPUCommandBuffer" },
+            { &PushGPUVertexUniformData, "SDL_PushGPUVertexUniformData" },
+            { &PushGPUFragmentUniformData, "SDL_PushGPUFragmentUniformData" },
+            { &PushGPUComputeUniformData, "SDL_PushGPUComputeUniformData" },
+            { &BeginGPURenderPass, "SDL_BeginGPURenderPass" },
+            { &BindGPUGraphicsPipeline, "SDL_BindGPUGraphicsPipeline" },
+            { &SetGPUViewport, "SDL_SetGPUViewport" },
+            { &SetGPUScissor, "SDL_SetGPUScissor" },
+            { &SetGPUBlendConstants, "SDL_SetGPUBlendConstants" },
+            { &SetGPUStencilReference, "SDL_SetGPUStencilReference" },
+            { &BindGPUVertexBuffers, "SDL_BindGPUVertexBuffers" },
+            { &BindGPUIndexBuffer, "SDL_BindGPUIndexBuffer" },
+            { &BindGPUVertexSamplers, "SDL_BindGPUVertexSamplers" },
+            { &BindGPUVertexStorageTextures, "SDL_BindGPUVertexStorageTextures" },
+            { &BindGPUVertexStorageBuffers, "SDL_BindGPUVertexStorageBuffers" },
+            { &BindGPUFragmentSamplers, "SDL_BindGPUFragmentSamplers" },
+            { &BindGPUFragmentStorageTextures, "SDL_BindGPUFragmentStorageTextures" },
+            { &BindGPUFragmentStorageBuffers, "SDL_BindGPUFragmentStorageBuffers" },
+            { &DrawGPUIndexedPrimitives, "SDL_DrawGPUIndexedPrimitives" },
+            { &DrawGPUPrimitives, "SDL_DrawGPUPrimitives" },
+            { &DrawGPUPrimitivesIndirect, "SDL_DrawGPUPrimitivesIndirect" },
+            { &DrawGPUIndexedPrimitivesIndirect, "SDL_DrawGPUIndexedPrimitivesIndirect" },
+            { &EndGPURenderPass, "SDL_EndGPURenderPass" },
+            { &BeginGPUComputePass, "SDL_BeginGPUComputePass" },
+            { &BindGPUComputePipeline, "SDL_BindGPUComputePipeline" },
+            { &BindGPUComputeSamplers, "SDL_BindGPUComputeSamplers" },
+            { &BindGPUComputeStorageTextures, "SDL_BindGPUComputeStorageTextures" },
+            { &BindGPUComputeStorageBuffers, "SDL_BindGPUComputeStorageBuffers" },
+            { &DispatchGPUCompute, "SDL_DispatchGPUCompute" },
+            { &DispatchGPUComputeIndirect, "SDL_DispatchGPUComputeIndirect" },
+            { &EndGPUComputePass, "SDL_EndGPUComputePass" },
+            { &MapGPUTransferBuffer, "SDL_MapGPUTransferBuffer" },
+            { &UnmapGPUTransferBuffer, "SDL_UnmapGPUTransferBuffer" },
+            { &BeginGPUCopyPass, "SDL_BeginGPUCopyPass" },
+            { &UploadToGPUTexture, "SDL_UploadToGPUTexture" },
+            { &UploadToGPUBuffer, "SDL_UploadToGPUBuffer" },
+            { &CopyGPUTextureToTexture, "SDL_CopyGPUTextureToTexture" },
+            { &CopyGPUBufferToBuffer, "SDL_CopyGPUBufferToBuffer" },
+            { &DownloadFromGPUTexture, "SDL_DownloadFromGPUTexture" },
+            { &DownloadFromGPUBuffer, "SDL_DownloadFromGPUBuffer" },
+            { &EndGPUCopyPass, "SDL_EndGPUCopyPass" },
+            { &GenerateMipmapsForGPUTexture, "SDL_GenerateMipmapsForGPUTexture" },
+            { &BlitGPUTexture, "SDL_BlitGPUTexture" },
+            { &WindowSupportsGPUSwapchainComposition, "SDL_WindowSupportsGPUSwapchainComposition" },
+            { &WindowSupportsGPUPresentMode, "SDL_WindowSupportsGPUPresentMode" },
+            { &ClaimWindowForGPUDevice, "SDL_ClaimWindowForGPUDevice" },
+            { &ReleaseWindowFromGPUDevice, "SDL_ReleaseWindowFromGPUDevice" },
+            { &SetGPUSwapchainParameters, "SDL_SetGPUSwapchainParameters" },
+            { &SetGPUAllowedFramesInFlight, "SDL_SetGPUAllowedFramesInFlight" },
+            { &GetGPUSwapchainTextureFormat, "SDL_GetGPUSwapchainTextureFormat" },
+            { &AcquireGPUSwapchainTexture, "SDL_AcquireGPUSwapchainTexture" },
+            { &WaitForGPUSwapchain, "SDL_WaitForGPUSwapchain" },
+            { &WaitAndAcquireGPUSwapchainTexture, "SDL_WaitAndAcquireGPUSwapchainTexture" },
+            { &SubmitGPUCommandBuffer, "SDL_SubmitGPUCommandBuffer" },
+            { &SubmitGPUCommandBufferAndAcquireFence, "SDL_SubmitGPUCommandBufferAndAcquireFence" },
+            { &CancelGPUCommandBuffer, "SDL_CancelGPUCommandBuffer" },
+            { &WaitForGPUIdle, "SDL_WaitForGPUIdle" },
+            { &WaitForGPUFences, "SDL_WaitForGPUFences" },
+            { &QueryGPUFence, "SDL_QueryGPUFence" },
+            { &ReleaseGPUFence, "SDL_ReleaseGPUFence" },
+            { &GPUTextureFormatTexelBlockSize, "SDL_GPUTextureFormatTexelBlockSize" },
+            { &GPUTextureSupportsFormat, "SDL_GPUTextureSupportsFormat" },
+            { &GPUTextureSupportsSampleCount, "SDL_GPUTextureSupportsSampleCount" },
+            { &CalculateGPUTextureFormatSize, "SDL_CalculateGPUTextureFormatSize" },
+        }
     })
 }

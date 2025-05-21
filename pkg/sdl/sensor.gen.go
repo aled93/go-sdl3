@@ -1,23 +1,22 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&GetSensors, lib, "SDL_GetSensors")
-        purego.RegisterLibFunc(&GetSensorNameForID, lib, "SDL_GetSensorNameForID")
-        purego.RegisterLibFunc(&GetSensorTypeForID, lib, "SDL_GetSensorTypeForID")
-        purego.RegisterLibFunc(&GetSensorNonPortableTypeForID, lib, "SDL_GetSensorNonPortableTypeForID")
-        purego.RegisterLibFunc(&OpenSensor, lib, "SDL_OpenSensor")
-        purego.RegisterLibFunc(&GetSensorFromID, lib, "SDL_GetSensorFromID")
-        purego.RegisterLibFunc(&GetSensorProperties, lib, "SDL_GetSensorProperties")
-        purego.RegisterLibFunc(&GetSensorName, lib, "SDL_GetSensorName")
-        purego.RegisterLibFunc(&GetSensorType, lib, "SDL_GetSensorType")
-        purego.RegisterLibFunc(&GetSensorNonPortableType, lib, "SDL_GetSensorNonPortableType")
-        purego.RegisterLibFunc(&GetSensorID, lib, "SDL_GetSensorID")
-        purego.RegisterLibFunc(&GetSensorData, lib, "SDL_GetSensorData")
-        purego.RegisterLibFunc(&CloseSensor, lib, "SDL_CloseSensor")
-        purego.RegisterLibFunc(&UpdateSensors, lib, "SDL_UpdateSensors")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &GetSensors, "SDL_GetSensors" },
+            { &GetSensorNameForID, "SDL_GetSensorNameForID" },
+            { &GetSensorTypeForID, "SDL_GetSensorTypeForID" },
+            { &GetSensorNonPortableTypeForID, "SDL_GetSensorNonPortableTypeForID" },
+            { &OpenSensor, "SDL_OpenSensor" },
+            { &GetSensorFromID, "SDL_GetSensorFromID" },
+            { &GetSensorProperties, "SDL_GetSensorProperties" },
+            { &GetSensorName, "SDL_GetSensorName" },
+            { &GetSensorType, "SDL_GetSensorType" },
+            { &GetSensorNonPortableType, "SDL_GetSensorNonPortableType" },
+            { &GetSensorID, "SDL_GetSensorID" },
+            { &GetSensorData, "SDL_GetSensorData" },
+            { &CloseSensor, "SDL_CloseSensor" },
+            { &UpdateSensors, "SDL_UpdateSensors" },
+        }
     })
 }

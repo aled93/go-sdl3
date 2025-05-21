@@ -1,122 +1,121 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&GetNumVideoDrivers, lib, "SDL_GetNumVideoDrivers")
-        purego.RegisterLibFunc(&GetVideoDriver, lib, "SDL_GetVideoDriver")
-        purego.RegisterLibFunc(&GetCurrentVideoDriver, lib, "SDL_GetCurrentVideoDriver")
-        purego.RegisterLibFunc(&GetSystemTheme, lib, "SDL_GetSystemTheme")
-        purego.RegisterLibFunc(&GetDisplays, lib, "SDL_GetDisplays")
-        purego.RegisterLibFunc(&GetPrimaryDisplay, lib, "SDL_GetPrimaryDisplay")
-        purego.RegisterLibFunc(&GetDisplayProperties, lib, "SDL_GetDisplayProperties")
-        purego.RegisterLibFunc(&GetDisplayName, lib, "SDL_GetDisplayName")
-        purego.RegisterLibFunc(&GetDisplayBounds, lib, "SDL_GetDisplayBounds")
-        purego.RegisterLibFunc(&GetDisplayUsableBounds, lib, "SDL_GetDisplayUsableBounds")
-        purego.RegisterLibFunc(&GetNaturalDisplayOrientation, lib, "SDL_GetNaturalDisplayOrientation")
-        purego.RegisterLibFunc(&GetCurrentDisplayOrientation, lib, "SDL_GetCurrentDisplayOrientation")
-        purego.RegisterLibFunc(&GetDisplayContentScale, lib, "SDL_GetDisplayContentScale")
-        purego.RegisterLibFunc(&GetFullscreenDisplayModes, lib, "SDL_GetFullscreenDisplayModes")
-        purego.RegisterLibFunc(&GetClosestFullscreenDisplayMode, lib, "SDL_GetClosestFullscreenDisplayMode")
-        purego.RegisterLibFunc(&GetDesktopDisplayMode, lib, "SDL_GetDesktopDisplayMode")
-        purego.RegisterLibFunc(&GetCurrentDisplayMode, lib, "SDL_GetCurrentDisplayMode")
-        purego.RegisterLibFunc(&GetDisplayForPoint, lib, "SDL_GetDisplayForPoint")
-        purego.RegisterLibFunc(&GetDisplayForRect, lib, "SDL_GetDisplayForRect")
-        purego.RegisterLibFunc(&GetDisplayForWindow, lib, "SDL_GetDisplayForWindow")
-        purego.RegisterLibFunc(&GetWindowPixelDensity, lib, "SDL_GetWindowPixelDensity")
-        purego.RegisterLibFunc(&GetWindowDisplayScale, lib, "SDL_GetWindowDisplayScale")
-        purego.RegisterLibFunc(&SetWindowFullscreenMode, lib, "SDL_SetWindowFullscreenMode")
-        purego.RegisterLibFunc(&GetWindowFullscreenMode, lib, "SDL_GetWindowFullscreenMode")
-        purego.RegisterLibFunc(&GetWindowICCProfile, lib, "SDL_GetWindowICCProfile")
-        purego.RegisterLibFunc(&GetWindowPixelFormat, lib, "SDL_GetWindowPixelFormat")
-        purego.RegisterLibFunc(&GetWindows, lib, "SDL_GetWindows")
-        purego.RegisterLibFunc(&CreateWindow, lib, "SDL_CreateWindow")
-        purego.RegisterLibFunc(&CreatePopupWindow, lib, "SDL_CreatePopupWindow")
-        purego.RegisterLibFunc(&CreateWindowWithProperties, lib, "SDL_CreateWindowWithProperties")
-        purego.RegisterLibFunc(&GetWindowID, lib, "SDL_GetWindowID")
-        purego.RegisterLibFunc(&GetWindowFromID, lib, "SDL_GetWindowFromID")
-        purego.RegisterLibFunc(&GetWindowParent, lib, "SDL_GetWindowParent")
-        purego.RegisterLibFunc(&GetWindowProperties, lib, "SDL_GetWindowProperties")
-        purego.RegisterLibFunc(&GetWindowFlags, lib, "SDL_GetWindowFlags")
-        purego.RegisterLibFunc(&SetWindowTitle, lib, "SDL_SetWindowTitle")
-        purego.RegisterLibFunc(&GetWindowTitle, lib, "SDL_GetWindowTitle")
-        purego.RegisterLibFunc(&SetWindowIcon, lib, "SDL_SetWindowIcon")
-        purego.RegisterLibFunc(&SetWindowPosition, lib, "SDL_SetWindowPosition")
-        purego.RegisterLibFunc(&GetWindowPosition, lib, "SDL_GetWindowPosition")
-        purego.RegisterLibFunc(&SetWindowSize, lib, "SDL_SetWindowSize")
-        purego.RegisterLibFunc(&GetWindowSize, lib, "SDL_GetWindowSize")
-        purego.RegisterLibFunc(&GetWindowSafeArea, lib, "SDL_GetWindowSafeArea")
-        purego.RegisterLibFunc(&SetWindowAspectRatio, lib, "SDL_SetWindowAspectRatio")
-        purego.RegisterLibFunc(&GetWindowAspectRatio, lib, "SDL_GetWindowAspectRatio")
-        purego.RegisterLibFunc(&GetWindowBordersSize, lib, "SDL_GetWindowBordersSize")
-        purego.RegisterLibFunc(&GetWindowSizeInPixels, lib, "SDL_GetWindowSizeInPixels")
-        purego.RegisterLibFunc(&SetWindowMinimumSize, lib, "SDL_SetWindowMinimumSize")
-        purego.RegisterLibFunc(&GetWindowMinimumSize, lib, "SDL_GetWindowMinimumSize")
-        purego.RegisterLibFunc(&SetWindowMaximumSize, lib, "SDL_SetWindowMaximumSize")
-        purego.RegisterLibFunc(&GetWindowMaximumSize, lib, "SDL_GetWindowMaximumSize")
-        purego.RegisterLibFunc(&SetWindowBordered, lib, "SDL_SetWindowBordered")
-        purego.RegisterLibFunc(&SetWindowResizable, lib, "SDL_SetWindowResizable")
-        purego.RegisterLibFunc(&SetWindowAlwaysOnTop, lib, "SDL_SetWindowAlwaysOnTop")
-        purego.RegisterLibFunc(&ShowWindow, lib, "SDL_ShowWindow")
-        purego.RegisterLibFunc(&HideWindow, lib, "SDL_HideWindow")
-        purego.RegisterLibFunc(&RaiseWindow, lib, "SDL_RaiseWindow")
-        purego.RegisterLibFunc(&MaximizeWindow, lib, "SDL_MaximizeWindow")
-        purego.RegisterLibFunc(&MinimizeWindow, lib, "SDL_MinimizeWindow")
-        purego.RegisterLibFunc(&RestoreWindow, lib, "SDL_RestoreWindow")
-        purego.RegisterLibFunc(&SetWindowFullscreen, lib, "SDL_SetWindowFullscreen")
-        purego.RegisterLibFunc(&SyncWindow, lib, "SDL_SyncWindow")
-        purego.RegisterLibFunc(&WindowHasSurface, lib, "SDL_WindowHasSurface")
-        purego.RegisterLibFunc(&GetWindowSurface, lib, "SDL_GetWindowSurface")
-        purego.RegisterLibFunc(&SetWindowSurfaceVSync, lib, "SDL_SetWindowSurfaceVSync")
-        purego.RegisterLibFunc(&GetWindowSurfaceVSync, lib, "SDL_GetWindowSurfaceVSync")
-        purego.RegisterLibFunc(&UpdateWindowSurface, lib, "SDL_UpdateWindowSurface")
-        purego.RegisterLibFunc(&UpdateWindowSurfaceRects, lib, "SDL_UpdateWindowSurfaceRects")
-        purego.RegisterLibFunc(&DestroyWindowSurface, lib, "SDL_DestroyWindowSurface")
-        purego.RegisterLibFunc(&SetWindowKeyboardGrab, lib, "SDL_SetWindowKeyboardGrab")
-        purego.RegisterLibFunc(&SetWindowMouseGrab, lib, "SDL_SetWindowMouseGrab")
-        purego.RegisterLibFunc(&GetWindowKeyboardGrab, lib, "SDL_GetWindowKeyboardGrab")
-        purego.RegisterLibFunc(&GetWindowMouseGrab, lib, "SDL_GetWindowMouseGrab")
-        purego.RegisterLibFunc(&GetGrabbedWindow, lib, "SDL_GetGrabbedWindow")
-        purego.RegisterLibFunc(&SetWindowMouseRect, lib, "SDL_SetWindowMouseRect")
-        purego.RegisterLibFunc(&GetWindowMouseRect, lib, "SDL_GetWindowMouseRect")
-        purego.RegisterLibFunc(&SetWindowOpacity, lib, "SDL_SetWindowOpacity")
-        purego.RegisterLibFunc(&GetWindowOpacity, lib, "SDL_GetWindowOpacity")
-        purego.RegisterLibFunc(&SetWindowParent, lib, "SDL_SetWindowParent")
-        purego.RegisterLibFunc(&SetWindowModal, lib, "SDL_SetWindowModal")
-        purego.RegisterLibFunc(&SetWindowFocusable, lib, "SDL_SetWindowFocusable")
-        purego.RegisterLibFunc(&ShowWindowSystemMenu, lib, "SDL_ShowWindowSystemMenu")
-        purego.RegisterLibFunc(&SetWindowHitTest, lib, "SDL_SetWindowHitTest")
-        purego.RegisterLibFunc(&SetWindowShape, lib, "SDL_SetWindowShape")
-        purego.RegisterLibFunc(&FlashWindow, lib, "SDL_FlashWindow")
-        purego.RegisterLibFunc(&SetWindowProgressState, lib, "SDL_SetWindowProgressState")
-        purego.RegisterLibFunc(&GetWindowProgressState, lib, "SDL_GetWindowProgressState")
-        purego.RegisterLibFunc(&SetWindowProgressValue, lib, "SDL_SetWindowProgressValue")
-        purego.RegisterLibFunc(&GetWindowProgressValue, lib, "SDL_GetWindowProgressValue")
-        purego.RegisterLibFunc(&DestroyWindow, lib, "SDL_DestroyWindow")
-        purego.RegisterLibFunc(&ScreenSaverEnabled, lib, "SDL_ScreenSaverEnabled")
-        purego.RegisterLibFunc(&EnableScreenSaver, lib, "SDL_EnableScreenSaver")
-        purego.RegisterLibFunc(&DisableScreenSaver, lib, "SDL_DisableScreenSaver")
-        purego.RegisterLibFunc(&GL_LoadLibrary, lib, "SDL_GL_LoadLibrary")
-        purego.RegisterLibFunc(&GL_GetProcAddress, lib, "SDL_GL_GetProcAddress")
-        purego.RegisterLibFunc(&EGL_GetProcAddress, lib, "SDL_EGL_GetProcAddress")
-        purego.RegisterLibFunc(&GL_UnloadLibrary, lib, "SDL_GL_UnloadLibrary")
-        purego.RegisterLibFunc(&GL_ExtensionSupported, lib, "SDL_GL_ExtensionSupported")
-        purego.RegisterLibFunc(&GL_ResetAttributes, lib, "SDL_GL_ResetAttributes")
-        purego.RegisterLibFunc(&GL_SetAttribute, lib, "SDL_GL_SetAttribute")
-        purego.RegisterLibFunc(&GL_GetAttribute, lib, "SDL_GL_GetAttribute")
-        purego.RegisterLibFunc(&GL_CreateContext, lib, "SDL_GL_CreateContext")
-        purego.RegisterLibFunc(&GL_MakeCurrent, lib, "SDL_GL_MakeCurrent")
-        purego.RegisterLibFunc(&GL_GetCurrentWindow, lib, "SDL_GL_GetCurrentWindow")
-        purego.RegisterLibFunc(&GL_GetCurrentContext, lib, "SDL_GL_GetCurrentContext")
-        purego.RegisterLibFunc(&EGL_GetCurrentDisplay, lib, "SDL_EGL_GetCurrentDisplay")
-        purego.RegisterLibFunc(&EGL_GetCurrentConfig, lib, "SDL_EGL_GetCurrentConfig")
-        purego.RegisterLibFunc(&EGL_GetWindowSurface, lib, "SDL_EGL_GetWindowSurface")
-        purego.RegisterLibFunc(&EGL_SetAttributeCallbacks, lib, "SDL_EGL_SetAttributeCallbacks")
-        purego.RegisterLibFunc(&GL_SetSwapInterval, lib, "SDL_GL_SetSwapInterval")
-        purego.RegisterLibFunc(&GL_GetSwapInterval, lib, "SDL_GL_GetSwapInterval")
-        purego.RegisterLibFunc(&GL_SwapWindow, lib, "SDL_GL_SwapWindow")
-        purego.RegisterLibFunc(&GL_DestroyContext, lib, "SDL_GL_DestroyContext")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &GetNumVideoDrivers, "SDL_GetNumVideoDrivers" },
+            { &GetVideoDriver, "SDL_GetVideoDriver" },
+            { &GetCurrentVideoDriver, "SDL_GetCurrentVideoDriver" },
+            { &GetSystemTheme, "SDL_GetSystemTheme" },
+            { &GetDisplays, "SDL_GetDisplays" },
+            { &GetPrimaryDisplay, "SDL_GetPrimaryDisplay" },
+            { &GetDisplayProperties, "SDL_GetDisplayProperties" },
+            { &GetDisplayName, "SDL_GetDisplayName" },
+            { &GetDisplayBounds, "SDL_GetDisplayBounds" },
+            { &GetDisplayUsableBounds, "SDL_GetDisplayUsableBounds" },
+            { &GetNaturalDisplayOrientation, "SDL_GetNaturalDisplayOrientation" },
+            { &GetCurrentDisplayOrientation, "SDL_GetCurrentDisplayOrientation" },
+            { &GetDisplayContentScale, "SDL_GetDisplayContentScale" },
+            { &GetFullscreenDisplayModes, "SDL_GetFullscreenDisplayModes" },
+            { &GetClosestFullscreenDisplayMode, "SDL_GetClosestFullscreenDisplayMode" },
+            { &GetDesktopDisplayMode, "SDL_GetDesktopDisplayMode" },
+            { &GetCurrentDisplayMode, "SDL_GetCurrentDisplayMode" },
+            { &GetDisplayForPoint, "SDL_GetDisplayForPoint" },
+            { &GetDisplayForRect, "SDL_GetDisplayForRect" },
+            { &GetDisplayForWindow, "SDL_GetDisplayForWindow" },
+            { &GetWindowPixelDensity, "SDL_GetWindowPixelDensity" },
+            { &GetWindowDisplayScale, "SDL_GetWindowDisplayScale" },
+            { &SetWindowFullscreenMode, "SDL_SetWindowFullscreenMode" },
+            { &GetWindowFullscreenMode, "SDL_GetWindowFullscreenMode" },
+            { &GetWindowICCProfile, "SDL_GetWindowICCProfile" },
+            { &GetWindowPixelFormat, "SDL_GetWindowPixelFormat" },
+            { &GetWindows, "SDL_GetWindows" },
+            { &CreateWindow, "SDL_CreateWindow" },
+            { &CreatePopupWindow, "SDL_CreatePopupWindow" },
+            { &CreateWindowWithProperties, "SDL_CreateWindowWithProperties" },
+            { &GetWindowID, "SDL_GetWindowID" },
+            { &GetWindowFromID, "SDL_GetWindowFromID" },
+            { &GetWindowParent, "SDL_GetWindowParent" },
+            { &GetWindowProperties, "SDL_GetWindowProperties" },
+            { &GetWindowFlags, "SDL_GetWindowFlags" },
+            { &SetWindowTitle, "SDL_SetWindowTitle" },
+            { &GetWindowTitle, "SDL_GetWindowTitle" },
+            { &SetWindowIcon, "SDL_SetWindowIcon" },
+            { &SetWindowPosition, "SDL_SetWindowPosition" },
+            { &GetWindowPosition, "SDL_GetWindowPosition" },
+            { &SetWindowSize, "SDL_SetWindowSize" },
+            { &GetWindowSize, "SDL_GetWindowSize" },
+            { &GetWindowSafeArea, "SDL_GetWindowSafeArea" },
+            { &SetWindowAspectRatio, "SDL_SetWindowAspectRatio" },
+            { &GetWindowAspectRatio, "SDL_GetWindowAspectRatio" },
+            { &GetWindowBordersSize, "SDL_GetWindowBordersSize" },
+            { &GetWindowSizeInPixels, "SDL_GetWindowSizeInPixels" },
+            { &SetWindowMinimumSize, "SDL_SetWindowMinimumSize" },
+            { &GetWindowMinimumSize, "SDL_GetWindowMinimumSize" },
+            { &SetWindowMaximumSize, "SDL_SetWindowMaximumSize" },
+            { &GetWindowMaximumSize, "SDL_GetWindowMaximumSize" },
+            { &SetWindowBordered, "SDL_SetWindowBordered" },
+            { &SetWindowResizable, "SDL_SetWindowResizable" },
+            { &SetWindowAlwaysOnTop, "SDL_SetWindowAlwaysOnTop" },
+            { &ShowWindow, "SDL_ShowWindow" },
+            { &HideWindow, "SDL_HideWindow" },
+            { &RaiseWindow, "SDL_RaiseWindow" },
+            { &MaximizeWindow, "SDL_MaximizeWindow" },
+            { &MinimizeWindow, "SDL_MinimizeWindow" },
+            { &RestoreWindow, "SDL_RestoreWindow" },
+            { &SetWindowFullscreen, "SDL_SetWindowFullscreen" },
+            { &SyncWindow, "SDL_SyncWindow" },
+            { &WindowHasSurface, "SDL_WindowHasSurface" },
+            { &GetWindowSurface, "SDL_GetWindowSurface" },
+            { &SetWindowSurfaceVSync, "SDL_SetWindowSurfaceVSync" },
+            { &GetWindowSurfaceVSync, "SDL_GetWindowSurfaceVSync" },
+            { &UpdateWindowSurface, "SDL_UpdateWindowSurface" },
+            { &UpdateWindowSurfaceRects, "SDL_UpdateWindowSurfaceRects" },
+            { &DestroyWindowSurface, "SDL_DestroyWindowSurface" },
+            { &SetWindowKeyboardGrab, "SDL_SetWindowKeyboardGrab" },
+            { &SetWindowMouseGrab, "SDL_SetWindowMouseGrab" },
+            { &GetWindowKeyboardGrab, "SDL_GetWindowKeyboardGrab" },
+            { &GetWindowMouseGrab, "SDL_GetWindowMouseGrab" },
+            { &GetGrabbedWindow, "SDL_GetGrabbedWindow" },
+            { &SetWindowMouseRect, "SDL_SetWindowMouseRect" },
+            { &GetWindowMouseRect, "SDL_GetWindowMouseRect" },
+            { &SetWindowOpacity, "SDL_SetWindowOpacity" },
+            { &GetWindowOpacity, "SDL_GetWindowOpacity" },
+            { &SetWindowParent, "SDL_SetWindowParent" },
+            { &SetWindowModal, "SDL_SetWindowModal" },
+            { &SetWindowFocusable, "SDL_SetWindowFocusable" },
+            { &ShowWindowSystemMenu, "SDL_ShowWindowSystemMenu" },
+            { &SetWindowHitTest, "SDL_SetWindowHitTest" },
+            { &SetWindowShape, "SDL_SetWindowShape" },
+            { &FlashWindow, "SDL_FlashWindow" },
+            { &SetWindowProgressState, "SDL_SetWindowProgressState" },
+            { &GetWindowProgressState, "SDL_GetWindowProgressState" },
+            { &SetWindowProgressValue, "SDL_SetWindowProgressValue" },
+            { &GetWindowProgressValue, "SDL_GetWindowProgressValue" },
+            { &DestroyWindow, "SDL_DestroyWindow" },
+            { &ScreenSaverEnabled, "SDL_ScreenSaverEnabled" },
+            { &EnableScreenSaver, "SDL_EnableScreenSaver" },
+            { &DisableScreenSaver, "SDL_DisableScreenSaver" },
+            { &GL_LoadLibrary, "SDL_GL_LoadLibrary" },
+            { &GL_GetProcAddress, "SDL_GL_GetProcAddress" },
+            { &EGL_GetProcAddress, "SDL_EGL_GetProcAddress" },
+            { &GL_UnloadLibrary, "SDL_GL_UnloadLibrary" },
+            { &GL_ExtensionSupported, "SDL_GL_ExtensionSupported" },
+            { &GL_ResetAttributes, "SDL_GL_ResetAttributes" },
+            { &GL_SetAttribute, "SDL_GL_SetAttribute" },
+            { &GL_GetAttribute, "SDL_GL_GetAttribute" },
+            { &GL_CreateContext, "SDL_GL_CreateContext" },
+            { &GL_MakeCurrent, "SDL_GL_MakeCurrent" },
+            { &GL_GetCurrentWindow, "SDL_GL_GetCurrentWindow" },
+            { &GL_GetCurrentContext, "SDL_GL_GetCurrentContext" },
+            { &EGL_GetCurrentDisplay, "SDL_EGL_GetCurrentDisplay" },
+            { &EGL_GetCurrentConfig, "SDL_EGL_GetCurrentConfig" },
+            { &EGL_GetWindowSurface, "SDL_EGL_GetWindowSurface" },
+            { &EGL_SetAttributeCallbacks, "SDL_EGL_SetAttributeCallbacks" },
+            { &GL_SetSwapInterval, "SDL_GL_SetSwapInterval" },
+            { &GL_GetSwapInterval, "SDL_GL_GetSwapInterval" },
+            { &GL_SwapWindow, "SDL_GL_SwapWindow" },
+            { &GL_DestroyContext, "SDL_GL_DestroyContext" },
+        }
     })
 }

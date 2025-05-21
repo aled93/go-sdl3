@@ -1,12 +1,11 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&ShouldInit, lib, "SDL_ShouldInit")
-        purego.RegisterLibFunc(&ShouldQuit, lib, "SDL_ShouldQuit")
-        purego.RegisterLibFunc(&SetInitialized, lib, "SDL_SetInitialized")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &ShouldInit, "SDL_ShouldInit" },
+            { &ShouldQuit, "SDL_ShouldQuit" },
+            { &SetInitialized, "SDL_SetInitialized" },
+        }
     })
 }

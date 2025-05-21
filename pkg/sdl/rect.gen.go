@@ -1,19 +1,18 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&HasRectIntersection, lib, "SDL_HasRectIntersection")
-        purego.RegisterLibFunc(&GetRectIntersection, lib, "SDL_GetRectIntersection")
-        purego.RegisterLibFunc(&GetRectUnion, lib, "SDL_GetRectUnion")
-        purego.RegisterLibFunc(&GetRectEnclosingPoints, lib, "SDL_GetRectEnclosingPoints")
-        purego.RegisterLibFunc(&GetRectAndLineIntersection, lib, "SDL_GetRectAndLineIntersection")
-        purego.RegisterLibFunc(&HasRectIntersectionFloat, lib, "SDL_HasRectIntersectionFloat")
-        purego.RegisterLibFunc(&GetRectIntersectionFloat, lib, "SDL_GetRectIntersectionFloat")
-        purego.RegisterLibFunc(&GetRectUnionFloat, lib, "SDL_GetRectUnionFloat")
-        purego.RegisterLibFunc(&GetRectEnclosingPointsFloat, lib, "SDL_GetRectEnclosingPointsFloat")
-        purego.RegisterLibFunc(&GetRectAndLineIntersectionFloat, lib, "SDL_GetRectAndLineIntersectionFloat")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &HasRectIntersection, "SDL_HasRectIntersection" },
+            { &GetRectIntersection, "SDL_GetRectIntersection" },
+            { &GetRectUnion, "SDL_GetRectUnion" },
+            { &GetRectEnclosingPoints, "SDL_GetRectEnclosingPoints" },
+            { &GetRectAndLineIntersection, "SDL_GetRectAndLineIntersection" },
+            { &HasRectIntersectionFloat, "SDL_HasRectIntersectionFloat" },
+            { &GetRectIntersectionFloat, "SDL_GetRectIntersectionFloat" },
+            { &GetRectUnionFloat, "SDL_GetRectUnionFloat" },
+            { &GetRectEnclosingPointsFloat, "SDL_GetRectEnclosingPointsFloat" },
+            { &GetRectAndLineIntersectionFloat, "SDL_GetRectAndLineIntersectionFloat" },
+        }
     })
 }

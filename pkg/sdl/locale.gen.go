@@ -1,10 +1,9 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&GetPreferredLocales, lib, "SDL_GetPreferredLocales")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &GetPreferredLocales, "SDL_GetPreferredLocales" },
+        }
     })
 }

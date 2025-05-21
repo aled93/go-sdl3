@@ -1,27 +1,26 @@
 package sdl
 
-import "github.com/ebitengine/purego"
-
 func init() {
-    registerLoaderFunc(func(lib uintptr) {
-        purego.RegisterLibFunc(&GetNumLogicalCPUCores, lib, "SDL_GetNumLogicalCPUCores")
-        purego.RegisterLibFunc(&GetCPUCacheLineSize, lib, "SDL_GetCPUCacheLineSize")
-        purego.RegisterLibFunc(&HasAltiVec, lib, "SDL_HasAltiVec")
-        purego.RegisterLibFunc(&HasMMX, lib, "SDL_HasMMX")
-        purego.RegisterLibFunc(&HasSSE, lib, "SDL_HasSSE")
-        purego.RegisterLibFunc(&HasSSE2, lib, "SDL_HasSSE2")
-        purego.RegisterLibFunc(&HasSSE3, lib, "SDL_HasSSE3")
-        purego.RegisterLibFunc(&HasSSE41, lib, "SDL_HasSSE41")
-        purego.RegisterLibFunc(&HasSSE42, lib, "SDL_HasSSE42")
-        purego.RegisterLibFunc(&HasAVX, lib, "SDL_HasAVX")
-        purego.RegisterLibFunc(&HasAVX2, lib, "SDL_HasAVX2")
-        purego.RegisterLibFunc(&HasAVX512F, lib, "SDL_HasAVX512F")
-        purego.RegisterLibFunc(&HasARMSIMD, lib, "SDL_HasARMSIMD")
-        purego.RegisterLibFunc(&HasNEON, lib, "SDL_HasNEON")
-        purego.RegisterLibFunc(&HasLSX, lib, "SDL_HasLSX")
-        purego.RegisterLibFunc(&HasLASX, lib, "SDL_HasLASX")
-        purego.RegisterLibFunc(&GetSystemRAM, lib, "SDL_GetSystemRAM")
-        purego.RegisterLibFunc(&GetSIMDAlignment, lib, "SDL_GetSIMDAlignment")
-        
+    registerLoaderFunc(func() []externFunc {
+        return []externFunc {
+            { &GetNumLogicalCPUCores, "SDL_GetNumLogicalCPUCores" },
+            { &GetCPUCacheLineSize, "SDL_GetCPUCacheLineSize" },
+            { &HasAltiVec, "SDL_HasAltiVec" },
+            { &HasMMX, "SDL_HasMMX" },
+            { &HasSSE, "SDL_HasSSE" },
+            { &HasSSE2, "SDL_HasSSE2" },
+            { &HasSSE3, "SDL_HasSSE3" },
+            { &HasSSE41, "SDL_HasSSE41" },
+            { &HasSSE42, "SDL_HasSSE42" },
+            { &HasAVX, "SDL_HasAVX" },
+            { &HasAVX2, "SDL_HasAVX2" },
+            { &HasAVX512F, "SDL_HasAVX512F" },
+            { &HasARMSIMD, "SDL_HasARMSIMD" },
+            { &HasNEON, "SDL_HasNEON" },
+            { &HasLSX, "SDL_HasLSX" },
+            { &HasLASX, "SDL_HasLASX" },
+            { &GetSystemRAM, "SDL_GetSystemRAM" },
+            { &GetSIMDAlignment, "SDL_GetSIMDAlignment" },
+        }
     })
 }
