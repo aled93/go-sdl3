@@ -3,6 +3,7 @@ package wat
 import (
 	"errors"
 	"io"
+	"strconv"
 	"strings"
 )
 
@@ -23,10 +24,8 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 	state := State_Initial
 	root = &AstNode{}
 	curNode := root
-	var lastAttr *AstAttr
 	var lastChild *AstNode
 	var nodeStack []*AstNode
-	var lastAttrStack []*AstAttr
 	var lastChildStack []*AstNode
 
 	for {
@@ -50,6 +49,8 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 				}
 			}
 
+			curNode.ParenOpenToken = &tok
+
 			state = State_NodeName
 
 		case State_NodeName:
@@ -64,6 +65,7 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 				}
 			}
 
+			curNode.NameToken = &tok
 			curNode.Name = tok.Content
 			state = State_NodeInner
 
@@ -71,7 +73,7 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 			// (import "env" ...)
 			//         ^
 
-			var newAttr *AstAttr
+			var newAttr *AstNode
 			switch tok.Kind {
 			case ParenOpen:
 				nodeStack = append(nodeStack, curNode)
@@ -82,12 +84,11 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 				} else {
 					curNode.FirstChild = newNode
 				}
+				lastChild = newNode
 				curNode = newNode
 
 				lastChildStack = append(lastChildStack, lastChild)
 				lastChild = nil
-				lastAttrStack = append(lastAttrStack, lastAttr)
-				lastAttr = nil
 
 				state = State_NodeName
 
@@ -97,63 +98,68 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 					return root, nil
 				}
 
+				curNode.ParenCloseToken = &tok
+
 				curNode = nodeStack[len(nodeStack)-1]
 				nodeStack = nodeStack[:len(nodeStack)-1]
 				lastChild = lastChildStack[len(lastChildStack)-1]
 				lastChildStack = lastChildStack[:len(lastChildStack)-1]
-				lastAttr = lastAttrStack[len(lastAttrStack)-1]
-				lastAttrStack = lastAttrStack[:len(lastAttrStack)-1]
 
 				state = State_NodeInner
 
 			case Keyword:
-				newAttr = &AstAttr{
-					Kind:     AttrKeyword,
-					StrValue: tok.Content,
+				newAttr = &AstNode{
+					Kind:       NodeKind_AttrKeyword,
+					StrValue:   tok.Content,
+					ValueToken: &tok,
 				}
 				fallthrough
 
 			case Identifier:
 				if newAttr == nil {
-					newAttr = &AstAttr{
-						Kind:     AttrIdentifier,
-						StrValue: tok.Content,
+					newAttr = &AstNode{
+						Kind:       NodeKind_AttrIdentifier,
+						StrValue:   tok.Content,
+						ValueToken: &tok,
 					}
 				}
 				fallthrough
 
 			case String:
 				if newAttr == nil {
-					newAttr = &AstAttr{
-						Kind:     AttrString,
-						StrValue: tok.Content,
+					newAttr = &AstNode{
+						Kind:       NodeKind_AttrString,
+						StrValue:   tok.Content,
+						ValueToken: &tok,
 					}
 				}
 				fallthrough
 
 			case DecimalNumber:
 				if newAttr == nil {
-					newAttr = &AstAttr{
-						Kind:     AttrInteger,
-						IntValue: tok.IntValue,
+					newAttr = &AstNode{
+						Kind:       NodeKind_AttrInteger,
+						IntValue:   tok.IntValue,
+						ValueToken: &tok,
 					}
 				}
 				fallthrough
 
 			case FloatNumber:
 				if newAttr == nil {
-					newAttr = &AstAttr{
-						Kind:       AttrFloat,
+					newAttr = &AstNode{
+						Kind:       NodeKind_AttrFloat,
 						FloatValue: tok.FloatValue,
+						ValueToken: &tok,
 					}
 				}
 
-				if lastAttr == nil {
-					curNode.FirstAttr = newAttr
+				if lastChild == nil {
+					curNode.FirstChild = newAttr
 				} else {
-					lastAttr.NextAttr = newAttr
+					lastChild.NextSibling = newAttr
 				}
-				lastAttr = newAttr
+				lastChild = newAttr
 			}
 
 		}
@@ -165,28 +171,74 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 }
 
 type AstNode struct {
-	Name        string
-	FirstAttr   *AstAttr
-	FirstChild  *AstNode
-	NextSibling *AstNode
+	Kind            AstNodeKind
+	Name            string
+	StrValue        string
+	IntValue        int64
+	FloatValue      float64
+	FirstChild      *AstNode
+	NextSibling     *AstNode
+	NameToken       *Token
+	ParenOpenToken  *Token
+	ParenCloseToken *Token
+	ValueToken      *Token
 }
 
-type AstAttrKind int
-
-const (
-	AttrKeyword AstAttrKind = iota
-	AttrIdentifier
-	AttrString
-	AttrInteger
-	AttrFloat
+var escapeStr = strings.NewReplacer(
+	"\t", "\\t",
+	"\n", "\\n",
+	"\r", "\\r",
+	"\\", "\\\\",
+	"\"", "\\\"",
 )
 
-type AstAttr struct {
-	NextAttr   *AstAttr
-	Kind       AstAttrKind
-	StrValue   string
-	IntValue   int64
-	FloatValue float64
+func (n *AstNode) String() string {
+	switch n.Kind {
+	case NodeKind_AttrFloat:
+		return strconv.FormatFloat(n.FloatValue, 'f', 4, 64)
+	case NodeKind_AttrIdentifier:
+		return "$" + n.StrValue
+	case NodeKind_AttrInteger:
+		return strconv.FormatInt(n.IntValue, 10)
+	case NodeKind_AttrKeyword:
+		return n.StrValue
+	case NodeKind_AttrString:
+		return `"` + escapeStr.Replace(n.StrValue) + `"`
+	case NodeKind_SubNode:
+		return "(" + n.Name
+	}
+
+	panic("unhandled AstNodeKind variant")
+}
+
+type AstNodeKind int
+
+const (
+	NodeKind_SubNode AstNodeKind = iota
+	NodeKind_AttrKeyword
+	NodeKind_AttrIdentifier
+	NodeKind_AttrString
+	NodeKind_AttrInteger
+	NodeKind_AttrFloat
+)
+
+func (k AstNodeKind) String() string {
+	switch k {
+	case NodeKind_AttrFloat:
+		return "AttrFloat"
+	case NodeKind_AttrIdentifier:
+		return "AttrIdent"
+	case NodeKind_AttrInteger:
+		return "AttrInt"
+	case NodeKind_AttrKeyword:
+		return "AttrKeyword"
+	case NodeKind_AttrString:
+		return "AttrString"
+	case NodeKind_SubNode:
+		return "Subnode"
+	}
+
+	panic("unhandled AstNodeKind variant")
 }
 
 type UnexpectedToken struct {

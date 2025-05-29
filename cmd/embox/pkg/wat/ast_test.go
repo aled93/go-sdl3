@@ -1,12 +1,13 @@
 package wat
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
 
 func TestAstParseSimpleWat(t *testing.T) {
-	src := `(module (import "js" "print" (func (param i32) ) ) )`
+	src := `(module (import "js" "print" (func (param i32) (result i32) ) ) )`
 
 	astRoot, err := parseAst(strings.NewReader(src))
 	if err != nil {
@@ -17,7 +18,51 @@ func TestAstParseSimpleWat(t *testing.T) {
 		}
 	}
 
-	printNode(astRoot, t)
+	expectedAst := &AstNode{
+		Kind: NodeKind_SubNode,
+		Name: "module",
+		FirstChild: &AstNode{
+			Kind: NodeKind_SubNode,
+			Name: "import",
+			FirstChild: astNodeChain(
+				&AstNode{
+					Kind:     NodeKind_AttrString,
+					StrValue: "js",
+				},
+				&AstNode{
+					Kind:     NodeKind_AttrString,
+					StrValue: "print",
+				},
+				&AstNode{
+					Kind: NodeKind_SubNode,
+					Name: "func",
+					FirstChild: astNodeChain(
+						&AstNode{
+							Kind: NodeKind_SubNode,
+							Name: "param",
+							FirstChild: &AstNode{
+								Kind:     NodeKind_AttrKeyword,
+								StrValue: "i32",
+							},
+						},
+						&AstNode{
+							Kind: NodeKind_SubNode,
+							Name: "result",
+							FirstChild: &AstNode{
+								Kind:     NodeKind_AttrKeyword,
+								StrValue: "i32",
+							},
+						},
+					),
+				},
+			),
+		},
+	}
+
+	if err, tok := compareNodes(expectedAst, astRoot); err != nil {
+		code, arrow := getTokenContext(src, tok)
+		t.Error("got wrong ast:", err, "\n| "+code+"\n| "+arrow)
+	}
 }
 
 func TestAstParseSDL3Wat(t *testing.T) {
@@ -37,26 +82,120 @@ func TestAstParseSDL3Wat(t *testing.T) {
 	printNode(astRoot, t)
 }
 
-func printNode(curNode *AstNode, t *testing.T) {
-	t.Logf("(%s", curNode.Name)
-	for attr := curNode.FirstAttr; attr != nil; attr = attr.NextAttr {
-		switch attr.Kind {
-		case AttrFloat:
-			t.Logf(" %f", attr.FloatValue)
-		case AttrIdentifier:
-			t.Logf(" $%s", attr.StrValue)
-		case AttrInteger:
-			t.Logf(" %d", attr.IntValue)
-		case AttrKeyword:
-			t.Logf(" %s", attr.StrValue)
-		case AttrString:
-			t.Logf(" %#v", attr.StrValue)
-		}
+func astNodeChain(nodes ...*AstNode) *AstNode {
+	if len(nodes) == 0 {
+		return nil
 	}
 
+	for i := 0; i+1 < len(nodes); i++ {
+		nodes[i].NextSibling = nodes[i+1]
+	}
+
+	return nodes[0]
+}
+
+func getTokenContext(input string, tok *Token) (line, arrow string) {
+	lo := max(0, tok.Pos-32)
+	hi := min(len(input), tok.Pos+32)
+
+	return input[lo:hi], strings.Repeat(" ", tok.Pos-lo) + "^"
+}
+
+func compareNodes(expected, got *AstNode) (error, *Token) {
+	if expected.Kind != got.Kind {
+		return fmt.Errorf("expected node %s (%s), got %s (%s)", expected, expected.Kind, got, got.Kind), got.ParenOpenToken
+	}
+
+	switch got.Kind {
+	case NodeKind_AttrFloat:
+		if expected.Kind != NodeKind_AttrFloat {
+			return fmt.Errorf("expected float attribute with value \"%f\", got \"%s\"", expected.FloatValue, got), got.ValueToken
+		}
+
+		if expected.FloatValue != got.FloatValue {
+			return fmt.Errorf("expected float attribute with value %f, got %f", expected.FloatValue, got.FloatValue), got.ValueToken
+		}
+	case NodeKind_AttrIdentifier:
+		if expected.Kind != NodeKind_AttrIdentifier {
+			return fmt.Errorf("expected identifier attribute \"%s\", got \"%s\"", expected, got), got.ValueToken
+		}
+
+		if expected.StrValue != got.StrValue {
+			return fmt.Errorf("expected identifier %s, got %s", expected, got), got.ValueToken
+		}
+	case NodeKind_AttrInteger:
+		if expected.Kind != NodeKind_AttrInteger {
+			return fmt.Errorf("expected integer attribute with value %d, got %s", expected.IntValue, got), got.ValueToken
+		}
+
+		if expected.IntValue != got.IntValue {
+			return fmt.Errorf("expected integer attribute with value %s, got %s", expected, got), got.ValueToken
+		}
+
+	case NodeKind_AttrKeyword:
+		if expected.Kind != NodeKind_AttrKeyword {
+			return fmt.Errorf("expected keyword attribute %s, got %s", expected, got), got.ValueToken
+		}
+
+		if expected.StrValue != got.StrValue {
+			return fmt.Errorf("expected keyword %s, got %s", expected.StrValue, got.StrValue), got.ValueToken
+		}
+	case NodeKind_AttrString:
+		if expected.Kind != NodeKind_AttrString {
+			return fmt.Errorf("expected string attribute %s, got %s", expected, got), got.ValueToken
+		}
+
+		if expected.StrValue != got.StrValue {
+			return fmt.Errorf("expected string %s, got %s", expected.StrValue, got.StrValue), got.ValueToken
+		}
+
+	case NodeKind_SubNode:
+		if expected.Name != got.Name {
+			return fmt.Errorf("expected node name \"%s\", got \"%s\"", expected.Name, got.Name), got.NameToken
+		}
+
+		expSubnode := expected.FirstChild
+		gotSubnode := got.FirstChild
+		for {
+			if expSubnode == nil && gotSubnode != nil {
+				return fmt.Errorf("got extra subnode \"%s\"", gotSubnode.Kind), got.ValueToken
+			} else if expSubnode != nil && gotSubnode == nil {
+				return fmt.Errorf("expected node \"%s\", got nothing", expSubnode.Kind), got.ValueToken
+			} else if expSubnode == nil {
+				break
+			} else if err, tok := compareNodes(expSubnode, gotSubnode); err != nil {
+				return err, tok
+			}
+
+			expSubnode = expSubnode.NextSibling
+			gotSubnode = gotSubnode.NextSibling
+		}
+
+	default:
+		panic(fmt.Sprintf("unexpected wat.AstNodeKind: %#v", got.Kind))
+	}
+
+	return nil, nil
+}
+
+func printNode(curNode *AstNode, t *testing.T) {
+	t.Logf("(%s", curNode.Name)
 	for child := curNode.FirstChild; child != nil; child = child.NextSibling {
-		t.Log("\n")
-		printNode(child, t)
+		switch child.Kind {
+		case NodeKind_SubNode:
+			printNode(child, t)
+
+		case NodeKind_AttrFloat:
+			t.Logf(" %f", child.FloatValue)
+		case NodeKind_AttrIdentifier:
+			t.Logf(" $%s", child.StrValue)
+		case NodeKind_AttrInteger:
+			t.Logf(" %d", child.IntValue)
+		case NodeKind_AttrKeyword:
+			t.Logf(" %s", child.StrValue)
+		case NodeKind_AttrString:
+			t.Logf(" %#v", child.StrValue)
+		}
 	}
 
 	t.Log(")")
