@@ -1,6 +1,6 @@
 package wasm
 
-type PlainInstruction struct {
+type InstructionInfo struct {
 	Opcode   uint32
 	Name     string
 	Operands []Oper
@@ -11,7 +11,8 @@ type PlainInstruction struct {
 type Oper uint8
 
 const (
-	Oper_Ref Oper = iota // $g0, 1
+	Oper_Special Oper = iota // for control instructions
+	Oper_Ref                 // $g0, 1
 	Oper_T1
 	Oper_T2
 	Oper_ConstI32
@@ -45,11 +46,95 @@ var (
 
 // list of basic instructions, i.e. instructions
 // with fixed inputs and outputs
-var BasicInstructions = []PlainInstruction{
+var BasicInstructions = []InstructionInfo{
+	{
+		Opcode:   0x00,
+		Name:     "unreachable",
+		Operands: []Oper{Oper_Special},
+		StackIn:  nil,
+		StackOut: nil,
+	},
 	{
 		Opcode:   0x01,
 		Name:     "nop",
 		Operands: nil,
+		StackIn:  nil,
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x02,
+		Name:     "block",
+		Operands: []Oper{Oper_Special},
+		StackIn:  nil,
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x03,
+		Name:     "loop",
+		Operands: []Oper{Oper_Special},
+		StackIn:  nil,
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x04,
+		Name:     "if",
+		Operands: []Oper{Oper_Special},
+		StackIn:  []Type{Type_i32},
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x05,
+		Name:     "if",
+		Operands: nil,
+		StackIn:  nil,
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x0B,
+		Name:     "end",
+		Operands: nil,
+		StackIn:  nil,
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x0C,
+		Name:     "br",
+		Operands: []Oper{Oper_Ref},
+		StackIn:  nil,
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x0D,
+		Name:     "br_if",
+		Operands: []Oper{Oper_Ref},
+		StackIn:  []Type{Type_i32},
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x0E,
+		Name:     "br_table",
+		Operands: []Oper{Oper_Special},
+		StackIn:  []Type{Type_i32},
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x0F,
+		Name:     "return",
+		Operands: nil,
+		StackIn:  []Type{t1},
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x10,
+		Name:     "call",
+		Operands: []Oper{Oper_Ref},
+		StackIn:  nil,
+		StackOut: nil,
+	},
+	{
+		Opcode:   0x0F,
+		Name:     "call_indirect",
+		Operands: []Oper{Oper_Ref, Oper_Ref},
 		StackIn:  nil,
 		StackOut: nil,
 	},
