@@ -1,5 +1,17 @@
 package wasm
 
+type Type interface {
+	isType()
+}
+
+type ImportableType interface {
+	isImportableType()
+}
+
+type ExportableType interface {
+	isExportableType()
+}
+
 type NumberType uint8
 
 const (
@@ -32,9 +44,8 @@ func (VectorType) isValueType() {}
 func (RefType) isType()         {}
 func (RefType) isValueType()    {}
 
-type Function struct {
-	Params  []Param
-	Results []Result
+type FuncType struct {
+	FuncSignature
 }
 
 type Param struct {
@@ -47,27 +58,14 @@ type Result struct {
 	Type Type
 }
 
-type Limits struct {
-	Min     uint32
-	Max     uint32
-	HaveMax bool
-}
+func (FuncType) isType() {}
 
-type Memory struct {
-	Limits Limits
-}
+func (FuncType) isImportableType() {}
+func (Memory) isImportableType()   {}
+func (Table) isImportableType()    {}
+func (Global) isImportableType()   {}
 
-type Table struct {
-	Limits  Limits
-	Element RefType
-}
-
-type GlobalType struct {
-	Type    ValueType
-	Mutable bool
-}
-
-func (Function) isType()   {}
-func (Memory) isType()     {}
-func (Table) isType()      {}
-func (GlobalType) isType() {}
+func (FuncType) isExportableType() {}
+func (Memory) isExportableType()   {}
+func (Table) isExportableType()    {}
+func (Global) isExportableType()   {}
