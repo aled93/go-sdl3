@@ -7,6 +7,7 @@ import (
 	"sdl3/cmd/embox/pkg/wasm"
 	"sdl3/cmd/embox/pkg/wat/internal/ast"
 	"sdl3/cmd/embox/pkg/wat/internal/matcher"
+	"sdl3/cmd/embox/pkg/wat/internal/tuple"
 )
 
 var (
@@ -39,7 +40,7 @@ func ParseModule(r io.Reader, opts *ParseOptions) (*wasm.Module, error) {
 }
 
 var (
-	module = matcher.OneOf(
+	module = matcher.OneOf2(
 		matcher.NamedSubnode("module", moduleInner),
 		moduleInner,
 	)
@@ -48,23 +49,23 @@ var (
 		typedef,
 	)
 
-	typedef = matcher.NamedSubnode("type", matcher.Sequence(
+	typedef = matcher.NamedSubnode("type", matcher.Sequence2(
 		matcher.Optional(id),
 		functype,
 	))
 
-	id = matcher.OneOf(
+	id = matcher.OneOf2(
 		matcher.Identifier(),
 		matcher.Int(),
 	)
 
-	functype = matcher.NamedSubnode("func", matcher.Sequence(
+	functype = matcher.NamedSubnode("func", matcher.Sequence2(
 		matcher.Repeat(param),
 		matcher.Repeat(result),
 	))
 
-	param = matcher.NamedSubnode("param", matcher.OneOf(
-		matcher.Sequence(
+	param = matcher.NamedSubnode("param", matcher.OneOf2(
+		matcher.Sequence2(
 			id,
 			valtype,
 		),
@@ -73,39 +74,48 @@ var (
 
 	result = matcher.NamedSubnode("result", matcher.RepeatAtLeast(1, valtype))
 
-	numtype = matcher.OneOf(
-		matcher.KeywordExact("i32"),
-		matcher.KeywordExact("i64"),
-		matcher.KeywordExact("f32"),
-		matcher.KeywordExact("f64"),
-	).Transform(func(in any) any {
-		switch in.(*ast.Node).StrValue {
-		case "i32":
-			return wasm.Type_i32
-		case "i64":
-			return wasm.Type_i64
-		case "f32":
-			return wasm.Type_f32
-		}
-		return wasm.Type_f64
-	})
+	numtype = matcher.Transform(
+		matcher.OneOf4(
+			matcher.KeywordExact("i32"),
+			matcher.KeywordExact("i64"),
+			matcher.KeywordExact("f32"),
+			matcher.KeywordExact("f64"),
+		),
+		func(in tuple.Of5[*ast.Node, *ast.Node, *ast.Node, *ast.Node, int]) wasm.NumberType {
+			switch in.M5 {
+			case 1:
+				return wasm.Type_i32
+			case 2:
+				return wasm.Type_i64
+			case 3:
+				return wasm.Type_f32
+			}
+			return wasm.Type_f64
+		},
+	)
 
-	vectype = matcher.KeywordExact("v128").Transform(func(in any) any {
-		return wasm.Type_v128
-	})
+	vectype = matcher.Transform(
+		matcher.KeywordExact("v128"),
+		func(in *ast.Node) wasm.VectorType {
+			return wasm.Type_v128
+		},
+	)
 
-	reftype = matcher.OneOf(
-		matcher.KeywordExact("funcref"),
-		matcher.KeywordExact("externref"),
-	).Transform(func(in any) any {
-		if in.(*ast.Node).StrValue == "funcref" {
-			return wasm.Type_FuncRef
-		} else {
-			return wasm.Type_ExternRef
-		}
-	})
+	reftype = matcher.Transform(
+		matcher.OneOf2(
+			matcher.KeywordExact("funcref"),
+			matcher.KeywordExact("externref"),
+		),
+		func(in tuple.Of3[*ast.Node, *ast.Node, int]) wasm.RefType {
+			if in.M3 == 1 {
+				return wasm.Type_FuncRef
+			} else {
+				return wasm.Type_ExternRef
+			}
+		},
+	)
 
-	valtype = matcher.OneOf(
+	valtype = matcher.OneOf3(
 		numtype,
 		vectype,
 		reftype,

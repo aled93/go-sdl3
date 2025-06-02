@@ -4,17 +4,18 @@ import (
 	"math"
 	"regexp"
 	"sdl3/cmd/embox/pkg/wat/internal/ast"
+	"sdl3/cmd/embox/pkg/wat/internal/tuple"
 )
 
-func Subnode(inner Matcher) *subnodeMatcher {
-	return &subnodeMatcher{
+func Subnode[T any](inner Matcher[T]) *subnodeMatcher[T] {
+	return &subnodeMatcher[T]{
 		inner: inner,
 	}
 }
 
 // NamedSubnode matches subnode with exact name
-func NamedSubnode(name string, inner Matcher) *subnodeMatcher {
-	return &subnodeMatcher{
+func NamedSubnode[T any](name string, inner Matcher[T]) *subnodeMatcher[T] {
+	return &subnodeMatcher[T]{
 		inner:     inner,
 		exactName: true,
 		name:      name,
@@ -22,12 +23,12 @@ func NamedSubnode(name string, inner Matcher) *subnodeMatcher {
 }
 
 // NamePatternSubnode matches subnode testing name against regexp pattern
-func NamePatternSubnode(namePattern *regexp.Regexp, inner Matcher) *subnodeMatcher {
+func NamePatternSubnode[T any](namePattern *regexp.Regexp, inner Matcher[T]) *subnodeMatcher[T] {
 	if namePattern == nil {
 		panic("namePattern is nil")
 	}
 
-	return &subnodeMatcher{
+	return &subnodeMatcher[T]{
 		inner: inner,
 		ptrn:  namePattern,
 	}
@@ -124,36 +125,90 @@ func IntRange(min, max int64) *attr {
 }
 
 // Sequence matches seq in exact provided order
-func Sequence(seq ...Matcher) *sequence {
-	return &sequence{
-		seq: seq,
+func Sequence2[T1, T2 any](m1 Matcher[T1], m2 Matcher[T2]) *sequence2[T1, T2] {
+	return &sequence2[T1, T2]{
+		m1: m1,
+		m2: m2,
+	}
+}
+
+func Sequence3[T1, T2, T3 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3]) *sequence3[T1, T2, T3] {
+	return &sequence3[T1, T2, T3]{
+		m1: m1,
+		m2: m2,
+		m3: m3,
+	}
+}
+
+func Sequence4[T1, T2, T3, T4 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3], m4 Matcher[T4]) *sequence4[T1, T2, T3, T4] {
+	return &sequence4[T1, T2, T3, T4]{
+		m1: m1,
+		m2: m2,
+		m3: m3,
+		m4: m4,
 	}
 }
 
 // Optional can match m
-func Optional(m Matcher) *optional {
-	return &optional{
+func Optional[T any](m Matcher[T]) *optional[T] {
+	return &optional[T]{
 		submatcher: m,
 	}
 }
 
 // OneOf matches one of variants
-func OneOf(variants ...Matcher) *oneOf {
-	return &oneOf{
-		variants: variants,
+func OneOf2[T1, T2 any](v1 Matcher[T1], v2 Matcher[T2]) *oneOf2[T1, T2] {
+	return &oneOf2[T1, T2]{
+		v1: v1,
+		v2: v2,
+	}
+}
+
+func OneOf3[T1, T2, T3 any](v1 Matcher[T1], v2 Matcher[T2], v3 Matcher[T3]) *oneOf3[T1, T2, T3] {
+	return &oneOf3[T1, T2, T3]{
+		v1: v1,
+		v2: v2,
+		v3: v3,
+	}
+}
+
+func OneOf4[T1, T2, T3, T4 any](v1 Matcher[T1], v2 Matcher[T2], v3 Matcher[T3], v4 Matcher[T4]) *oneOf4[T1, T2, T3, T4] {
+	return &oneOf4[T1, T2, T3, T4]{
+		v1: v1,
+		v2: v2,
+		v3: v3,
+		v4: v4,
 	}
 }
 
 // All matches all variants in any order
-func All(variants ...Matcher) *matchAll {
-	return &matchAll{
-		submatchers: variants,
+func All2[T1, T2 any](m1 Matcher[T1], m2 Matcher[T2]) *matchAll2[T1, T2] {
+	return &matchAll2[T1, T2]{
+		m1: m1,
+		m2: m2,
+	}
+}
+
+func All3[T1, T2, T3 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3]) *matchAll3[T1, T2, T3] {
+	return &matchAll3[T1, T2, T3]{
+		m1: m1,
+		m2: m2,
+		m3: m3,
+	}
+}
+
+func All4[T1, T2, T3, T4 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3], m4 Matcher[T4]) *matchAll4[T1, T2, T3, T4] {
+	return &matchAll4[T1, T2, T3, T4]{
+		m1: m1,
+		m2: m2,
+		m3: m3,
+		m4: m4,
 	}
 }
 
 // Repeat matches m any number of time
-func Repeat(m Matcher) *repeat {
-	return &repeat{
+func Repeat[T any](m Matcher[T]) *repeat[T] {
+	return &repeat[T]{
 		matcher:    m,
 		minRepeats: 0,
 		maxRepeats: math.MaxInt,
@@ -161,8 +216,8 @@ func Repeat(m Matcher) *repeat {
 }
 
 // RepeatExact matches m exact n times
-func RepeatExact(n int, m Matcher) *repeat {
-	return &repeat{
+func RepeatExact[T any](n int, m Matcher[T]) *repeat[T] {
+	return &repeat[T]{
 		matcher:    m,
 		minRepeats: n,
 		maxRepeats: n,
@@ -170,8 +225,8 @@ func RepeatExact(n int, m Matcher) *repeat {
 }
 
 // RepeatAtLeast matches m at least minRepeats times
-func RepeatAtLeast(minRepeats int, m Matcher) *repeat {
-	return &repeat{
+func RepeatAtLeast[T any](minRepeats int, m Matcher[T]) *repeat[T] {
+	return &repeat[T]{
 		matcher:    m,
 		minRepeats: minRepeats,
 		maxRepeats: math.MaxInt,
@@ -180,26 +235,33 @@ func RepeatAtLeast(minRepeats int, m Matcher) *repeat {
 
 // RepeatRange matches m at least minRepeats times
 // but no more that maxRepeats
-func RepeatRange(minRepeats, maxRepeats int, m Matcher) *repeat {
-	return &repeat{
+func RepeatRange[T any](minRepeats, maxRepeats int, m Matcher[T]) *repeat[T] {
+	return &repeat[T]{
 		matcher:    m,
 		minRepeats: minRepeats,
 		maxRepeats: maxRepeats,
 	}
 }
 
-type Matcher interface {
-	TryMatch(c *Cursor) (any, bool)
+func Transform[In, Out any](m Matcher[In], transformer func(in In) Out) *transform[In, Out] {
+	return &transform[In, Out]{
+		m: m,
+		f: transformer,
+	}
+}
+
+type Matcher[Out any] interface {
+	TryMatch(c *Cursor) (Out, bool)
 }
 
 type MatcherBase struct{}
 
-type subnodeMatcher struct {
+type subnodeMatcher[T any] struct {
 	MatcherBase
 	exactName bool
 	name      string
 	ptrn      *regexp.Regexp
-	inner     Matcher
+	inner     Matcher[T]
 }
 
 type attr struct {
@@ -211,65 +273,108 @@ type attr struct {
 	maxInt   int64
 }
 
-type sequence struct {
+type sequence2[T1, T2 any] struct {
 	MatcherBase
-	seq []Matcher
+	m1 Matcher[T1]
+	m2 Matcher[T2]
 }
 
-type optional struct {
+type sequence3[T1, T2, T3 any] struct {
 	MatcherBase
-	submatcher Matcher
+	m1 Matcher[T1]
+	m2 Matcher[T2]
+	m3 Matcher[T3]
 }
 
-type oneOf struct {
+type sequence4[T1, T2, T3, T4 any] struct {
 	MatcherBase
-	variants []Matcher
+	m1 Matcher[T1]
+	m2 Matcher[T2]
+	m3 Matcher[T3]
+	m4 Matcher[T4]
 }
 
-type matchAll struct {
+type optional[T any] struct {
 	MatcherBase
-	submatchers []Matcher
+	submatcher Matcher[T]
 }
 
-type repeat struct {
+type oneOf2[T1, T2 any] struct {
 	MatcherBase
-	matcher    Matcher
+	v1 Matcher[T1]
+	v2 Matcher[T2]
+}
+
+type oneOf3[T1, T2, T3 any] struct {
+	MatcherBase
+	v1 Matcher[T1]
+	v2 Matcher[T2]
+	v3 Matcher[T3]
+}
+
+type oneOf4[T1, T2, T3, T4 any] struct {
+	MatcherBase
+	v1 Matcher[T1]
+	v2 Matcher[T2]
+	v3 Matcher[T3]
+	v4 Matcher[T4]
+}
+
+type matchAll2[T1, T2 any] struct {
+	MatcherBase
+	m1 Matcher[T1]
+	m2 Matcher[T2]
+}
+
+type matchAll3[T1, T2, T3 any] struct {
+	MatcherBase
+	m1 Matcher[T1]
+	m2 Matcher[T2]
+	m3 Matcher[T3]
+}
+
+type matchAll4[T1, T2, T3, T4 any] struct {
+	MatcherBase
+	m1 Matcher[T1]
+	m2 Matcher[T2]
+	m3 Matcher[T3]
+	m4 Matcher[T4]
+}
+
+type repeat[T any] struct {
+	MatcherBase
+	matcher    Matcher[T]
 	minRepeats int
 	maxRepeats int
 }
 
-type transform struct {
-	f func(any) any
+type transform[In, Out any] struct {
+	m Matcher[In]
+	f func(In) Out
 }
 
-func (m *MatcherBase) Transform(transformer func(in any) any) *transform {
-	return &transform{
-		f: transformer,
-	}
-}
-
-func (m *subnodeMatcher) TryMatch(c *Cursor) (any, bool) {
+func (m *subnodeMatcher[T]) TryMatch(c *Cursor) (res T, ok bool) {
 	node := c.Node()
 
 	if node.Kind != ast.NodeKind_SubNode {
-		return nil, false
+		return res, false
 	}
 
 	if m.exactName && node.Name != m.name {
-		return nil, false
+		return res, false
 	} else if m.ptrn != nil && !m.ptrn.MatchString(node.Name) {
-		return nil, false
+		return res, false
 	}
 
 	cp := c.Mark()
 	c.EnterChildren()
-	var res any
 
 	if m.inner != nil {
-		var ok bool
-		if res, ok = m.inner.TryMatch(c); !ok {
+		if innerRes, ok := m.inner.TryMatch(c); !ok {
 			c.Reset(cp)
-			return nil, false
+			return res, false
+		} else {
+			res = innerRes
 		}
 	}
 
@@ -279,7 +384,7 @@ func (m *subnodeMatcher) TryMatch(c *Cursor) (any, bool) {
 	return res, true
 }
 
-func (a *attr) TryMatch(c *Cursor) (any, bool) {
+func (a *attr) TryMatch(c *Cursor) (*ast.Node, bool) {
 	node := c.Node()
 
 	if node.Kind != a.kind {
@@ -307,96 +412,332 @@ func (a *attr) TryMatch(c *Cursor) (any, bool) {
 	return nil, false
 }
 
-func (s *sequence) TryMatch(c *Cursor) (any, bool) {
+func (s *sequence2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], ok bool) {
 	cp := c.Mark()
-	ress := []any{}
 
-	for i, m := range s.seq {
-		if res, ok := m.TryMatch(c); ok {
-			ress = append(ress, res)
-			if !c.GotoNextSibling() && i < len(s.seq)-1 {
-				c.Reset(cp)
-				return nil, false
-			}
-		} else {
+	if m1Res, ok := s.m1.TryMatch(c); ok {
+		res.M1 = m1Res
+		if !c.GotoNextSibling() {
 			c.Reset(cp)
-			return nil, false
+			return res, false
 		}
+	} else {
+		c.Reset(cp)
+		return res, false
 	}
 
-	return ress, true
+	if m2Res, ok := s.m2.TryMatch(c); ok {
+		res.M2 = m2Res
+		c.GotoNextSibling()
+	} else {
+		c.Reset(cp)
+		return res, false
+	}
+
+	return res, true
 }
 
-func (o *optional) TryMatch(c *Cursor) (any, bool) {
+func (s *sequence3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], ok bool) {
+	cp := c.Mark()
+
+	if m1Res, ok := s.m1.TryMatch(c); ok {
+		res.M1 = m1Res
+		if !c.GotoNextSibling() {
+			c.Reset(cp)
+			return res, false
+		}
+	} else {
+		c.Reset(cp)
+		return res, false
+	}
+
+	if m2Res, ok := s.m2.TryMatch(c); ok {
+		res.M2 = m2Res
+		if !c.GotoNextSibling() {
+			c.Reset(cp)
+			return res, false
+		}
+	} else {
+		c.Reset(cp)
+		return res, false
+	}
+
+	if m3Res, ok := s.m3.TryMatch(c); ok {
+		res.M3 = m3Res
+		c.GotoNextSibling()
+	} else {
+		c.Reset(cp)
+		return res, false
+	}
+
+	return res, true
+}
+
+func (s *sequence4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, T4], ok bool) {
+	cp := c.Mark()
+
+	if m1Res, ok := s.m1.TryMatch(c); ok {
+		res.M1 = m1Res
+		if !c.GotoNextSibling() {
+			c.Reset(cp)
+			return res, false
+		}
+	} else {
+		c.Reset(cp)
+		return res, false
+	}
+
+	if m2Res, ok := s.m2.TryMatch(c); ok {
+		res.M2 = m2Res
+		if !c.GotoNextSibling() {
+			c.Reset(cp)
+			return res, false
+		}
+	} else {
+		c.Reset(cp)
+		return res, false
+	}
+
+	if m3Res, ok := s.m3.TryMatch(c); ok {
+		res.M3 = m3Res
+		if !c.GotoNextSibling() {
+			c.Reset(cp)
+			return res, false
+		}
+	} else {
+		c.Reset(cp)
+		return res, false
+	}
+
+	if m4Res, ok := s.m4.TryMatch(c); ok {
+		res.M4 = m4Res
+		c.GotoNextSibling()
+	} else {
+		c.Reset(cp)
+		return res, false
+	}
+
+	return res, true
+}
+
+func (o *optional[T]) TryMatch(c *Cursor) (T, bool) {
 	if res, ok := o.submatcher.TryMatch(c); ok {
 		return res, true
 	}
 
-	return nil, true
+	var zeroT T
+	return zeroT, true
 }
 
-func (a *oneOf) TryMatch(c *Cursor) (any, bool) {
+func (a *oneOf2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, int], ok bool) {
 	cp := c.Mark()
 
-	for _, m := range a.variants {
-		if res, ok := m.TryMatch(c); ok {
-			return res, true
-		}
-
-		c.Reset(cp)
+	if mRes, ok := a.v1.TryMatch(c); ok {
+		return tuple.New3(mRes, *new(T2), 1), true
 	}
 
-	return nil, false
+	if mRes, ok := a.v2.TryMatch(c); ok {
+		return tuple.New3(*new(T1), mRes, 2), true
+	}
+
+	c.Reset(cp)
+
+	return res, false
 }
 
-func (a *matchAll) TryMatch(c *Cursor) (any, bool) {
+func (a *oneOf3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, int], ok bool) {
 	cp := c.Mark()
-	ress := []any{}
 
-outter:
-	for len(ress) < len(a.submatchers) {
-		for _, m := range a.submatchers {
-			if res, ok := m.TryMatch(c); ok {
-				ress = append(ress, res)
-				c.GotoNextSibling()
-				continue outter
+	if mRes, ok := a.v1.TryMatch(c); ok {
+		return tuple.New4(mRes, *new(T2), *new(T3), 1), true
+	}
+
+	if mRes, ok := a.v2.TryMatch(c); ok {
+		return tuple.New4(*new(T1), mRes, *new(T3), 2), true
+	}
+
+	if mRes, ok := a.v3.TryMatch(c); ok {
+		return tuple.New4(*new(T1), *new(T2), mRes, 3), true
+	}
+
+	c.Reset(cp)
+
+	return res, false
+}
+
+func (a *oneOf4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of5[T1, T2, T3, T4, int], ok bool) {
+	cp := c.Mark()
+
+	if mRes, ok := a.v1.TryMatch(c); ok {
+		return tuple.New5(mRes, *new(T2), *new(T3), *new(T4), 1), true
+	}
+
+	if mRes, ok := a.v2.TryMatch(c); ok {
+		return tuple.New5(*new(T1), mRes, *new(T3), *new(T4), 2), true
+	}
+
+	if mRes, ok := a.v3.TryMatch(c); ok {
+		return tuple.New5(*new(T1), *new(T2), mRes, *new(T4), 3), true
+	}
+
+	if mRes, ok := a.v4.TryMatch(c); ok {
+		return tuple.New5(*new(T1), *new(T2), *new(T3), mRes, 4), true
+	}
+
+	c.Reset(cp)
+
+	return res, false
+}
+
+func (a *matchAll2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], ok bool) {
+	cp := c.Mark()
+
+	for i := range res.Size() {
+		isLast := i == res.Size()-1
+
+		if mRes, ok := a.m1.TryMatch(c); ok {
+			res.M1 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
 			}
+			continue
+		}
+
+		if mRes, ok := a.m2.TryMatch(c); ok {
+			res.M2 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
+			}
+			continue
 		}
 
 		c.Reset(cp)
-		return nil, false
+		return res, false
 	}
 
-	return ress, true
+	return res, true
 }
 
-func (r *repeat) TryMatch(c *Cursor) (any, bool) {
+func (a *matchAll3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], ok bool) {
 	cp := c.Mark()
 
-	var ress []any
+	for i := range res.Size() {
+		isLast := i == res.Size()-1
+
+		if mRes, ok := a.m1.TryMatch(c); ok {
+			res.M1 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
+			}
+			continue
+		}
+
+		if mRes, ok := a.m2.TryMatch(c); ok {
+			res.M2 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
+			}
+			continue
+		}
+
+		if mRes, ok := a.m3.TryMatch(c); ok {
+			res.M3 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
+			}
+			continue
+		}
+
+		c.Reset(cp)
+		return res, false
+	}
+
+	return res, true
+}
+
+func (a *matchAll4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, T4], ok bool) {
+	cp := c.Mark()
+
+	for i := range res.Size() {
+		isLast := i == res.Size()-1
+
+		if mRes, ok := a.m1.TryMatch(c); ok {
+			res.M1 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
+			}
+			continue
+		}
+
+		if mRes, ok := a.m2.TryMatch(c); ok {
+			res.M2 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
+			}
+			continue
+		}
+
+		if mRes, ok := a.m3.TryMatch(c); ok {
+			res.M3 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
+			}
+			continue
+		}
+
+		if mRes, ok := a.m4.TryMatch(c); ok {
+			res.M4 = mRes
+			if !c.GotoNextSibling() && !isLast {
+				c.Reset(cp)
+				return res, false
+			}
+			continue
+		}
+
+		c.Reset(cp)
+		return res, false
+	}
+
+	return res, true
+}
+
+func (r *repeat[T]) TryMatch(c *Cursor) (res []T, ok bool) {
+	cp := c.Mark()
 
 	for range r.maxRepeats {
-		res, ok := r.matcher.TryMatch(c)
+		mRes, ok := r.matcher.TryMatch(c)
 
 		if !ok {
 			break
 		}
 
-		ress = append(ress, res)
+		res = append(res, mRes)
 
-		if len(ress) > r.maxRepeats {
+		if len(res) > r.maxRepeats {
 			break
 		}
 	}
 
-	if len(ress) < r.minRepeats {
+	if len(res) < r.minRepeats {
 		c.Reset(cp)
 		return nil, false
 	}
 
-	return ress, true
+	return res, true
 }
 
-func (t *transform) TryMatch(c *Cursor) (any, bool) {
-	return t.f(c.Node()), true
+func (t *transform[In, Out]) TryMatch(c *Cursor) (res Out, ok bool) {
+	if mRes, ok := t.m.TryMatch(c); !ok {
+		return res, false
+	} else {
+		return t.f(mRes), true
+	}
 }
