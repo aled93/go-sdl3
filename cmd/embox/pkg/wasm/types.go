@@ -54,7 +54,6 @@ type Param struct {
 }
 
 type Result struct {
-	Name string
 	Type Type
 }
 

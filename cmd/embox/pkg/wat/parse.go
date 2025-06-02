@@ -40,39 +40,106 @@ func ParseModule(r io.Reader, opts *ParseOptions) (*wasm.Module, error) {
 }
 
 var (
-	module = matcher.OneOf2(
-		matcher.NamedSubnode("module", moduleInner),
-		moduleInner,
-	)
-
-	moduleInner = matcher.RepeatAtLeast(0,
-		typedef,
-	)
-
-	typedef = matcher.NamedSubnode("type", matcher.Sequence2(
-		matcher.Optional(id),
-		functype,
-	))
-
-	id = matcher.OneOf2(
-		matcher.Identifier(),
-		matcher.Int(),
-	)
-
-	functype = matcher.NamedSubnode("func", matcher.Sequence2(
-		matcher.Repeat(param),
-		matcher.Repeat(result),
-	))
-
-	param = matcher.NamedSubnode("param", matcher.OneOf2(
-		matcher.Sequence2(
-			id,
-			valtype,
+	module = matcher.Transform(
+		matcher.OneOf2(
+			matcher.NamedSubnode("module", moduleInner),
+			moduleInner,
 		),
-		matcher.RepeatAtLeast(1, valtype),
-	))
+		func(in tuple.Of3[wasm.Module, wasm.Module, int]) wasm.Module {
+			if in.M3 == 1 {
+				return in.M1
+			}
+			return in.M2
+		},
+	)
 
-	result = matcher.NamedSubnode("result", matcher.RepeatAtLeast(1, valtype))
+	moduleInner = matcher.Transform(
+		matcher.RepeatAtLeast(0,
+			typedef,
+		),
+		func(in []wasm.TypeDef) wasm.Module {
+			return wasm.Module{
+				Typedefs: in,
+			}
+		},
+	)
+
+	typedef = matcher.Transform(
+		matcher.NamedSubnode("type", matcher.Sequence2(
+			matcher.Optional(id),
+			funcsignature,
+		)),
+		func(in tuple.Of2[wasm.ElementId, wasm.FuncSignature]) wasm.TypeDef {
+			return wasm.TypeDef{
+				Id:       in.M1,
+				FuncType: in.M2,
+			}
+		},
+	)
+
+	id = matcher.Transform(
+		matcher.OneOf2(
+			matcher.Identifier(),
+			matcher.Int(),
+		),
+		func(in tuple.Of3[*ast.Node, *ast.Node, int]) wasm.ElementId {
+			if in.M3 == 1 {
+				return wasm.ElementId{
+					HasValue: true,
+					Name:     in.M1.StrValue,
+				}
+			}
+			return wasm.ElementId{
+				HasValue: true,
+				Index:    uint32(in.M2.IntValue),
+			}
+		},
+	)
+
+	funcsignature = matcher.Transform(
+		matcher.NamedSubnode("func", matcher.Sequence2(
+			matcher.Repeat(param),
+			matcher.Repeat(result),
+		)),
+		func(in tuple.Of2[[]wasm.Param, []wasm.Result]) wasm.FuncSignature {
+			return wasm.FuncSignature{
+				Params:  in.M1,
+				Results: in.M2,
+			}
+		},
+	)
+
+	param = matcher.Transform(
+		matcher.NamedSubnode("param", matcher.OneOf2(
+			matcher.Sequence2(
+				id,
+				valtype,
+			),
+			matcher.RepeatAtLeast(1, valtype),
+		)),
+		func(in tuple.Of3[tuple.Of2[wasm.ElementId, wasm.ValueType], []wasm.ValueType, int]) wasm.Param {
+			if in.M3 == 1 {
+				return wasm.Param{
+					Name: in.M1.M1.Name,
+					Type: in.M1.M2,
+				}
+			}
+			panic("TODO multiple param abbreviation")
+		},
+	)
+
+	result = matcher.Transform(
+		matcher.NamedSubnode("result", matcher.RepeatAtLeast(1, valtype)),
+		func(in []wasm.ValueType) wasm.Result {
+			if len(in) > 1 {
+				panic("multiple returns not supported yet")
+			}
+
+			return wasm.Result{
+				Type: in[0],
+			}
+		},
+	)
 
 	numtype = matcher.Transform(
 		matcher.OneOf4(
@@ -115,9 +182,20 @@ var (
 		},
 	)
 
-	valtype = matcher.OneOf3(
-		numtype,
-		vectype,
-		reftype,
+	valtype = matcher.Transform(
+		matcher.OneOf3(
+			numtype,
+			vectype,
+			reftype,
+		),
+		func(in tuple.Of4[wasm.NumberType, wasm.VectorType, wasm.RefType, int]) wasm.ValueType {
+			switch in.M4 {
+			case 1:
+				return in.M1
+			case 2:
+				return in.M2
+			}
+			return in.M3
+		},
 	)
 )
