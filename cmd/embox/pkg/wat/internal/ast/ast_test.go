@@ -1,4 +1,4 @@
-package wat
+package ast
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 func TestAstParseSimpleWat(t *testing.T) {
 	src := `(module (import "js" "print" (func (param i32) (result i32) ) ) )`
 
-	astRoot, err := parseAst(strings.NewReader(src))
+	astRoot, err := Parse(strings.NewReader(src))
 	if err != nil {
 		if ut, ok := err.(*UnexpectedToken); ok {
 			t.Fatalf("Parse error: %s\n| %s\n| %s", err.Error(), src, strings.Repeat(" ", ut.GotToken.Pos)+"^")
@@ -18,37 +18,37 @@ func TestAstParseSimpleWat(t *testing.T) {
 		}
 	}
 
-	expectedAst := &AstNode{
+	expectedAst := &Node{
 		Kind: NodeKind_SubNode,
 		Name: "module",
-		FirstChild: &AstNode{
+		FirstChild: &Node{
 			Kind: NodeKind_SubNode,
 			Name: "import",
 			FirstChild: astNodeChain(
-				&AstNode{
+				&Node{
 					Kind:     NodeKind_AttrString,
 					StrValue: "js",
 				},
-				&AstNode{
+				&Node{
 					Kind:     NodeKind_AttrString,
 					StrValue: "print",
 				},
-				&AstNode{
+				&Node{
 					Kind: NodeKind_SubNode,
 					Name: "func",
 					FirstChild: astNodeChain(
-						&AstNode{
+						&Node{
 							Kind: NodeKind_SubNode,
 							Name: "param",
-							FirstChild: &AstNode{
+							FirstChild: &Node{
 								Kind:     NodeKind_AttrKeyword,
 								StrValue: "i32",
 							},
 						},
-						&AstNode{
+						&Node{
 							Kind: NodeKind_SubNode,
 							Name: "result",
-							FirstChild: &AstNode{
+							FirstChild: &Node{
 								Kind:     NodeKind_AttrKeyword,
 								StrValue: "i32",
 							},
@@ -68,7 +68,7 @@ func TestAstParseSimpleWat(t *testing.T) {
 func TestAstParseSDL3Wat(t *testing.T) {
 	src := string(sdl3Wat)
 
-	astRoot, err := parseAst(strings.NewReader(src))
+	astRoot, err := Parse(strings.NewReader(src))
 	if err != nil {
 		if ut, ok := err.(*UnexpectedToken); ok {
 			offset := ut.GotToken.Pos - 16
@@ -82,7 +82,7 @@ func TestAstParseSDL3Wat(t *testing.T) {
 	printNode(astRoot, t)
 }
 
-func astNodeChain(nodes ...*AstNode) *AstNode {
+func astNodeChain(nodes ...*Node) *Node {
 	if len(nodes) == 0 {
 		return nil
 	}
@@ -101,7 +101,7 @@ func getTokenContext(input string, tok *Token) (line, arrow string) {
 	return input[lo:hi], strings.Repeat(" ", tok.Pos-lo) + "^"
 }
 
-func compareNodes(expected, got *AstNode) (error, *Token) {
+func compareNodes(expected, got *Node) (error, *Token) {
 	if expected.Kind != got.Kind {
 		return fmt.Errorf("expected node %s (%s), got %s (%s)", expected, expected.Kind, got, got.Kind), got.ParenOpenToken
 	}
@@ -178,7 +178,7 @@ func compareNodes(expected, got *AstNode) (error, *Token) {
 	return nil, nil
 }
 
-func printNode(curNode *AstNode, t *testing.T) {
+func printNode(curNode *Node, t *testing.T) {
 	t.Logf("(%s", curNode.Name)
 	for child := curNode.FirstChild; child != nil; child = child.NextSibling {
 		switch child.Kind {

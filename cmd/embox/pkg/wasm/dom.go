@@ -1,8 +1,9 @@
 package wasm
 
 type ElementId struct {
-	Name  string
-	Index uint32
+	HasValue bool
+	Name     string
+	Index    uint32
 }
 
 type Module struct {

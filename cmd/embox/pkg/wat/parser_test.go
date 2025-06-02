@@ -18,7 +18,7 @@ func TestParseEmptyModule(t *testing.T) {
 
 func TestParseSimpleModule(t *testing.T) {
 	src := `(module
-  (import "js" "print" (func (param i32)))
+  (type $dotest (func (param $a i32) (param $b i64) (result f64)))
 )`
 
 	_, err := ParseModule(strings.NewReader(src), &ParseOptions{

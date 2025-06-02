@@ -1,8 +1,9 @@
-package wat
+package ast
 
 import (
 	"errors"
 	"io"
+	"sdl3/cmd/embox/pkg/wat/internal/tokenizer"
 	"strconv"
 	"strings"
 )
@@ -11,7 +12,7 @@ var (
 	ErrExcessNodeClosing = errors.New("excess node closing")
 )
 
-func parseAst(r io.Reader) (root *AstNode, err error) {
+func Parse(r io.Reader) (root *Node, err error) {
 	type State int
 	const (
 		State_Initial State = iota
@@ -20,13 +21,13 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 		State_NodeInner
 	)
 
-	toker := NewTokenizer(r)
+	toker := tokenizer.NewTokenizer(r)
 	state := State_Initial
-	root = &AstNode{}
+	root = &Node{}
 	curNode := root
-	var lastChild *AstNode
-	var nodeStack []*AstNode
-	var lastChildStack []*AstNode
+	var lastChild *Node
+	var nodeStack []*Node
+	var lastChildStack []*Node
 
 	for {
 		tok, err := toker.NextToken()
@@ -35,16 +36,16 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 		case State_PreNode:
 			// (import "env" ...)
 			// ^
-			curNode.NextSibling = &AstNode{}
+			curNode.NextSibling = &Node{}
 			curNode = curNode.NextSibling
 			fallthrough
 
 		case State_Initial:
-			if tok.Kind != ParenOpen {
+			if tok.Kind != tokenizer.ParenOpen {
 				return nil, &UnexpectedToken{
 					GotToken: tok,
-					ExpectedTokens: []TokenKind{
-						ParenOpen,
+					ExpectedTokens: []tokenizer.TokenKind{
+						tokenizer.ParenOpen,
 					},
 				}
 			}
@@ -56,11 +57,11 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 		case State_NodeName:
 			// (import "env" ...)
 			//  ^
-			if tok.Kind != Keyword {
+			if tok.Kind != tokenizer.Keyword {
 				return nil, &UnexpectedToken{
 					GotToken: tok,
-					ExpectedTokens: []TokenKind{
-						Keyword,
+					ExpectedTokens: []tokenizer.TokenKind{
+						tokenizer.Keyword,
 					},
 				}
 			}
@@ -73,12 +74,12 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 			// (import "env" ...)
 			//         ^
 
-			var newAttr *AstNode
+			var newAttr *Node
 			switch tok.Kind {
-			case ParenOpen:
+			case tokenizer.ParenOpen:
 				nodeStack = append(nodeStack, curNode)
 
-				newNode := &AstNode{}
+				newNode := &Node{}
 				if lastChild != nil {
 					lastChild.NextSibling = newNode
 				} else {
@@ -92,7 +93,7 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 
 				state = State_NodeName
 
-			case ParenClose:
+			case tokenizer.ParenClose:
 				if len(nodeStack) == 0 {
 					// done
 					return root, nil
@@ -107,17 +108,17 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 
 				state = State_NodeInner
 
-			case Keyword:
-				newAttr = &AstNode{
+			case tokenizer.Keyword:
+				newAttr = &Node{
 					Kind:       NodeKind_AttrKeyword,
 					StrValue:   tok.Content,
 					ValueToken: &tok,
 				}
 				fallthrough
 
-			case Identifier:
+			case tokenizer.Identifier:
 				if newAttr == nil {
-					newAttr = &AstNode{
+					newAttr = &Node{
 						Kind:       NodeKind_AttrIdentifier,
 						StrValue:   tok.Content,
 						ValueToken: &tok,
@@ -125,9 +126,9 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 				}
 				fallthrough
 
-			case String:
+			case tokenizer.String:
 				if newAttr == nil {
-					newAttr = &AstNode{
+					newAttr = &Node{
 						Kind:       NodeKind_AttrString,
 						StrValue:   tok.Content,
 						ValueToken: &tok,
@@ -135,9 +136,9 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 				}
 				fallthrough
 
-			case DecimalNumber:
+			case tokenizer.DecimalNumber:
 				if newAttr == nil {
-					newAttr = &AstNode{
+					newAttr = &Node{
 						Kind:       NodeKind_AttrInteger,
 						IntValue:   tok.IntValue,
 						ValueToken: &tok,
@@ -145,9 +146,9 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 				}
 				fallthrough
 
-			case FloatNumber:
+			case tokenizer.FloatNumber:
 				if newAttr == nil {
-					newAttr = &AstNode{
+					newAttr = &Node{
 						Kind:       NodeKind_AttrFloat,
 						FloatValue: tok.FloatValue,
 						ValueToken: &tok,
@@ -170,18 +171,18 @@ func parseAst(r io.Reader) (root *AstNode, err error) {
 	}
 }
 
-type AstNode struct {
-	Kind            AstNodeKind
+type Node struct {
+	Kind            NodeKind
 	Name            string
 	StrValue        string
 	IntValue        int64
 	FloatValue      float64
-	FirstChild      *AstNode
-	NextSibling     *AstNode
-	NameToken       *Token
-	ParenOpenToken  *Token
-	ParenCloseToken *Token
-	ValueToken      *Token
+	FirstChild      *Node
+	NextSibling     *Node
+	NameToken       *tokenizer.Token
+	ParenOpenToken  *tokenizer.Token
+	ParenCloseToken *tokenizer.Token
+	ValueToken      *tokenizer.Token
 }
 
 var escapeStr = strings.NewReplacer(
@@ -192,7 +193,11 @@ var escapeStr = strings.NewReplacer(
 	"\"", "\\\"",
 )
 
-func (n *AstNode) String() string {
+func (n *Node) String() string {
+	if n == nil {
+		return "nothing"
+	}
+
 	switch n.Kind {
 	case NodeKind_AttrFloat:
 		return strconv.FormatFloat(n.FloatValue, 'f', 4, 64)
@@ -208,13 +213,13 @@ func (n *AstNode) String() string {
 		return "(" + n.Name
 	}
 
-	panic("unhandled AstNodeKind variant")
+	panic("unhandled NodeKind variant")
 }
 
-type AstNodeKind int
+type NodeKind int
 
 const (
-	NodeKind_SubNode AstNodeKind = iota
+	NodeKind_SubNode NodeKind = iota
 	NodeKind_AttrKeyword
 	NodeKind_AttrIdentifier
 	NodeKind_AttrString
@@ -222,7 +227,7 @@ const (
 	NodeKind_AttrFloat
 )
 
-func (k AstNodeKind) String() string {
+func (k NodeKind) String() string {
 	switch k {
 	case NodeKind_AttrFloat:
 		return "AttrFloat"
@@ -238,12 +243,12 @@ func (k AstNodeKind) String() string {
 		return "Subnode"
 	}
 
-	panic("unhandled AstNodeKind variant")
+	panic("unhandled NodeKind variant")
 }
 
 type UnexpectedToken struct {
-	GotToken       Token
-	ExpectedTokens []TokenKind
+	GotToken       tokenizer.Token
+	ExpectedTokens []tokenizer.TokenKind
 	ExpectedWhat   string
 }
 
@@ -251,7 +256,7 @@ func (ut *UnexpectedToken) Error() string {
 	var sb strings.Builder
 
 	sb.WriteString("unexpected token")
-	if ut.GotToken.Kind != Invalid {
+	if ut.GotToken.Kind != tokenizer.Invalid {
 		sb.WriteRune(' ')
 		sb.WriteString(ut.GotToken.Kind.String())
 		sb.WriteString(" \"")

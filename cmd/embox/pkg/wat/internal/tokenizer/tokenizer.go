@@ -1,4 +1,4 @@
-package wat
+package tokenizer
 
 import (
 	"bufio"
