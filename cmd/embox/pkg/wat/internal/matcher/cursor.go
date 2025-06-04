@@ -26,7 +26,7 @@ func (c *Cursor) Node() *ast.Node {
 }
 
 func (c *Cursor) GotoNextSibling() bool {
-	if c != nil && c.pos != nil && c.pos.NextSibling != nil {
+	if c != nil && c.pos != nil {
 		c.pos = c.pos.NextSibling
 		return true
 	}
@@ -67,4 +67,8 @@ func (c *Cursor) Reset(cp checkpoint) {
 	c.pos = cp.pos
 	c.parents = c.parents[:0]
 	c.parents = append(c.parents, cp.parents...)
+}
+
+func (c *Cursor) EndOfSubnode() bool {
+	return c.pos == nil
 }

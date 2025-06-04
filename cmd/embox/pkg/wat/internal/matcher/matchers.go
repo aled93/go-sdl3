@@ -456,7 +456,7 @@ func (s *sequence2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], ok bool)
 
 	if m1Res, ok := s.m1.TryMatch(c); ok {
 		res.M1 = m1Res
-		if !c.GotoNextSibling() {
+		if c.EndOfSubnode() {
 			c.Reset(cp)
 			return res, false
 		}
@@ -467,7 +467,6 @@ func (s *sequence2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], ok bool)
 
 	if m2Res, ok := s.m2.TryMatch(c); ok {
 		res.M2 = m2Res
-		c.GotoNextSibling()
 	} else {
 		c.Reset(cp)
 		return res, false
@@ -481,7 +480,7 @@ func (s *sequence3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], 
 
 	if m1Res, ok := s.m1.TryMatch(c); ok {
 		res.M1 = m1Res
-		if !c.GotoNextSibling() {
+		if c.EndOfSubnode() {
 			c.Reset(cp)
 			return res, false
 		}
@@ -492,7 +491,7 @@ func (s *sequence3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], 
 
 	if m2Res, ok := s.m2.TryMatch(c); ok {
 		res.M2 = m2Res
-		if !c.GotoNextSibling() {
+		if c.EndOfSubnode() {
 			c.Reset(cp)
 			return res, false
 		}
@@ -503,7 +502,6 @@ func (s *sequence3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], 
 
 	if m3Res, ok := s.m3.TryMatch(c); ok {
 		res.M3 = m3Res
-		c.GotoNextSibling()
 	} else {
 		c.Reset(cp)
 		return res, false
@@ -517,7 +515,7 @@ func (s *sequence4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T
 
 	if m1Res, ok := s.m1.TryMatch(c); ok {
 		res.M1 = m1Res
-		if !c.GotoNextSibling() {
+		if c.EndOfSubnode() {
 			c.Reset(cp)
 			return res, false
 		}
@@ -528,7 +526,7 @@ func (s *sequence4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T
 
 	if m2Res, ok := s.m2.TryMatch(c); ok {
 		res.M2 = m2Res
-		if !c.GotoNextSibling() {
+		if c.EndOfSubnode() {
 			c.Reset(cp)
 			return res, false
 		}
@@ -539,7 +537,7 @@ func (s *sequence4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T
 
 	if m3Res, ok := s.m3.TryMatch(c); ok {
 		res.M3 = m3Res
-		if !c.GotoNextSibling() {
+		if c.EndOfSubnode() {
 			c.Reset(cp)
 			return res, false
 		}
@@ -550,7 +548,6 @@ func (s *sequence4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T
 
 	if m4Res, ok := s.m4.TryMatch(c); ok {
 		res.M4 = m4Res
-		c.GotoNextSibling()
 	} else {
 		c.Reset(cp)
 		return res, false
