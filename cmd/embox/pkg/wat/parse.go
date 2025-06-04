@@ -36,7 +36,7 @@ func ParseModule(r io.Reader, opts *ParseOptions) (*wasm.Module, error) {
 		panic("not ok")
 	}
 
-	panic(res)
+	return &res, nil
 }
 
 var (
