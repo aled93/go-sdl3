@@ -398,6 +398,10 @@ type transform[In, Out any] struct {
 func (m *subnodeMatcher[T]) TryMatch(c *Cursor) (res T, err error) {
 	node := c.Node()
 
+	if node == nil {
+		return res, newSyntaxError(c, m)
+	}
+
 	if node.Kind != ast.NodeKind_SubNode {
 		return res, newSyntaxError(c, m)
 	}
@@ -444,6 +448,10 @@ func (m *subnodeMatcher[T]) expects() string {
 func (a *attr) TryMatch(c *Cursor) (*ast.Node, error) {
 	node := c.Node()
 
+	if node == nil {
+		return nil, newSyntaxError(c, a)
+	}
+
 	if node.Kind != a.kind {
 		return nil, newSyntaxError(c, a)
 	}
@@ -457,11 +465,13 @@ func (a *attr) TryMatch(c *Cursor) (*ast.Node, error) {
 		if (a.ptrnStr != nil && a.ptrnStr.MatchString(node.StrValue)) ||
 			(len(a.exactStr) > 0 && a.exactStr == node.StrValue) ||
 			(len(a.exactStr) == 0) {
+			c.GotoNextSibling()
 			return node, nil
 		}
 
 	case ast.NodeKind_AttrInteger:
 		if node.IntValue >= a.minInt && node.IntValue <= a.maxInt {
+			c.GotoNextSibling()
 			return node, nil
 		}
 	}
@@ -519,6 +529,10 @@ func (a *attr) expects() string {
 }
 
 func (s *sequence2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, s)
+	}
+
 	cp := c.Mark()
 
 	if m1Res, err := s.m1.TryMatch(c); err == nil {
@@ -547,6 +561,10 @@ func (s *sequence2[T1, T2]) expects() string {
 }
 
 func (s *sequence3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, s)
+	}
+
 	cp := c.Mark()
 
 	if m1Res, err := s.m1.TryMatch(c); err == nil {
@@ -586,6 +604,10 @@ func (s *sequence3[T1, T2, T3]) expects() string {
 }
 
 func (s *sequence4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, T4], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, s)
+	}
+
 	cp := c.Mark()
 
 	if m1Res, err := s.m1.TryMatch(c); err == nil {
@@ -636,6 +658,11 @@ func (s *sequence4[T1, T2, T3, T4]) expects() string {
 }
 
 func (o *optional[T]) TryMatch(c *Cursor) (T, error) {
+	if c.EndOfSubnode() {
+		var zero T
+		return zero, newSyntaxError(c, o)
+	}
+
 	if res, err := o.submatcher.TryMatch(c); err == nil {
 		return res, nil
 	}
@@ -649,6 +676,10 @@ func (o *optional[T]) expects() string {
 }
 
 func (a *oneOfSame[T]) TryMatch(c *Cursor) (res tuple.Of2[T, int], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, a)
+	}
+
 	cp := c.Mark()
 
 	for i, v := range a.variants {
@@ -688,6 +719,10 @@ func (a oneOfSame[T]) expects() string {
 }
 
 func (a *oneOf2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, int], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, a)
+	}
+
 	cp := c.Mark()
 
 	if mRes, err := a.v1.TryMatch(c); err == nil {
@@ -708,6 +743,10 @@ func (a oneOf2[T1, T2]) expects() string {
 }
 
 func (a *oneOf3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, int], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, a)
+	}
+
 	cp := c.Mark()
 
 	if mRes, err := a.v1.TryMatch(c); err == nil {
@@ -732,6 +771,10 @@ func (a oneOf3[T1, T2, T3]) expects() string {
 }
 
 func (a *oneOf4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of5[T1, T2, T3, T4, int], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, a)
+	}
+
 	cp := c.Mark()
 
 	if mRes, err := a.v1.TryMatch(c); err == nil {
@@ -764,6 +807,10 @@ func (a oneOf4[T1, T2, T3, T4]) expects() string {
 }
 
 func (a *matchAll2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, a)
+	}
+
 	cp := c.Mark()
 
 	for i := range res.Size() {
@@ -799,6 +846,10 @@ func (a *matchAll2[T1, T2]) expects() string {
 }
 
 func (a *matchAll3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, a)
+	}
+
 	cp := c.Mark()
 
 	for i := range res.Size() {
@@ -843,6 +894,10 @@ func (a *matchAll3[T1, T2, T3]) expects() string {
 }
 
 func (a *matchAll4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, T4], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, a)
+	}
+
 	cp := c.Mark()
 
 	for i := range res.Size() {
@@ -896,6 +951,10 @@ func (a *matchAll4[T1, T2, T3, T4]) expects() string {
 }
 
 func (r *repeat[T]) TryMatch(c *Cursor) (res []T, err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxError(c, r)
+	}
+
 	cp := c.Mark()
 
 	for range r.maxRepeats {
