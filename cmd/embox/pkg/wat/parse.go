@@ -78,12 +78,12 @@ var (
 	)
 
 	id = matcher.Transform(
-		matcher.OneOf2(
+		matcher.OneOfSame(
 			matcher.Identifier(),
 			matcher.Int(),
 		),
-		func(in tuple.Of3[*ast.Node, *ast.Node, int]) wasm.ElementId {
-			if in.M3 == 1 {
+		func(in tuple.Of2[*ast.Node, int]) wasm.ElementId {
+			if in.M2 == 0 {
 				return wasm.ElementId{
 					HasValue: true,
 					Name:     in.M1.StrValue,
@@ -91,7 +91,7 @@ var (
 			}
 			return wasm.ElementId{
 				HasValue: true,
-				Index:    uint32(in.M2.IntValue),
+				Index:    uint32(in.M1.IntValue),
 			}
 		},
 	)
@@ -142,19 +142,19 @@ var (
 	)
 
 	numtype = matcher.Transform(
-		matcher.OneOf4(
+		matcher.OneOfSame(
 			matcher.KeywordExact("i32"),
 			matcher.KeywordExact("i64"),
 			matcher.KeywordExact("f32"),
 			matcher.KeywordExact("f64"),
 		),
-		func(in tuple.Of5[*ast.Node, *ast.Node, *ast.Node, *ast.Node, int]) wasm.NumberType {
-			switch in.M5 {
-			case 1:
+		func(in tuple.Of2[*ast.Node, int]) wasm.NumberType {
+			switch in.M2 {
+			case 0:
 				return wasm.Type_i32
-			case 2:
+			case 1:
 				return wasm.Type_i64
-			case 3:
+			case 2:
 				return wasm.Type_f32
 			}
 			return wasm.Type_f64
@@ -169,12 +169,12 @@ var (
 	)
 
 	reftype = matcher.Transform(
-		matcher.OneOf2(
+		matcher.OneOfSame(
 			matcher.KeywordExact("funcref"),
 			matcher.KeywordExact("externref"),
 		),
-		func(in tuple.Of3[*ast.Node, *ast.Node, int]) wasm.RefType {
-			if in.M3 == 1 {
+		func(in tuple.Of2[*ast.Node, int]) wasm.RefType {
+			if in.M2 == 0 {
 				return wasm.Type_FuncRef
 			} else {
 				return wasm.Type_ExternRef

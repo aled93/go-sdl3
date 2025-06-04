@@ -157,6 +157,12 @@ func Optional[T any](m Matcher[T]) *optional[T] {
 }
 
 // OneOf matches one of variants
+func OneOfSame[T any](variants ...Matcher[T]) *oneOfSame[T] {
+	return &oneOfSame[T]{
+		variants: variants,
+	}
+}
+
 func OneOf2[T1, T2 any](v1 Matcher[T1], v2 Matcher[T2]) *oneOf2[T1, T2] {
 	return &oneOf2[T1, T2]{
 		v1: v1,
@@ -297,6 +303,11 @@ type sequence4[T1, T2, T3, T4 any] struct {
 type optional[T any] struct {
 	MatcherBase
 	submatcher Matcher[T]
+}
+
+type oneOfSame[T any] struct {
+	MatcherBase
+	variants []Matcher[T]
 }
 
 type oneOf2[T1, T2 any] struct {
@@ -527,6 +538,20 @@ func (o *optional[T]) TryMatch(c *Cursor) (T, bool) {
 
 	var zeroT T
 	return zeroT, true
+}
+
+func (a *oneOfSame[T]) TryMatch(c *Cursor) (res tuple.Of2[T, int], ok bool) {
+	cp := c.Mark()
+
+	for i, v := range a.variants {
+		if mRes, ok := v.TryMatch(c); ok {
+			return tuple.New2(mRes, i), true
+		}
+	}
+
+	c.Reset(cp)
+
+	return res, false
 }
 
 func (a *oneOf2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, int], ok bool) {
