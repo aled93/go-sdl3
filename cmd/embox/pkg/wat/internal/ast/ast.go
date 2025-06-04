@@ -15,16 +15,15 @@ var (
 func Parse(r io.Reader) (root *Node, err error) {
 	type State int
 	const (
-		State_Initial State = iota
-		State_PreNode
+		State_PreNode State = iota
 		State_NodeName
 		State_NodeInner
 	)
 
 	toker := tokenizer.NewTokenizer(r)
-	state := State_Initial
-	root = &Node{}
-	curNode := root
+	state := State_PreNode
+	var curNode *Node
+	var prevNode *Node
 	var lastChild *Node
 	var nodeStack []*Node
 	var lastChildStack []*Node
@@ -36,11 +35,12 @@ func Parse(r io.Reader) (root *Node, err error) {
 		case State_PreNode:
 			// (import "env" ...)
 			// ^
-			curNode.NextSibling = &Node{}
-			curNode = curNode.NextSibling
-			fallthrough
 
-		case State_Initial:
+			if tok.Kind == tokenizer.Invalid {
+				// done
+				return root, nil
+			}
+
 			if tok.Kind != tokenizer.ParenOpen {
 				return nil, &UnexpectedToken{
 					GotToken: tok,
@@ -48,6 +48,15 @@ func Parse(r io.Reader) (root *Node, err error) {
 						tokenizer.ParenOpen,
 					},
 				}
+			}
+
+			curNode = &Node{}
+			if root == nil {
+				root = curNode
+			}
+			if prevNode != nil {
+				prevNode.NextSibling = curNode
+				prevNode = nil
 			}
 
 			curNode.ParenOpenToken = &tok
@@ -94,19 +103,22 @@ func Parse(r io.Reader) (root *Node, err error) {
 				state = State_NodeName
 
 			case tokenizer.ParenClose:
-				if len(nodeStack) == 0 {
-					// done
-					return root, nil
-				}
-
 				curNode.ParenCloseToken = &tok
 
-				curNode = nodeStack[len(nodeStack)-1]
-				nodeStack = nodeStack[:len(nodeStack)-1]
-				lastChild = lastChildStack[len(lastChildStack)-1]
-				lastChildStack = lastChildStack[:len(lastChildStack)-1]
+				if len(nodeStack) == 0 {
+					prevNode = curNode
+					curNode = nil
+					lastChild = nil
 
-				state = State_NodeInner
+					state = State_PreNode
+				} else {
+					curNode = nodeStack[len(nodeStack)-1]
+					nodeStack = nodeStack[:len(nodeStack)-1]
+					lastChild = lastChildStack[len(lastChildStack)-1]
+					lastChildStack = lastChildStack[:len(lastChildStack)-1]
+
+					state = State_NodeInner
+				}
 
 			case tokenizer.Keyword:
 				newAttr = &Node{
