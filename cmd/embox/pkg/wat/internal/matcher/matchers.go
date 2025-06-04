@@ -413,23 +413,23 @@ func (m *subnodeMatcher[T]) TryMatch(c *Cursor) (res T, err error) {
 	}
 
 	cp := c.Mark()
-	c.EnterChildren()
-
-	if m.inner != nil {
-		if innerRes, err := m.inner.TryMatch(c); err != nil {
-			c.Reset(cp)
-			return res, err
-		} else {
-			res = innerRes
+	if c.EnterChildren() {
+		if m.inner != nil {
+			if innerRes, err := m.inner.TryMatch(c); err != nil {
+				c.Reset(cp)
+				return res, err
+			} else {
+				res = innerRes
+			}
 		}
-	}
 
-	// TODO: test this only in strict parser mode
-	if !c.EndOfSubnode() {
-		return res, newSyntaxErrorCustom(c, fmt.Errorf("expected end of subnode, but extra node found (%s)", c.Node()))
-	}
+		// TODO: test this only in strict parser mode
+		if !c.EndOfSubnode() {
+			return res, newSyntaxErrorCustom(c, fmt.Errorf("expected end of subnode, but extra node found (%s)", c.Node()))
+		}
 
-	c.ExitChildren()
+		c.ExitChildren()
+	}
 	c.GotoNextSibling()
 
 	return res, nil
