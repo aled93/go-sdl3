@@ -36,6 +36,10 @@ func ParseModule(r io.Reader, opts *ParseOptions) (*wasm.Module, error) {
 		return nil, err
 	}
 
+	if !cursor.EndOfSubnode() {
+		return nil, fmt.Errorf("unexpected node %s", cursor.Node())
+	}
+
 	return &res, nil
 }
 
