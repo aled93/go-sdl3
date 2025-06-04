@@ -228,6 +228,64 @@ func (n *Node) String() string {
 	panic("unhandled NodeKind variant")
 }
 
+func (node *Node) WriteTo(w io.Writer) (n int64, err error) {
+	switch node.Kind {
+	case NodeKind_AttrFloat:
+		wn, werr := w.Write([]byte(strconv.FormatFloat(node.FloatValue, 'f', 4, 64)))
+		return int64(wn), werr
+
+	case NodeKind_AttrIdentifier:
+		wn, werr := w.Write([]byte("$" + node.StrValue))
+		return int64(wn), werr
+
+	case NodeKind_AttrInteger:
+		wn, werr := w.Write([]byte(strconv.FormatInt(node.IntValue, 10)))
+		return int64(wn), werr
+
+	case NodeKind_AttrKeyword:
+		wn, werr := w.Write([]byte(node.StrValue))
+		return int64(wn), werr
+
+	case NodeKind_AttrString:
+		wn, werr := escapeStr.WriteString(w, node.StrValue)
+		return int64(wn), werr
+
+	case NodeKind_SubNode:
+		wn, werr := w.Write([]byte("(" + node.Name))
+		n += int64(wn)
+		if werr != nil {
+			return n, werr
+		}
+
+		for subnode := node.FirstChild; subnode != nil; subnode = subnode.NextSibling {
+			var sn int64
+
+			wn, werr = w.Write([]byte(" "))
+			n += int64(wn)
+			if werr != nil {
+				return n, werr
+			}
+
+			sn, werr = subnode.WriteTo(w)
+			n += sn
+			if werr != nil {
+				return n, werr
+			}
+		}
+
+		wn, werr = w.Write([]byte(")"))
+		n += int64(wn)
+		if werr != nil {
+			return n, werr
+		}
+
+	default:
+		panic("unknown node kind")
+	}
+
+	return n, nil
+}
+
 type NodeKind int
 
 const (

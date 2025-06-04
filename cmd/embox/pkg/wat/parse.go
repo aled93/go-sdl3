@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"sdl3/cmd/embox/pkg/wasm"
 	"sdl3/cmd/embox/pkg/wat/internal/ast"
 	"sdl3/cmd/embox/pkg/wat/internal/matcher"
@@ -28,6 +29,13 @@ func ParseModule(r io.Reader, opts *ParseOptions) (*wasm.Module, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed parse wat: %w", err)
 	}
+
+	print("Restored AST: ")
+	_, err = astRoot.WriteTo(os.Stdout)
+	if err != nil {
+		panic(err)
+	}
+	println()
 
 	cursor := matcher.NewCursor(astRoot)
 
