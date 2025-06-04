@@ -6,6 +6,7 @@ import (
 )
 
 type Cursor struct {
+	root    *ast.Node
 	pos     *ast.Node
 	parents []*ast.Node
 }
@@ -17,7 +18,8 @@ type checkpoint struct {
 
 func NewCursor(root *ast.Node) *Cursor {
 	return &Cursor{
-		pos: root,
+		root: root,
+		pos:  root,
 	}
 }
 
@@ -71,4 +73,21 @@ func (c *Cursor) Reset(cp checkpoint) {
 
 func (c *Cursor) EndOfSubnode() bool {
 	return c.pos == nil
+}
+
+func (c *Cursor) lastNonNilNode() *ast.Node {
+	node := c.pos
+
+	if node == nil {
+		if len(c.parents) == 0 {
+			node = c.root
+		} else {
+			node = c.parents[len(c.parents)-1]
+			for node.NextSibling != nil {
+				node = node.NextSibling
+			}
+		}
+	}
+
+	return node
 }

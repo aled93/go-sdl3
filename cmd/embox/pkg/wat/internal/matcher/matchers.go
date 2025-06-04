@@ -1,10 +1,12 @@
 package matcher
 
 import (
+	"fmt"
 	"math"
 	"regexp"
 	"sdl3/cmd/embox/pkg/wat/internal/ast"
 	"sdl3/cmd/embox/pkg/wat/internal/tuple"
+	"strings"
 )
 
 // Subnode matches any subnode
@@ -285,7 +287,8 @@ func Transform[In, Out any](m Matcher[In], transformer func(in In) Out) *transfo
 }
 
 type Matcher[Out any] interface {
-	TryMatch(c *Cursor) (Out, bool)
+	TryMatch(c *Cursor) (Out, error)
+	expects() string
 }
 
 type MatcherBase struct{}
@@ -392,26 +395,26 @@ type transform[In, Out any] struct {
 	f func(In) Out
 }
 
-func (m *subnodeMatcher[T]) TryMatch(c *Cursor) (res T, ok bool) {
+func (m *subnodeMatcher[T]) TryMatch(c *Cursor) (res T, err error) {
 	node := c.Node()
 
 	if node.Kind != ast.NodeKind_SubNode {
-		return res, false
+		return res, newSyntaxError(c, m)
 	}
 
 	if m.exactName && node.Name != m.name {
-		return res, false
+		return res, newSyntaxError(c, m)
 	} else if m.ptrn != nil && !m.ptrn.MatchString(node.Name) {
-		return res, false
+		return res, newSyntaxError(c, m)
 	}
 
 	cp := c.Mark()
 	c.EnterChildren()
 
 	if m.inner != nil {
-		if innerRes, ok := m.inner.TryMatch(c); !ok {
+		if innerRes, err := m.inner.TryMatch(c); err != nil {
 			c.Reset(cp)
-			return res, false
+			return res, err
 		} else {
 			res = innerRes
 		}
@@ -420,14 +423,24 @@ func (m *subnodeMatcher[T]) TryMatch(c *Cursor) (res T, ok bool) {
 	c.ExitChildren()
 	c.GotoNextSibling()
 
-	return res, true
+	return res, nil
 }
 
-func (a *attr) TryMatch(c *Cursor) (*ast.Node, bool) {
+func (m *subnodeMatcher[T]) expects() string {
+	if m.exactName {
+		return fmt.Sprintf(`subnode with name "%s"`, m.name)
+	} else if m.ptrn != nil {
+		return fmt.Sprintf(`subnode with name matching pattern "%s"`, m.ptrn)
+	} else {
+		return `subnode`
+	}
+}
+
+func (a *attr) TryMatch(c *Cursor) (*ast.Node, error) {
 	node := c.Node()
 
 	if node.Kind != a.kind {
-		return nil, false
+		return nil, newSyntaxError(c, a)
 	}
 
 	switch node.Kind {
@@ -439,333 +452,451 @@ func (a *attr) TryMatch(c *Cursor) (*ast.Node, bool) {
 		if (a.ptrnStr != nil && a.ptrnStr.MatchString(node.StrValue)) ||
 			(len(a.exactStr) > 0 && a.exactStr == node.StrValue) ||
 			(len(a.exactStr) == 0) {
-			return node, true
+			return node, nil
 		}
 
 	case ast.NodeKind_AttrInteger:
 		if node.IntValue >= a.minInt && node.IntValue <= a.maxInt {
-			return node, true
+			return node, nil
 		}
 	}
 
-	return nil, false
+	return nil, newSyntaxErrorCustom(c, fmt.Errorf("unexpected attribute type %s, expected %s", node.Kind, a.kind))
 }
 
-func (s *sequence2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], ok bool) {
+func (a *attr) expects() string {
+	switch a.kind {
+	case ast.NodeKind_AttrFloat:
+		return "float attribute"
+
+	case ast.NodeKind_AttrIdentifier:
+		if len(a.exactStr) > 0 {
+			return fmt.Sprintf(`identifier attribute with value "$%s"`, a.exactStr)
+		} else if a.ptrnStr != nil {
+			return fmt.Sprintf(`identifier attribute with value matching regexp "%s"`, a.ptrnStr)
+		} else {
+			return `identifier attribute`
+		}
+
+	case ast.NodeKind_AttrInteger:
+		if a.minInt == 0 && a.maxInt == math.MaxInt64 {
+			return `integer attribute`
+		} else if a.minInt == a.maxInt {
+			return fmt.Sprintf(`integer attribute with value %d`, a.minInt)
+		} else if a.minInt > 0 && a.maxInt == math.MaxInt64 {
+			return fmt.Sprintf(`integer attribute with value >= %d`, a.minInt)
+		} else if a.maxInt < math.MaxInt64 && a.minInt == 0 {
+			return fmt.Sprintf(`integer attribute with value <= %d`, a.minInt)
+		} else {
+			return fmt.Sprintf(`integer attribute with value within range [%d..%d]`, a.minInt, a.maxInt)
+		}
+
+	case ast.NodeKind_AttrKeyword:
+		if len(a.exactStr) > 0 {
+			return fmt.Sprintf(`keyword "%s"`, a.exactStr)
+		} else if a.ptrnStr != nil {
+			return fmt.Sprintf(`keyword matching regexp "%s"`, a.ptrnStr)
+		} else {
+			return `keyword`
+		}
+
+	case ast.NodeKind_AttrString:
+		if len(a.exactStr) > 0 {
+			return fmt.Sprintf(`string attribute with value "%s"`, a.exactStr)
+		} else if a.ptrnStr != nil {
+			return fmt.Sprintf(`string attribute with value matching regexp "%s"`, a.ptrnStr)
+		} else {
+			return `string attribute`
+		}
+	}
+
+	panic("unhandled attribute kind")
+}
+
+func (s *sequence2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], err error) {
 	cp := c.Mark()
 
-	if m1Res, ok := s.m1.TryMatch(c); ok {
+	if m1Res, err := s.m1.TryMatch(c); err == nil {
 		res.M1 = m1Res
 		if c.EndOfSubnode() {
 			c.Reset(cp)
-			return res, false
+			return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected 1 more element"))
 		}
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	if m2Res, ok := s.m2.TryMatch(c); ok {
+	if m2Res, err := s.m2.TryMatch(c); err == nil {
 		res.M2 = m2Res
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	return res, true
+	return res, nil
 }
 
-func (s *sequence3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], ok bool) {
+func (s *sequence2[T1, T2]) expects() string {
+	return fmt.Sprintf(`%s followed by %s`, s.m1.expects(), s.m2.expects())
+}
+
+func (s *sequence3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], err error) {
 	cp := c.Mark()
 
-	if m1Res, ok := s.m1.TryMatch(c); ok {
+	if m1Res, err := s.m1.TryMatch(c); err == nil {
 		res.M1 = m1Res
 		if c.EndOfSubnode() {
 			c.Reset(cp)
-			return res, false
+			return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected 2 more elements"))
 		}
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	if m2Res, ok := s.m2.TryMatch(c); ok {
+	if m2Res, err := s.m2.TryMatch(c); err == nil {
 		res.M2 = m2Res
 		if c.EndOfSubnode() {
 			c.Reset(cp)
-			return res, false
+			return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected 1 more element"))
 		}
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	if m3Res, ok := s.m3.TryMatch(c); ok {
+	if m3Res, err := s.m3.TryMatch(c); err == nil {
 		res.M3 = m3Res
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	return res, true
+	return res, nil
 }
 
-func (s *sequence4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, T4], ok bool) {
+func (s *sequence3[T1, T2, T3]) expects() string {
+	return fmt.Sprintf(`sequence of %s, %s and %s`, s.m1.expects(), s.m2.expects(), s.m3.expects())
+}
+
+func (s *sequence4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, T4], err error) {
 	cp := c.Mark()
 
-	if m1Res, ok := s.m1.TryMatch(c); ok {
+	if m1Res, err := s.m1.TryMatch(c); err == nil {
 		res.M1 = m1Res
 		if c.EndOfSubnode() {
 			c.Reset(cp)
-			return res, false
+			return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected 3 more elements"))
 		}
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	if m2Res, ok := s.m2.TryMatch(c); ok {
+	if m2Res, err := s.m2.TryMatch(c); err == nil {
 		res.M2 = m2Res
 		if c.EndOfSubnode() {
 			c.Reset(cp)
-			return res, false
+			return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected 2 more elements"))
 		}
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	if m3Res, ok := s.m3.TryMatch(c); ok {
+	if m3Res, err := s.m3.TryMatch(c); err == nil {
 		res.M3 = m3Res
 		if c.EndOfSubnode() {
 			c.Reset(cp)
-			return res, false
+			return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected 1 more element"))
 		}
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	if m4Res, ok := s.m4.TryMatch(c); ok {
+	if m4Res, err := s.m4.TryMatch(c); err == nil {
 		res.M4 = m4Res
 	} else {
 		c.Reset(cp)
-		return res, false
+		return res, err
 	}
 
-	return res, true
+	return res, nil
 }
 
-func (o *optional[T]) TryMatch(c *Cursor) (T, bool) {
-	if res, ok := o.submatcher.TryMatch(c); ok {
-		return res, true
+func (s *sequence4[T1, T2, T3, T4]) expects() string {
+	return fmt.Sprintf(`sequence of %s, %s, %s and %s`, s.m1.expects(), s.m2.expects(), s.m3.expects(), s.m4.expects())
+}
+
+func (o *optional[T]) TryMatch(c *Cursor) (T, error) {
+	if res, err := o.submatcher.TryMatch(c); err == nil {
+		return res, nil
 	}
 
 	var zeroT T
-	return zeroT, true
+	return zeroT, nil
 }
 
-func (a *oneOfSame[T]) TryMatch(c *Cursor) (res tuple.Of2[T, int], ok bool) {
+func (o *optional[T]) expects() string {
+	return fmt.Sprintf(`optional %s`, o.submatcher.expects())
+}
+
+func (a *oneOfSame[T]) TryMatch(c *Cursor) (res tuple.Of2[T, int], err error) {
 	cp := c.Mark()
 
 	for i, v := range a.variants {
-		if mRes, ok := v.TryMatch(c); ok {
-			return tuple.New2(mRes, i), true
+		if mRes, err := v.TryMatch(c); err == nil {
+			return tuple.New2(mRes, i), nil
 		}
 	}
 
 	c.Reset(cp)
 
-	return res, false
+	return res, newSyntaxError(c, a)
 }
 
-func (a *oneOf2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, int], ok bool) {
-	cp := c.Mark()
-
-	if mRes, ok := a.v1.TryMatch(c); ok {
-		return tuple.New3(mRes, *new(T2), 1), true
+func (a oneOfSame[T]) expects() string {
+	if len(a.variants) == 0 {
+		return `nothing`
+	} else if len(a.variants) == 1 {
+		return a.variants[0].expects()
+	} else if len(a.variants) == 2 {
+		return a.variants[0].expects() + " or " + a.variants[1].expects()
 	}
 
-	if mRes, ok := a.v2.TryMatch(c); ok {
-		return tuple.New3(*new(T1), mRes, 2), true
+	var sb strings.Builder
+	sb.WriteString("one of: ")
+
+	for i, v := range a.variants {
+		sb.WriteString(v.expects())
+
+		if i < len(a.variants)-1 {
+			sb.WriteString(", ")
+		} else {
+			sb.WriteString(" or ")
+		}
+	}
+
+	return sb.String()
+}
+
+func (a *oneOf2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, int], err error) {
+	cp := c.Mark()
+
+	if mRes, err := a.v1.TryMatch(c); err == nil {
+		return tuple.New3(mRes, *new(T2), 1), nil
+	}
+
+	if mRes, err := a.v2.TryMatch(c); err == nil {
+		return tuple.New3(*new(T1), mRes, 2), nil
 	}
 
 	c.Reset(cp)
 
-	return res, false
+	return res, newSyntaxError(c, a)
 }
 
-func (a *oneOf3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, int], ok bool) {
+func (a oneOf2[T1, T2]) expects() string {
+	return a.v1.expects() + " or " + a.v2.expects()
+}
+
+func (a *oneOf3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, int], err error) {
 	cp := c.Mark()
 
-	if mRes, ok := a.v1.TryMatch(c); ok {
-		return tuple.New4(mRes, *new(T2), *new(T3), 1), true
+	if mRes, err := a.v1.TryMatch(c); err == nil {
+		return tuple.New4(mRes, *new(T2), *new(T3), 1), nil
 	}
 
-	if mRes, ok := a.v2.TryMatch(c); ok {
-		return tuple.New4(*new(T1), mRes, *new(T3), 2), true
+	if mRes, err := a.v2.TryMatch(c); err == nil {
+		return tuple.New4(*new(T1), mRes, *new(T3), 2), nil
 	}
 
-	if mRes, ok := a.v3.TryMatch(c); ok {
-		return tuple.New4(*new(T1), *new(T2), mRes, 3), true
+	if mRes, err := a.v3.TryMatch(c); err == nil {
+		return tuple.New4(*new(T1), *new(T2), mRes, 3), nil
 	}
 
 	c.Reset(cp)
 
-	return res, false
+	return res, newSyntaxError(c, a)
 }
 
-func (a *oneOf4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of5[T1, T2, T3, T4, int], ok bool) {
+func (a oneOf3[T1, T2, T3]) expects() string {
+	return a.v1.expects() + ", " + a.v2.expects() + " or " + a.v3.expects()
+}
+
+func (a *oneOf4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of5[T1, T2, T3, T4, int], err error) {
 	cp := c.Mark()
 
-	if mRes, ok := a.v1.TryMatch(c); ok {
-		return tuple.New5(mRes, *new(T2), *new(T3), *new(T4), 1), true
+	if mRes, err := a.v1.TryMatch(c); err == nil {
+		return tuple.New5(mRes, *new(T2), *new(T3), *new(T4), 1), nil
 	}
 
-	if mRes, ok := a.v2.TryMatch(c); ok {
-		return tuple.New5(*new(T1), mRes, *new(T3), *new(T4), 2), true
+	if mRes, err := a.v2.TryMatch(c); err == nil {
+		return tuple.New5(*new(T1), mRes, *new(T3), *new(T4), 2), nil
 	}
 
-	if mRes, ok := a.v3.TryMatch(c); ok {
-		return tuple.New5(*new(T1), *new(T2), mRes, *new(T4), 3), true
+	if mRes, err := a.v3.TryMatch(c); err == nil {
+		return tuple.New5(*new(T1), *new(T2), mRes, *new(T4), 3), nil
 	}
 
-	if mRes, ok := a.v4.TryMatch(c); ok {
-		return tuple.New5(*new(T1), *new(T2), *new(T3), mRes, 4), true
+	if mRes, err := a.v4.TryMatch(c); err == nil {
+		return tuple.New5(*new(T1), *new(T2), *new(T3), mRes, 4), nil
 	}
 
 	c.Reset(cp)
 
-	return res, false
+	return res, newSyntaxError(c, a)
 }
 
-func (a *matchAll2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], ok bool) {
+func (a oneOf4[T1, T2, T3, T4]) expects() string {
+	return "one of: " +
+		a.v1.expects() + ", " +
+		a.v2.expects() + ", " +
+		a.v3.expects() + " or " +
+		a.v4.expects()
+}
+
+func (a *matchAll2[T1, T2]) TryMatch(c *Cursor) (res tuple.Of2[T1, T2], err error) {
 	cp := c.Mark()
 
 	for i := range res.Size() {
 		isLast := i == res.Size()-1
 
-		if mRes, ok := a.m1.TryMatch(c); ok {
+		if mRes, err := a.m1.TryMatch(c); err == nil {
 			res.M1 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
-		if mRes, ok := a.m2.TryMatch(c); ok {
+		if mRes, err := a.m2.TryMatch(c); err == nil {
 			res.M2 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
 		c.Reset(cp)
-		return res, false
+		return res, newSyntaxError(c, a)
 	}
 
-	return res, true
+	return res, nil
 }
 
-func (a *matchAll3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], ok bool) {
+func (a *matchAll2[T1, T2]) expects() string {
+	return a.m1.expects() + " or " + a.m2.expects()
+}
+
+func (a *matchAll3[T1, T2, T3]) TryMatch(c *Cursor) (res tuple.Of3[T1, T2, T3], err error) {
 	cp := c.Mark()
 
 	for i := range res.Size() {
 		isLast := i == res.Size()-1
 
-		if mRes, ok := a.m1.TryMatch(c); ok {
+		if mRes, err := a.m1.TryMatch(c); err == nil {
 			res.M1 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
-		if mRes, ok := a.m2.TryMatch(c); ok {
+		if mRes, err := a.m2.TryMatch(c); err == nil {
 			res.M2 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
-		if mRes, ok := a.m3.TryMatch(c); ok {
+		if mRes, err := a.m3.TryMatch(c); err == nil {
 			res.M3 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
 		c.Reset(cp)
-		return res, false
+		return res, newSyntaxError(c, a)
 	}
 
-	return res, true
+	return res, nil
 }
 
-func (a *matchAll4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, T4], ok bool) {
+func (a *matchAll3[T1, T2, T3]) expects() string {
+	return a.m1.expects() + ", " + a.m2.expects() + " or " + a.m3.expects()
+}
+
+func (a *matchAll4[T1, T2, T3, T4]) TryMatch(c *Cursor) (res tuple.Of4[T1, T2, T3, T4], err error) {
 	cp := c.Mark()
 
 	for i := range res.Size() {
 		isLast := i == res.Size()-1
 
-		if mRes, ok := a.m1.TryMatch(c); ok {
+		if mRes, err := a.m1.TryMatch(c); err == nil {
 			res.M1 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
-		if mRes, ok := a.m2.TryMatch(c); ok {
+		if mRes, err := a.m2.TryMatch(c); err == nil {
 			res.M2 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
-		if mRes, ok := a.m3.TryMatch(c); ok {
+		if mRes, err := a.m3.TryMatch(c); err == nil {
 			res.M3 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
-		if mRes, ok := a.m4.TryMatch(c); ok {
+		if mRes, err := a.m4.TryMatch(c); err == nil {
 			res.M4 = mRes
-			if !c.GotoNextSibling() && !isLast {
+			if c.EndOfSubnode() && !isLast {
 				c.Reset(cp)
-				return res, false
+				return res, newSyntaxErrorCustom(c, fmt.Errorf("unexpected end of subnode, expected %s", a.expects()))
 			}
 			continue
 		}
 
 		c.Reset(cp)
-		return res, false
+		return res, newSyntaxError(c, a)
 	}
 
-	return res, true
+	return res, nil
 }
 
-func (r *repeat[T]) TryMatch(c *Cursor) (res []T, ok bool) {
+func (a *matchAll4[T1, T2, T3, T4]) expects() string {
+	return a.m1.expects() + ", " + a.m2.expects() + ", " + a.m3.expects() + " or " + a.m4.expects()
+}
+
+func (r *repeat[T]) TryMatch(c *Cursor) (res []T, err error) {
 	cp := c.Mark()
 
 	for range r.maxRepeats {
-		mRes, ok := r.matcher.TryMatch(c)
+		mRes, mErr := r.matcher.TryMatch(c)
 
-		if !ok {
+		if mErr != nil {
 			break
 		}
 
@@ -778,16 +909,47 @@ func (r *repeat[T]) TryMatch(c *Cursor) (res []T, ok bool) {
 
 	if len(res) < r.minRepeats {
 		c.Reset(cp)
-		return nil, false
+		return nil, newSyntaxError(c, r)
 	}
 
-	return res, true
+	return res, nil
 }
 
-func (t *transform[In, Out]) TryMatch(c *Cursor) (res Out, ok bool) {
-	if mRes, ok := t.m.TryMatch(c); !ok {
-		return res, false
+func (r *repeat[T]) expects() string {
+	return r.matcher.expects()
+}
+
+func (t *transform[In, Out]) TryMatch(c *Cursor) (res Out, err error) {
+	if mRes, err := t.m.TryMatch(c); err != nil {
+		return res, err
 	} else {
-		return t.f(mRes), true
+		return t.f(mRes), nil
+	}
+}
+
+func (t *transform[In, Out]) expects() string {
+	return t.m.expects()
+}
+
+type SyntaxError struct {
+	Node *ast.Node
+	Err  error
+}
+
+func (e *SyntaxError) Error() string {
+	return e.Err.Error()
+}
+
+func newSyntaxError[T any](c *Cursor, matcher Matcher[T]) *SyntaxError {
+	return &SyntaxError{
+		Node: c.lastNonNilNode(),
+		Err:  fmt.Errorf("expected %s, got %s", matcher.expects(), c.lastNonNilNode()),
+	}
+}
+
+func newSyntaxErrorCustom(c *Cursor, err error) *SyntaxError {
+	return &SyntaxError{
+		Node: c.lastNonNilNode(),
+		Err:  err,
 	}
 }
