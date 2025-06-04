@@ -113,9 +113,19 @@ var (
 			matcher.Repeat(param),
 			matcher.Repeat(result),
 		)),
-		func(in tuple.Of2[[]wasm.Param, []wasm.Result]) wasm.FuncSignature {
+		func(in tuple.Of2[[][]wasm.Param, []wasm.Result]) wasm.FuncSignature {
+			allParamsLen := 0
+			for _, a := range in.M1 {
+				allParamsLen += len(a)
+			}
+
+			allParams := make([]wasm.Param, 0, allParamsLen)
+			for _, p := range in.M1 {
+				allParams = append(allParams, p...)
+			}
+
 			return wasm.FuncSignature{
-				Params:  in.M1,
+				Params:  allParams,
 				Results: in.M2,
 			}
 		},
@@ -129,14 +139,23 @@ var (
 			),
 			matcher.RepeatAtLeast(1, valtype),
 		)),
-		func(in tuple.Of3[tuple.Of2[wasm.ElementId, wasm.ValueType], []wasm.ValueType, int]) wasm.Param {
+		func(in tuple.Of3[tuple.Of2[wasm.ElementId, wasm.ValueType], []wasm.ValueType, int]) []wasm.Param {
 			if in.M3 == 1 {
-				return wasm.Param{
-					Name: in.M1.M1.Name,
-					Type: in.M1.M2,
+				return []wasm.Param{
+					{
+						Name: in.M1.M1.Name,
+						Type: in.M1.M2,
+					},
 				}
 			}
-			panic("TODO multiple param abbreviation")
+
+			res := make([]wasm.Param, len(in.M2))
+			for i, v := range in.M2 {
+				res[i] = wasm.Param{
+					Type: v,
+				}
+			}
+			return res
 		},
 	)
 
