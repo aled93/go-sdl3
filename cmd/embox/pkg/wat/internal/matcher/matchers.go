@@ -420,6 +420,11 @@ func (m *subnodeMatcher[T]) TryMatch(c *Cursor) (res T, err error) {
 		}
 	}
 
+	// TODO: test this only in strict parser mode
+	if !c.EndOfSubnode() {
+		return res, newSyntaxErrorCustom(c, fmt.Errorf("expected end of subnode, but extra node found (%s)", c.Node()))
+	}
+
 	c.ExitChildren()
 	c.GotoNextSibling()
 
