@@ -31,9 +31,9 @@ func ParseModule(r io.Reader, opts *ParseOptions) (*wasm.Module, error) {
 
 	cursor := matcher.NewCursor(astRoot)
 
-	res, ok := module.TryMatch(cursor)
-	if !ok {
-		panic("not ok")
+	res, err := module.TryMatch(cursor)
+	if err != nil {
+		return nil, err
 	}
 
 	return &res, nil
