@@ -16,6 +16,17 @@ func TestParseEmptyModule(t *testing.T) {
 	}
 }
 
+func TestParseModuleWithForeignNodes(t *testing.T) {
+	src := "(module foreign)"
+
+	_, err := ParseModule(strings.NewReader(src), &ParseOptions{
+		Strict: true,
+	})
+	if err == nil {
+		t.Errorf("expected error, got nil")
+	}
+}
+
 func TestParseSimpleModule(t *testing.T) {
 	src := `(module
   (type $dotest (func (param $a i32) (param $b i64) (result f64)))
@@ -34,5 +45,13 @@ func TestParseSimpleModule(t *testing.T) {
 
 	if mod.Typedefs[0].Id.Name != "dotest" {
 		t.Fatalf(`type name expected "dotest", got "%s"`, mod.Typedefs[0].Id.Name)
+	}
+
+	if mod.Typedefs[0].FuncType.Id.HasValue {
+		t.Errorf(`type's func id expected be empty, got %v`, mod.Typedefs[0].FuncType.Id)
+	}
+
+	if len(mod.Typedefs[0].FuncType.Params) != 2 {
+		t.Errorf(`type's func params expected length of 2, got %d`, len(mod.Typedefs[0].FuncType.Params))
 	}
 }
