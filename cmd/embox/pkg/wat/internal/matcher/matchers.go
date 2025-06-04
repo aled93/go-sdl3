@@ -7,6 +7,7 @@ import (
 	"sdl3/cmd/embox/pkg/wat/internal/tuple"
 )
 
+// Subnode matches any subnode
 func Subnode[T any](inner Matcher[T]) *subnodeMatcher[T] {
 	return &subnodeMatcher[T]{
 		inner: inner,
@@ -34,12 +35,14 @@ func NamePatternSubnode[T any](namePattern *regexp.Regexp, inner Matcher[T]) *su
 	}
 }
 
+// Keyword matches any keyword attribute
 func Keyword() *attr {
 	return &attr{
 		kind: ast.NodeKind_AttrKeyword,
 	}
 }
 
+// Keyword matches keyword attribute with exact value
 func KeywordExact(keyword string) *attr {
 	return &attr{
 		kind:     ast.NodeKind_AttrKeyword,
@@ -47,6 +50,7 @@ func KeywordExact(keyword string) *attr {
 	}
 }
 
+// KeywordPattern matches keyword attribute with value that satisfies regexp pattern
 func KeywordPattern(pattern *regexp.Regexp) *attr {
 	if pattern == nil {
 		panic("pattern is nil")
@@ -58,12 +62,14 @@ func KeywordPattern(pattern *regexp.Regexp) *attr {
 	}
 }
 
+// Identifier matches any identifier attribute
 func Identifier() *attr {
 	return &attr{
 		kind: ast.NodeKind_AttrIdentifier,
 	}
 }
 
+// IdentifierExact matches identifier attribute with exact value
 func IdentifierExact(ident string) *attr {
 	return &attr{
 		kind:     ast.NodeKind_AttrIdentifier,
@@ -71,6 +77,8 @@ func IdentifierExact(ident string) *attr {
 	}
 }
 
+// IdentifierPattern matches identifier attribute with value that satisfies
+// regexp pattern
 func IdentifierPattern(pattern *regexp.Regexp) *attr {
 	if pattern == nil {
 		panic("pattern is nil")
@@ -82,6 +90,14 @@ func IdentifierPattern(pattern *regexp.Regexp) *attr {
 	}
 }
 
+// String matches any string attribute
+func String(ident string) *attr {
+	return &attr{
+		kind: ast.NodeKind_AttrString,
+	}
+}
+
+// StringExact matches string attribute with exact value
 func StringExact(ident string) *attr {
 	return &attr{
 		kind:     ast.NodeKind_AttrString,
@@ -89,6 +105,7 @@ func StringExact(ident string) *attr {
 	}
 }
 
+// StringPattern matches string attribute with value satisfies regexp pattern
 func StringPattern(pattern *regexp.Regexp) *attr {
 	if pattern == nil {
 		panic("pattern is nil")
@@ -100,6 +117,7 @@ func StringPattern(pattern *regexp.Regexp) *attr {
 	}
 }
 
+// Int matches any integer attribute
 func Int() *attr {
 	return &attr{
 		kind:   ast.NodeKind_AttrInteger,
@@ -108,6 +126,7 @@ func Int() *attr {
 	}
 }
 
+// IntExact matches integer attribute with exact value
 func IntExact(value int64) *attr {
 	return &attr{
 		kind:   ast.NodeKind_AttrInteger,
@@ -116,6 +135,7 @@ func IntExact(value int64) *attr {
 	}
 }
 
+// IntRange matches integer attribute with value within range
 func IntRange(min, max int64) *attr {
 	return &attr{
 		kind:   ast.NodeKind_AttrInteger,
@@ -124,7 +144,7 @@ func IntRange(min, max int64) *attr {
 	}
 }
 
-// Sequence matches seq in exact provided order
+// Sequence2 matches sequences of 2 submatchers in exact provided order
 func Sequence2[T1, T2 any](m1 Matcher[T1], m2 Matcher[T2]) *sequence2[T1, T2] {
 	return &sequence2[T1, T2]{
 		m1: m1,
@@ -132,6 +152,7 @@ func Sequence2[T1, T2 any](m1 Matcher[T1], m2 Matcher[T2]) *sequence2[T1, T2] {
 	}
 }
 
+// Sequence3 matches sequences of 3 submatchers in exact provided order
 func Sequence3[T1, T2, T3 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3]) *sequence3[T1, T2, T3] {
 	return &sequence3[T1, T2, T3]{
 		m1: m1,
@@ -140,6 +161,7 @@ func Sequence3[T1, T2, T3 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3]) *
 	}
 }
 
+// Sequence4 matches sequences of 4 submatchers in exact provided order
 func Sequence4[T1, T2, T3, T4 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3], m4 Matcher[T4]) *sequence4[T1, T2, T3, T4] {
 	return &sequence4[T1, T2, T3, T4]{
 		m1: m1,
@@ -156,13 +178,14 @@ func Optional[T any](m Matcher[T]) *optional[T] {
 	}
 }
 
-// OneOf matches one of variants
+// OneOfSame matches one of variants with same output type
 func OneOfSame[T any](variants ...Matcher[T]) *oneOfSame[T] {
 	return &oneOfSame[T]{
 		variants: variants,
 	}
 }
 
+// OneOf2 matches one of 2 variants
 func OneOf2[T1, T2 any](v1 Matcher[T1], v2 Matcher[T2]) *oneOf2[T1, T2] {
 	return &oneOf2[T1, T2]{
 		v1: v1,
@@ -170,6 +193,7 @@ func OneOf2[T1, T2 any](v1 Matcher[T1], v2 Matcher[T2]) *oneOf2[T1, T2] {
 	}
 }
 
+// OneOf3 matches one of 3 variants
 func OneOf3[T1, T2, T3 any](v1 Matcher[T1], v2 Matcher[T2], v3 Matcher[T3]) *oneOf3[T1, T2, T3] {
 	return &oneOf3[T1, T2, T3]{
 		v1: v1,
@@ -178,6 +202,7 @@ func OneOf3[T1, T2, T3 any](v1 Matcher[T1], v2 Matcher[T2], v3 Matcher[T3]) *one
 	}
 }
 
+// OneOf4 matches one of 4 variants
 func OneOf4[T1, T2, T3, T4 any](v1 Matcher[T1], v2 Matcher[T2], v3 Matcher[T3], v4 Matcher[T4]) *oneOf4[T1, T2, T3, T4] {
 	return &oneOf4[T1, T2, T3, T4]{
 		v1: v1,
@@ -187,7 +212,7 @@ func OneOf4[T1, T2, T3, T4 any](v1 Matcher[T1], v2 Matcher[T2], v3 Matcher[T3], 
 	}
 }
 
-// All matches all variants in any order
+// All2 matches all variants in any order
 func All2[T1, T2 any](m1 Matcher[T1], m2 Matcher[T2]) *matchAll2[T1, T2] {
 	return &matchAll2[T1, T2]{
 		m1: m1,
@@ -195,6 +220,7 @@ func All2[T1, T2 any](m1 Matcher[T1], m2 Matcher[T2]) *matchAll2[T1, T2] {
 	}
 }
 
+// All3 matches all variants in any order
 func All3[T1, T2, T3 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3]) *matchAll3[T1, T2, T3] {
 	return &matchAll3[T1, T2, T3]{
 		m1: m1,
@@ -203,6 +229,7 @@ func All3[T1, T2, T3 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3]) *match
 	}
 }
 
+// All4 matches all variants in any order
 func All4[T1, T2, T3, T4 any](m1 Matcher[T1], m2 Matcher[T2], m3 Matcher[T3], m4 Matcher[T4]) *matchAll4[T1, T2, T3, T4] {
 	return &matchAll4[T1, T2, T3, T4]{
 		m1: m1,
@@ -249,6 +276,7 @@ func RepeatRange[T any](minRepeats, maxRepeats int, m Matcher[T]) *repeat[T] {
 	}
 }
 
+// Transform transforms output of matcher m using provided function
 func Transform[In, Out any](m Matcher[In], transformer func(in In) Out) *transform[In, Out] {
 	return &transform[In, Out]{
 		m: m,
