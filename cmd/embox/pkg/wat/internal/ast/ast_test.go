@@ -1,9 +1,16 @@
 package ast
 
 import (
+	_ "embed"
 	"fmt"
+	"sdl3/cmd/embox/pkg/wat/internal/tokenizer"
 	"strings"
 	"testing"
+)
+
+var (
+	//go:embed testdata/sdl3.wat
+	sdl3Wat []byte
 )
 
 func TestAstParseSimpleWat(t *testing.T) {
@@ -94,14 +101,14 @@ func astNodeChain(nodes ...*Node) *Node {
 	return nodes[0]
 }
 
-func getTokenContext(input string, tok *Token) (line, arrow string) {
+func getTokenContext(input string, tok *tokenizer.Token) (line, arrow string) {
 	lo := max(0, tok.Pos-32)
 	hi := min(len(input), tok.Pos+32)
 
 	return input[lo:hi], strings.Repeat(" ", tok.Pos-lo) + "^"
 }
 
-func compareNodes(expected, got *Node) (error, *Token) {
+func compareNodes(expected, got *Node) (error, *tokenizer.Token) {
 	if expected.Kind != got.Kind {
 		return fmt.Errorf("expected node %s (%s), got %s (%s)", expected, expected.Kind, got, got.Kind), got.ParenOpenToken
 	}
