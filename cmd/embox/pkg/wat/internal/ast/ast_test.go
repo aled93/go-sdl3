@@ -72,6 +72,64 @@ func TestAstParseSimpleWat(t *testing.T) {
 	}
 }
 
+func TestAstParseMalformedInput(t *testing.T) {
+	src := `(module`
+
+	_, err := Parse(strings.NewReader(src))
+	if err == nil {
+		t.Fatal("expected parse error, got nil error")
+	}
+}
+
+func TestAstParseShortenedModule(t *testing.T) {
+	src := `(data $d1 "one") (data $d2 "two")`
+
+	astRoot, err := Parse(strings.NewReader(src))
+	if err != nil {
+		if ut, ok := err.(*UnexpectedToken); ok {
+			t.Fatalf("Parse error: %s\n| %s\n| %s", err.Error(), src, strings.Repeat(" ", ut.GotToken.Pos)+"^")
+		} else {
+			t.Fatal(err)
+		}
+	}
+
+	expectedAst := astNodeChain(
+		&Node{
+			Kind: NodeKind_SubNode,
+			Name: "data",
+			FirstChild: astNodeChain(
+				&Node{
+					Kind:     NodeKind_AttrIdentifier,
+					StrValue: "d1",
+				},
+				&Node{
+					Kind:     NodeKind_AttrString,
+					StrValue: "one",
+				},
+			),
+		},
+		&Node{
+			Kind: NodeKind_SubNode,
+			Name: "data",
+			FirstChild: astNodeChain(
+				&Node{
+					Kind:     NodeKind_AttrIdentifier,
+					StrValue: "d2",
+				},
+				&Node{
+					Kind:     NodeKind_AttrString,
+					StrValue: "two",
+				},
+			),
+		},
+	)
+
+	if err, tok := compareNodes(expectedAst, astRoot); err != nil {
+		code, arrow := getTokenContext(src, tok)
+		t.Error("got wrong ast:", err, "\n| "+code+"\n| "+arrow)
+	}
+}
+
 func TestAstParseSDL3Wat(t *testing.T) {
 	src := string(sdl3Wat)
 
@@ -161,25 +219,25 @@ func compareNodes(expected, got *Node) (error, *tokenizer.Token) {
 			return fmt.Errorf("expected node name \"%s\", got \"%s\"", expected.Name, got.Name), got.NameToken
 		}
 
-		expSubnode := expected.FirstChild
-		gotSubnode := got.FirstChild
-		for {
-			if expSubnode == nil && gotSubnode != nil {
-				return fmt.Errorf("got extra subnode \"%s\"", gotSubnode.Kind), got.ValueToken
-			} else if expSubnode != nil && gotSubnode == nil {
-				return fmt.Errorf("expected node \"%s\", got nothing", expSubnode.Kind), got.ValueToken
-			} else if expSubnode == nil {
-				break
-			} else if err, tok := compareNodes(expSubnode, gotSubnode); err != nil {
-				return err, tok
-			}
-
-			expSubnode = expSubnode.NextSibling
-			gotSubnode = gotSubnode.NextSibling
+		if err, tok := compareNodes(expected.FirstChild, got.FirstChild); err != nil {
+			return err, tok
 		}
 
 	default:
 		panic(fmt.Sprintf("unexpected wat.AstNodeKind: %#v", got.Kind))
+	}
+
+	tok := got.ValueToken
+	if tok == nil {
+		tok = got.NameToken
+	}
+
+	if expected.NextSibling != nil && got.NextSibling == nil {
+		return fmt.Errorf("expected node \"%s\", got nothing", expected.NextSibling), tok
+	} else if expected.NextSibling == nil && got.NextSibling != nil {
+		return fmt.Errorf("unexpected node \"%s\"", got.NextSibling), tok
+	} else if expected.NextSibling != nil {
+		return compareNodes(expected.NextSibling, got.NextSibling)
 	}
 
 	return nil, nil
