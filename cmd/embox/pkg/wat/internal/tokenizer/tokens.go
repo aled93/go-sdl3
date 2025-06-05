@@ -1,15 +1,17 @@
 package tokenizer
 
-import "strconv"
+import (
+	"errors"
+	"strconv"
+)
 
 type Token struct {
-	Kind       TokenKind
-	Pos        int // byte position in input stream
-	Line, Col  int
-	Len        int    // number of bytes in input stream
-	Content    string // name for idents, text for comments
-	IntValue   int64
-	FloatValue float64
+	Kind      TokenKind
+	Flags     TokenFlags
+	Pos       int // byte position in input stream
+	Line, Col int
+	Len       int    // number of bytes in input stream
+	Content   string // name for idents, text for comments, digits for numbers
 }
 
 type TokenKind int
@@ -27,14 +29,20 @@ const (
 	BlockComment            // (; comment ;)
 )
 
+type TokenFlags uint8
+
+const (
+	IsHex TokenFlags = 1 << iota
+)
+
 func (tok *Token) String() string {
 	switch tok.Kind {
 	case BlockComment:
 		return "(; " + tok.Content + " ;)"
 	case DecimalNumber:
-		return strconv.FormatInt(tok.IntValue, 10)
+		return tok.Content
 	case FloatNumber:
-		return strconv.FormatFloat(tok.FloatValue, 'f', 1, 64)
+		return tok.Content
 	case Identifier:
 		return "$" + tok.Content
 	case Keyword:
@@ -50,6 +58,84 @@ func (tok *Token) String() string {
 	}
 
 	return "???"
+}
+
+func (tok *Token) AsInt32() (int32, bool) {
+	if tok.Kind != DecimalNumber {
+		return 0, false
+	}
+
+	base := 10
+	if (tok.Flags & IsHex) != 0 {
+		base = 16
+	}
+
+	i, err := strconv.ParseInt(tok.Content, base, 32)
+	if errors.Is(err, strconv.ErrRange) {
+		return 0, false
+	}
+
+	if err != nil {
+		panic(err)
+	}
+
+	return int32(i), true
+}
+
+func (tok *Token) AsInt64() (int64, bool) {
+	if tok.Kind != DecimalNumber {
+		return 0, false
+	}
+
+	base := 10
+	if (tok.Flags & IsHex) != 0 {
+		base = 16
+	}
+
+	i, err := strconv.ParseInt(tok.Content, base, 32)
+	if errors.Is(err, strconv.ErrRange) {
+		return 0, false
+	}
+
+	if err != nil {
+		panic(err)
+	}
+
+	return i, true
+}
+
+func (tok *Token) AsFloat32() (float32, bool) {
+	if tok.Kind != FloatNumber {
+		return 0, false
+	}
+
+	f, err := strconv.ParseFloat(tok.Content, 32)
+	if errors.Is(err, strconv.ErrRange) {
+		return 0, false
+	}
+
+	if err != nil {
+		panic(err)
+	}
+
+	return float32(f), true
+}
+
+func (tok *Token) AsFloat64() (float64, bool) {
+	if tok.Kind != FloatNumber {
+		return 0, false
+	}
+
+	f, err := strconv.ParseFloat(tok.Content, 64)
+	if errors.Is(err, strconv.ErrRange) {
+		return 0, false
+	}
+
+	if err != nil {
+		panic(err)
+	}
+
+	return f, true
 }
 
 func (tk TokenKind) String() string {

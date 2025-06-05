@@ -1,9 +1,15 @@
 package wat
 
 import (
+	_ "embed"
 	"sdl3/cmd/embox/pkg/wasm"
 	"strings"
 	"testing"
+)
+
+var (
+	//go:embed testdata/sdl3_onl.wat
+	sdl3Wat []byte
 )
 
 func TestParseEmptyModule(t *testing.T) {
@@ -56,4 +62,15 @@ func TestParseSimpleModule(t *testing.T) {
 	if len(mod.Typedefs[0].FuncType.Params) != 2 {
 		t.Errorf(`type's func params expected length of 2, got %d`, len(mod.Typedefs[0].FuncType.Params))
 	}
+}
+
+func TestParseSDL3Wat(t *testing.T) {
+	src := string(sdl3Wat)
+
+	module, err := ParseModule(strings.NewReader(src), nil)
+	if err != nil {
+		panic(err)
+	}
+
+	panic(module)
 }

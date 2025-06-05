@@ -4,7 +4,6 @@ import (
 	"errors"
 	"io"
 	"sdl3/cmd/embox/pkg/wat/internal/tokenizer"
-	"strconv"
 	"strings"
 )
 
@@ -152,7 +151,7 @@ func Parse(r io.Reader) (root *Node, err error) {
 				if newAttr == nil {
 					newAttr = &Node{
 						Kind:       NodeKind_AttrInteger,
-						IntValue:   tok.IntValue,
+						StrValue:   tok.Content,
 						ValueToken: &tok,
 					}
 				}
@@ -162,7 +161,7 @@ func Parse(r io.Reader) (root *Node, err error) {
 				if newAttr == nil {
 					newAttr = &Node{
 						Kind:       NodeKind_AttrFloat,
-						FloatValue: tok.FloatValue,
+						StrValue:   tok.Content,
 						ValueToken: &tok,
 					}
 				}
@@ -187,8 +186,6 @@ type Node struct {
 	Kind            NodeKind
 	Name            string
 	StrValue        string
-	IntValue        int64
-	FloatValue      float64
 	FirstChild      *Node
 	NextSibling     *Node
 	NameToken       *tokenizer.Token
@@ -212,11 +209,11 @@ func (n *Node) String() string {
 
 	switch n.Kind {
 	case NodeKind_AttrFloat:
-		return strconv.FormatFloat(n.FloatValue, 'f', 4, 64)
+		return n.StrValue
 	case NodeKind_AttrIdentifier:
 		return "$" + n.StrValue
 	case NodeKind_AttrInteger:
-		return strconv.FormatInt(n.IntValue, 10)
+		return n.StrValue
 	case NodeKind_AttrKeyword:
 		return n.StrValue
 	case NodeKind_AttrString:
@@ -231,7 +228,7 @@ func (n *Node) String() string {
 func (node *Node) WriteTo(w io.Writer) (n int64, err error) {
 	switch node.Kind {
 	case NodeKind_AttrFloat:
-		wn, werr := w.Write([]byte(strconv.FormatFloat(node.FloatValue, 'f', 4, 64)))
+		wn, werr := w.Write([]byte(node.StrValue))
 		return int64(wn), werr
 
 	case NodeKind_AttrIdentifier:
@@ -239,7 +236,7 @@ func (node *Node) WriteTo(w io.Writer) (n int64, err error) {
 		return int64(wn), werr
 
 	case NodeKind_AttrInteger:
-		wn, werr := w.Write([]byte(strconv.FormatInt(node.IntValue, 10)))
+		wn, werr := w.Write([]byte(node.StrValue))
 		return int64(wn), werr
 
 	case NodeKind_AttrKeyword:

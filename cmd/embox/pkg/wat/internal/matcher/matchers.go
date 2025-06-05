@@ -484,7 +484,7 @@ func (a *attr) TryMatch(c *Cursor) (*ast.Node, error) {
 		}
 
 	case ast.NodeKind_AttrInteger:
-		if node.IntValue >= a.minInt && node.IntValue <= a.maxInt {
+		if i, ok := node.ValueToken.AsInt64(); ok && i >= a.minInt && i <= a.maxInt {
 			c.GotoNextSibling()
 			return node, nil
 		}

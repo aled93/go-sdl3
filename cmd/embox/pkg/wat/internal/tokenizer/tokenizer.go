@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"errors"
 	"io"
-	"math"
 	"slices"
 	"strconv"
 	"strings"
@@ -224,20 +223,28 @@ func (t *Tokenizer) readId(tok *Token, err *error) {
 }
 
 func (t *Tokenizer) readNumber(tok *Token, err *error) {
+	var chs []byte
+	digitsPos := 0
+	tok.Kind = DecimalNumber
+
 	neg := false
 	if t.expectRune('-') {
 		neg = true
+		chs = append(chs, '-')
+		digitsPos = 1
 	} else if t.expectRune('+') {
 		neg = false
+		chs = append(chs, '+')
+		digitsPos = 1
 	}
 
 	if t.expectRune('i') {
 		if t.expectRune('n') && t.expectRune('f') {
 			tok.Kind = FloatNumber
 			if neg {
-				tok.FloatValue = math.Inf(-1)
+				tok.Content = "-inf"
 			} else {
-				tok.FloatValue = math.Inf(1)
+				tok.Content = "inf"
 			}
 			return
 		}
@@ -252,7 +259,7 @@ func (t *Tokenizer) readNumber(tok *Token, err *error) {
 	if t.expectRune('n') {
 		if t.expectRune('a') && t.expectRune('n') {
 			tok.Kind = FloatNumber
-			tok.FloatValue = math.NaN()
+			tok.Content = "nan"
 			return
 		}
 
@@ -263,53 +270,36 @@ func (t *Tokenizer) readNumber(tok *Token, err *error) {
 		})
 	}
 
-	var digits []byte
 	for r := t.peekRune(); r == '_' || (r >= '0' && r <= '9'); r = t.peekRune() {
-		digits = append(digits, byte(t.readRune()))
+		chs = append(chs, byte(t.readRune()))
 	}
 
-	if len(digits) == 0 {
+	if len(chs)-digitsPos == 0 {
 		panic(&UnexpectedRune{
 			UnparsedToken: *tok,
 			ExpectedWhat:  "missing integer part of number",
 		})
 	}
 
-	var intPart, fracPart, expPart uint64
-	isHex := false
-	hasExp := false
-	expNeg := false
-	isFloat := false
-
-	expPart = 1
-
-	if v, err := strconv.Atoi(string(digits)); err != nil {
-		panic(err)
-	} else {
-		intPart = uint64(v)
-	}
-
 	if t.expectRune('x') {
-		isHex = true
-		if len(digits) != 1 || digits[0] != '0' {
+		tok.Flags |= IsHex
+
+		if len(chs)-digitsPos != 1 || chs[digitsPos] != '0' {
 			panic(&UnexpectedRune{
 				UnparsedToken: *tok,
 				ExpectedWhat:  "hex must be prefixed with exact \"0x\"",
 			})
 		}
 
-		intPart = t.readAndParseUint(tok, digits, 1)
+		chs = append(chs, 'x')
+		chs = t.readUint(tok, chs, 1)
 		if t.expectRune('.') {
-			isFloat = true
-			fracPart = t.readAndParseUint(tok, nil, 1)
+			chs = append(chs, '.')
+			t.readUint(tok, nil, 1)
 		}
 		if t.expectRune('p') || t.expectRune('P') {
-			hasExp = true
-			if t.expectRune('+') {
-				expNeg = false
-			} else if t.expectRune('-') {
-				expNeg = true
-			} else {
+			chs = append(chs, 'p', byte(t.peekRune()))
+			if !t.expectRune('+') && !t.expectRune('-') {
 				panic(&UnexpectedRune{
 					UnparsedToken: *tok,
 					GotRune:       t.peekRune(),
@@ -317,90 +307,28 @@ func (t *Tokenizer) readNumber(tok *Token, err *error) {
 				})
 			}
 
-			expPart = t.readAndParseUint(tok, nil, 0)
+			chs = t.readUint(tok, chs, 0)
 		}
 	} else {
 		if t.expectRune('.') {
-			isFloat = true
-			fracPart = t.readAndParseUint(tok, nil, 0)
+			tok.Kind = FloatNumber
+			chs = append(chs, '.')
+			chs = t.readUint(tok, chs, 0)
 		}
 		if t.expectRune('e') || t.expectRune('E') {
-			hasExp = true
+			chs = append(chs, 'e')
 			if t.expectRune('+') {
-				expNeg = false
+				chs = append(chs, '+')
 			} else if t.expectRune('-') {
-				expNeg = true
+				chs = append(chs, '-')
 			}
 
-			expPart = t.readAndParseUint(tok, nil, 0)
-		}
-	}
-
-	if isFloat {
-		tok.Kind = FloatNumber
-	} else {
-		tok.Kind = DecimalNumber
-	}
-
-	if !isFloat && !hasExp {
-		tok.Kind = DecimalNumber
-		tok.IntValue = int64(intPart)
-		if neg {
-			tok.IntValue = -tok.IntValue
-		}
-	} else {
-		// delegate to checked solutions :)
-		var str []byte
-		if neg {
-			str = append(str, byte('-'))
-		}
-
-		if isHex {
-			str = append(str, '0', 'x')
-		}
-
-		base := 10
-		if isHex {
-			base = 16
-		}
-		str = strconv.AppendUint(str, intPart, base)
-
-		if isFloat {
-			str = append(str, byte('.'))
-			str = strconv.AppendUint(str, fracPart, base)
-		}
-
-		if hasExp || isHex {
-			if isHex {
-				str = append(str, byte('p'))
-			} else {
-				str = append(str, byte('e'))
-			}
-			if expNeg {
-				str = append(str, byte('-'))
-			} else {
-				str = append(str, byte('+'))
-			}
-			str = strconv.AppendUint(str, expPart, 10)
-		}
-
-		if isFloat {
-			tok.Kind = FloatNumber
-			f, e := strconv.ParseFloat(string(str), 64)
-			if e != nil {
-				panic(e)
-			}
-			tok.FloatValue = f
+			chs = t.readUint(tok, chs, 0)
 		}
 	}
 }
 
-func (t *Tokenizer) readAndParseUint(tok *Token, digits []byte, hex int) (val uint64) {
-	base := 10
-	if hex > 1 {
-		base = 16
-	}
-
+func (t *Tokenizer) readUint(tok *Token, digits []byte, hex int) []byte {
 	if hex == 0 {
 		for r := t.peekRune(); r == '_' || (r >= '0' && r <= '9'); r = t.peekRune() {
 			digits = append(digits, byte(t.readRune()))
@@ -410,9 +338,6 @@ func (t *Tokenizer) readAndParseUint(tok *Token, digits []byte, hex int) (val ui
 			(r >= '0' && r <= '9') ||
 			(r >= 'A' && r <= 'F') ||
 			(r >= 'a' && r <= 'F'); r = t.peekRune() {
-			if r < '0' || r > '9' {
-				base = 16
-			}
 			digits = append(digits, byte(t.readRune()))
 		}
 	}
@@ -425,16 +350,7 @@ func (t *Tokenizer) readAndParseUint(tok *Token, digits []byte, hex int) (val ui
 		})
 	}
 
-	v, e := strconv.ParseUint(string(digits), base, 64)
-	if e == strconv.ErrRange {
-		panic(ErrNumberOverflow)
-	} else if e != nil {
-		panic(e)
-	}
-
-	val = v
-
-	return
+	return digits
 }
 
 func (t *Tokenizer) readString(tok *Token, err *error) {
@@ -460,8 +376,13 @@ func (t *Tokenizer) readString(tok *Token, err *error) {
 			case '\\':
 				content = append(content, '\\')
 			case 'u':
-				cp := t.readAndParseUint(nil, nil, 1)
-				if cp > utf8.MaxRune {
+				cp := t.readUint(tok, nil, 1)
+				i, err := strconv.Atoi(string(cp))
+				if err != nil {
+					panic(err)
+				}
+
+				if i > utf8.MaxRune {
 					panic(UnexpectedRune{
 						UnparsedToken: *tok,
 						ExpectedWhat:  "unicode code point out of range",

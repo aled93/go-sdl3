@@ -174,11 +174,11 @@ func compareNodes(expected, got *Node) (error, *tokenizer.Token) {
 	switch got.Kind {
 	case NodeKind_AttrFloat:
 		if expected.Kind != NodeKind_AttrFloat {
-			return fmt.Errorf("expected float attribute with value \"%f\", got \"%s\"", expected.FloatValue, got), got.ValueToken
+			return fmt.Errorf("expected float attribute with value \"%s\", got \"%s\"", expected.StrValue, got), got.ValueToken
 		}
 
-		if expected.FloatValue != got.FloatValue {
-			return fmt.Errorf("expected float attribute with value %f, got %f", expected.FloatValue, got.FloatValue), got.ValueToken
+		if expected.StrValue != got.StrValue {
+			return fmt.Errorf("expected float attribute with value %s, got %s", expected.StrValue, got.StrValue), got.ValueToken
 		}
 	case NodeKind_AttrIdentifier:
 		if expected.Kind != NodeKind_AttrIdentifier {
@@ -190,10 +190,10 @@ func compareNodes(expected, got *Node) (error, *tokenizer.Token) {
 		}
 	case NodeKind_AttrInteger:
 		if expected.Kind != NodeKind_AttrInteger {
-			return fmt.Errorf("expected integer attribute with value %d, got %s", expected.IntValue, got), got.ValueToken
+			return fmt.Errorf("expected integer attribute with value %s, got %s", expected.StrValue, got), got.ValueToken
 		}
 
-		if expected.IntValue != got.IntValue {
+		if expected.StrValue != got.StrValue {
 			return fmt.Errorf("expected integer attribute with value %s, got %s", expected, got), got.ValueToken
 		}
 
@@ -251,11 +251,11 @@ func printNode(curNode *Node, t *testing.T) {
 			printNode(child, t)
 
 		case NodeKind_AttrFloat:
-			t.Logf(" %f", child.FloatValue)
+			t.Logf(" %s", child.StrValue)
 		case NodeKind_AttrIdentifier:
 			t.Logf(" $%s", child.StrValue)
 		case NodeKind_AttrInteger:
-			t.Logf(" %d", child.IntValue)
+			t.Logf(" %s", child.StrValue)
 		case NodeKind_AttrKeyword:
 			t.Logf(" %s", child.StrValue)
 		case NodeKind_AttrString:

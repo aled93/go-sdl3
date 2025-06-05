@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"sdl3/cmd/embox/pkg/wasm"
 	"sdl3/cmd/embox/pkg/wat/internal/ast"
@@ -133,8 +134,12 @@ var (
 					Name: in.M1.StrValue,
 				}
 			}
+			i, ok := in.M1.ValueToken.AsInt64()
+			if !ok || i > math.MaxUint32 {
+				panic("invalid int32 value") // TODO: gracefully report error
+			}
 			return wasm.ElementId{
-				Index: uint32(in.M1.IntValue),
+				Index: uint32(i),
 			}
 		},
 	)
@@ -267,10 +272,18 @@ var (
 			matcher.Optional(matcher.Int()),
 		),
 		func(in tuple.Of2[*ast.Node, tuple.Of2[*ast.Node, bool]]) (res wasm.Limits) {
-			res.Min = uint32(in.M1.IntValue)
+			i, ok := in.M1.ValueToken.AsInt32()
+			if !ok {
+				panic("invalid int32 value")
+			}
+			res.Min = uint32(i)
 			res.HaveMax = in.M2.M2
 			if res.HaveMax {
-				res.Max = uint32(in.M2.M1.IntValue)
+				i, ok = in.M1.ValueToken.AsInt32()
+				if !ok {
+					panic("invalid int32 value")
+				}
+				res.Max = uint32(i)
 			}
 			return
 		},
