@@ -1,8 +1,10 @@
 package matcher
 
 import (
+	"errors"
 	"fmt"
 	"math"
+	"reflect"
 	"regexp"
 	"sdl3/cmd/embox/pkg/wat/internal/ast"
 	"sdl3/cmd/embox/pkg/wat/internal/tuple"
@@ -180,6 +182,13 @@ func Optional[T any](m Matcher[T]) *optional[T] {
 	}
 }
 
+// OneOfAny matches one of any number of variants with different types
+func OneOfAny(variants ...any) *oneOfAny {
+	return &oneOfAny{
+		variants: variants,
+	}
+}
+
 // OneOfSame matches one of variants with same output type
 func OneOfSame[T any](variants ...Matcher[T]) *oneOfSame[T] {
 	return &oneOfSame[T]{
@@ -334,6 +343,11 @@ type sequence4[T1, T2, T3, T4 any] struct {
 type optional[T any] struct {
 	MatcherBase
 	submatcher Matcher[T]
+}
+
+type oneOfAny struct {
+	MatcherBase
+	variants []any
 }
 
 type oneOfSame[T any] struct {
@@ -657,22 +671,75 @@ func (s *sequence4[T1, T2, T3, T4]) expects() string {
 	return fmt.Sprintf(`sequence of %s, %s, %s and %s`, s.m1.expects(), s.m2.expects(), s.m3.expects(), s.m4.expects())
 }
 
-func (o *optional[T]) TryMatch(c *Cursor) (T, error) {
+func (o *optional[T]) TryMatch(c *Cursor) (res tuple.Of2[T, bool], err error) {
 	if c.EndOfSubnode() {
-		var zero T
-		return zero, newSyntaxError(c, o)
+		res.M2 = false
+		return res, newSyntaxError(c, o)
 	}
 
-	if res, err := o.submatcher.TryMatch(c); err == nil {
+	if subRes, err := o.submatcher.TryMatch(c); err == nil {
+		res.M1 = subRes
+		res.M2 = true
 		return res, nil
 	}
 
-	var zeroT T
-	return zeroT, nil
+	res.M2 = false
+	return res, nil
 }
 
 func (o *optional[T]) expects() string {
 	return fmt.Sprintf(`optional %s`, o.submatcher.expects())
+}
+
+func (a *oneOfAny) TryMatch(c *Cursor) (res tuple.Of2[any, int], err error) {
+	if c.EndOfSubnode() {
+		return res, newSyntaxErrorCustom(c, errors.New("unexpected end of subnode"))
+	}
+
+	cp := c.Mark()
+
+	for i, v := range a.variants {
+		mtd := reflect.ValueOf(v).MethodByName("TryMatch")
+
+		mResVals := mtd.Call([]reflect.Value{reflect.ValueOf(c)})
+		err = mResVals[1].Interface().(error)
+		if err == nil {
+			return tuple.New2(mResVals[0].Interface(), i), nil
+		}
+	}
+
+	c.Reset(cp)
+
+	return res, newSyntaxError(c, a)
+}
+
+func (a *oneOfAny) expects() string {
+	if len(a.variants) == 0 {
+		return `nothing`
+	} else if len(a.variants) == 1 {
+		res := reflect.ValueOf(a.variants[0]).MethodByName("expects").Call(nil)
+		return res[0].String()
+	} else if len(a.variants) == 2 {
+		res0 := reflect.ValueOf(a.variants[0]).MethodByName("expects").Call(nil)
+		res1 := reflect.ValueOf(a.variants[1]).MethodByName("expects").Call(nil)
+		return res0[0].String() + " or " + res1[0].String()
+	}
+
+	var sb strings.Builder
+	sb.WriteString("one of: ")
+
+	for i, v := range a.variants {
+		res := reflect.ValueOf(v).MethodByName("expects").Call(nil)
+		sb.WriteString(res[0].String())
+
+		if i < len(a.variants)-1 {
+			sb.WriteString(", ")
+		} else {
+			sb.WriteString(" or ")
+		}
+	}
+
+	return sb.String()
 }
 
 func (a *oneOfSame[T]) TryMatch(c *Cursor) (res tuple.Of2[T, int], err error) {
