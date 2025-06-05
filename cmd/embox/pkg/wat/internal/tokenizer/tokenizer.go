@@ -277,6 +277,14 @@ func (t *Tokenizer) readNumber(tok *Token, err *error) {
 	expNeg := false
 	isFloat := false
 
+	expPart = 1
+
+	if v, err := strconv.Atoi(string(digits)); err != nil {
+		panic(err)
+	} else {
+		intPart = uint64(v)
+	}
+
 	if t.expectRune('x') {
 		isHex = true
 		if len(digits) != 1 || digits[0] != '0' {
@@ -342,6 +350,11 @@ func (t *Tokenizer) readNumber(tok *Token, err *error) {
 		if neg {
 			str = append(str, byte('-'))
 		}
+
+		if isHex {
+			str = append(str, '0', 'x')
+		}
+
 		base := 10
 		if isHex {
 			base = 16
@@ -353,11 +366,11 @@ func (t *Tokenizer) readNumber(tok *Token, err *error) {
 			str = strconv.AppendUint(str, fracPart, base)
 		}
 
-		if hasExp {
-			if isFloat {
-				str = append(str, byte('e'))
-			} else {
+		if hasExp || isHex {
+			if isHex {
 				str = append(str, byte('p'))
+			} else {
+				str = append(str, byte('e'))
 			}
 			if expNeg {
 				str = append(str, byte('-'))

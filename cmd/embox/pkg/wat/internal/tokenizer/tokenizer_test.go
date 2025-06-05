@@ -57,3 +57,23 @@ func TestParseSDL3Wat(t *testing.T) {
 		}
 	}
 }
+
+func TestParseNumbers(t *testing.T) {
+	src := `42 3.14 14.1e-5 0xDEADBEEF 0xDEAD.BEEF 0xDEAD.BEEFp-4`
+
+	tokenizer := NewTokenizer(strings.NewReader(src))
+	for {
+		tok, err := tokenizer.NextToken()
+
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			panic(err)
+		}
+
+		t.Log(tok.String())
+	}
+
+	t.Log("Done")
+}
