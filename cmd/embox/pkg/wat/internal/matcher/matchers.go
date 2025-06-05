@@ -95,7 +95,7 @@ func IdentifierPattern(pattern *regexp.Regexp) *attr {
 }
 
 // String matches any string attribute
-func String(ident string) *attr {
+func String() *attr {
 	return &attr{
 		kind: ast.NodeKind_AttrString,
 	}
