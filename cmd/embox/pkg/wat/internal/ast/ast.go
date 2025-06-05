@@ -87,7 +87,9 @@ func Parse(r io.Reader) (root *Node, err error) {
 			case tokenizer.ParenOpen:
 				nodeStack = append(nodeStack, curNode)
 
-				newNode := &Node{}
+				newNode := &Node{
+					ParenOpenToken: &tok,
+				}
 				if lastChild != nil {
 					lastChild.NextSibling = newNode
 				} else {

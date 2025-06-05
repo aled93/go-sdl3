@@ -14,7 +14,7 @@ var (
 )
 
 func TestAstParseSimpleWat(t *testing.T) {
-	src := `(module (import "js" "print" (func (param i32) (result i32) ) ) )`
+	src := ` (module (import "js" "print" (func (param i32) (result i32) ) ) )`
 
 	astRoot, err := Parse(strings.NewReader(src))
 	if err != nil {
@@ -23,6 +23,31 @@ func TestAstParseSimpleWat(t *testing.T) {
 		} else {
 			t.Fatal(err)
 		}
+	}
+
+	if astRoot.ParenOpenToken == nil {
+		t.Errorf("root parenthesis open token expected, got nil")
+	} else if astRoot.ParenOpenToken.Pos != 1 {
+		t.Errorf("position of root parenthesis open token expected to be 1, got %d", astRoot.ParenOpenToken.Pos)
+	}
+
+	if astRoot.ParenCloseToken == nil {
+		t.Errorf("root parenthesis close token expected, got nil")
+	} else if astRoot.ParenCloseToken.Pos != 65 {
+		t.Errorf("position of root parenthesis close token expected to be 65, got %d", astRoot.ParenCloseToken.Pos)
+	}
+
+	importNode := astRoot.FirstChild
+	if importNode.ParenOpenToken == nil {
+		t.Errorf("import node parenthesis open token expected, got nil")
+	} else if importNode.ParenOpenToken.Pos != 9 {
+		t.Errorf("position of import node parenthesis open token expected to be 9, got %d", importNode.ParenOpenToken.Pos)
+	}
+
+	if importNode.ParenCloseToken == nil {
+		t.Errorf("import node parenthesis close token expected, got nil")
+	} else if importNode.ParenCloseToken.Pos != 63 {
+		t.Errorf("position of import node parenthesis close token expected to be 63, got %d", importNode.ParenCloseToken.Pos)
 	}
 
 	expectedAst := &Node{
