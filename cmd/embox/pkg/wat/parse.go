@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"os"
 	"sdl3/cmd/embox/pkg/wasm"
 	"sdl3/cmd/embox/pkg/wat/internal/ast"
 	"sdl3/cmd/embox/pkg/wat/internal/matcher"
@@ -46,7 +45,7 @@ func ParseModule(r io.Reader, opts *ParseOptions) (*wasm.Module, error) {
 	}
 
 	if !cursor.EndOfSubnode() {
-		return nil, fmt.Errorf("unexpected node %s", cursor.Node())
+		return nil, fmt.Errorf("unexpected node %s at %d:%d", cursor.Node(), cursor.Node().FirstToken().Line, cursor.Node().FirstToken().Col)
 	}
 
 	return &res, nil

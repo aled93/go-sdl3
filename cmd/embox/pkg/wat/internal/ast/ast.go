@@ -204,6 +204,22 @@ var escapeStr = strings.NewReplacer(
 	"\"", "\\\"",
 )
 
+func (n *Node) FirstToken() *tokenizer.Token {
+	if n.ParenOpenToken != nil {
+		return n.ParenOpenToken
+	}
+
+	return n.ValueToken
+}
+
+func (n *Node) LastToken() *tokenizer.Token {
+	if n.ParenCloseToken != nil {
+		return n.ParenCloseToken
+	}
+
+	return n.ValueToken
+}
+
 func (n *Node) String() string {
 	if n == nil {
 		return "nothing"
