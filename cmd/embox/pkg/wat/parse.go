@@ -68,9 +68,11 @@ var (
 	moduleInner = matcher.Transform(
 		matcher.Repeat(
 			matcher.OneOfAny(
-				typedef,
-				table,
-				elem,
+				/* 0 */ typedef,
+				/* 1 */ table,
+				/* 2 */ tableAbbr1,
+				/* 3 */ tableAbbr2,
+				/* 4 */ elem,
 			),
 		),
 		func(in []tuple.Of2[any, int]) wasm.Module {
@@ -78,18 +80,32 @@ var (
 
 			for _, v := range in {
 				switch v.M2 {
-				case 1:
+				case 0: // typedef
 					module.Typedefs = append(module.Typedefs, v.M1.(wasm.TypeDef))
 
-				case 2:
+				case 1: // table
 					module.Tables = append(module.Tables, v.M1.(wasm.Table))
 
-				case 3:
+				case 2: // tableAbbr1
+					out := v.M1.(tuple.Of2[wasm.Table, []wasm.TableElem])
+					module.Tables = append(module.Tables, out.M1)
+					module.TableElems = append(module.TableElems, out.M2...)
+
+				case 3: // tableAbbr2
+					out := v.M1.(tuple.Of3[wasm.Table, []wasm.Export, wasm.Import])
+					module.Tables = append(module.Tables, out.M1)
+					module.Exports = append(module.Exports, out.M2...)
+					module.Imports = append(module.Imports, out.M3)
+
+				case 4: // elem
 					module.TableElems = append(module.TableElems, v.M1.([]wasm.TableElem)...)
+
+				default:
+					panic("unreachable")
 				}
 			}
 
-			panic("unreachable")
+			return module
 		},
 	)
 
@@ -285,6 +301,84 @@ var (
 				Id:        in.M1.M1,
 				TableType: in.M2,
 			}
+		},
+	)
+
+	tableAbbr1 = matcher.Transform(
+		matcher.NamedSubnode("table",
+			matcher.Sequence3(
+				matcher.Optional(id),
+				reftype,
+				elem,
+			),
+		),
+		func(in tuple.Of3[
+			tuple.Of2[wasm.ElementId, bool],
+			wasm.RefType,
+			[]wasm.TableElem,
+		]) tuple.Of2[wasm.Table, []wasm.TableElem] {
+			return tuple.New2(
+				wasm.Table{
+					Id: in.M1.M1,
+					TableType: wasm.TableType{
+						Element: in.M2,
+						Limits: wasm.Limits{
+							Max: uint32(len(in.M3)),
+						},
+					},
+				},
+				in.M3,
+			)
+		},
+	)
+
+	tableAbbr2 = matcher.Transform(
+		matcher.NamedSubnode("table",
+			matcher.Sequence4(
+				matcher.Optional(id),
+				matcher.Repeat(
+					matcher.NamedSubnode("export",
+						matcher.String(),
+					),
+				),
+				matcher.NamedSubnode("import",
+					matcher.Sequence2(
+						matcher.String(),
+						matcher.String(),
+					),
+				),
+				tableType,
+			),
+		),
+		func(in tuple.Of4[
+			tuple.Of2[wasm.ElementId, bool],
+			[]*ast.Node,
+			tuple.Of2[*ast.Node, *ast.Node],
+			wasm.TableType,
+		]) tuple.Of3[wasm.Table, []wasm.Export, wasm.Import] {
+			exports := make([]wasm.Export, len(in.M2))
+			for i := range exports {
+				exports[i].Type = wasm.Table{
+					Id: in.M1.M1,
+				}
+				exports[i].SymbolName = in.M2[i].StrValue
+			}
+
+			return tuple.New3(
+				wasm.Table{
+					Id:        in.M1.M1,
+					TableType: in.M4,
+				},
+				exports,
+				wasm.Import{
+					ModuleName: in.M3.M1.StrValue,
+					SymbolName: in.M3.M2.StrValue,
+					Type: wasm.Table{
+						Id:        in.M1.M1,
+						TableType: in.M4,
+					},
+				},
+			)
 		},
 	)
 
