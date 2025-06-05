@@ -67,30 +67,25 @@ var (
 
 	moduleInner = matcher.Transform(
 		matcher.Repeat(
-			matcher.OneOf3(
+			matcher.OneOfAny(
 				typedef,
 				table,
 				elem,
 			),
 		),
-		func(in []tuple.Of4[
-			wasm.TypeDef,
-			wasm.Table,
-			[]wasm.TableElem,
-			int,
-		]) wasm.Module {
+		func(in []tuple.Of2[any, int]) wasm.Module {
 			module := wasm.Module{}
 
-			for _, d := range in {
-				switch d.M4 {
+			for _, v := range in {
+				switch v.M2 {
 				case 1:
-					module.Typedefs = append(module.Typedefs, d.M1)
+					module.Typedefs = append(module.Typedefs, v.M1.(wasm.TypeDef))
 
 				case 2:
-					module.Tables = append(module.Tables, d.M2)
+					module.Tables = append(module.Tables, v.M1.(wasm.Table))
 
 				case 3:
-					module.TableElems = append(module.TableElems, d.M3...)
+					module.TableElems = append(module.TableElems, v.M1.([]wasm.TableElem)...)
 				}
 			}
 
