@@ -1,6 +1,7 @@
 package wat
 
 import (
+	"sdl3/cmd/embox/pkg/wasm"
 	"strings"
 	"testing"
 )
@@ -47,7 +48,8 @@ func TestParseSimpleModule(t *testing.T) {
 		t.Fatalf(`type name expected "dotest", got "%s"`, mod.Typedefs[0].Id.Name)
 	}
 
-	if mod.Typedefs[0].FuncType.Id.HasValue {
+	var zero wasm.ElementId
+	if mod.Typedefs[0].FuncType.Id != zero {
 		t.Errorf(`type's func id expected be empty, got %v`, mod.Typedefs[0].FuncType.Id)
 	}
 
