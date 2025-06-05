@@ -25,12 +25,15 @@ var (
 
 type Tokenizer struct {
 	r   bufio.Reader
+	trk *LineEndTracker
 	pos int
 }
 
 func NewTokenizer(r io.Reader) *Tokenizer {
+	trk := NewLineEndTracker(r)
 	return &Tokenizer{
-		r: *bufio.NewReader(r),
+		r:   *bufio.NewReader(trk),
+		trk: trk,
 	}
 }
 
@@ -58,6 +61,7 @@ func (t *Tokenizer) NextToken() (tok Token, err error) {
 	}
 
 	tok.Pos = t.pos
+	tok.Line, tok.Col = t.trk.LineCol(t.pos)
 
 	r := t.peekRune()
 

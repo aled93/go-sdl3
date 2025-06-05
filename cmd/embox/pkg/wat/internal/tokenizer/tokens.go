@@ -4,7 +4,8 @@ import "strconv"
 
 type Token struct {
 	Kind       TokenKind
-	Pos        int    // byte position in input stream
+	Pos        int // byte position in input stream
+	Line, Col  int
 	Len        int    // number of bytes in input stream
 	Content    string // name for idents, text for comments
 	IntValue   int64
