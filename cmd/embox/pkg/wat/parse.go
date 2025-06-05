@@ -66,13 +66,35 @@ var (
 	)
 
 	moduleInner = matcher.Transform(
-		matcher.RepeatAtLeast(0,
-			typedef,
+		matcher.Repeat(
+			matcher.OneOf3(
+				typedef,
+				table,
+				elem,
+			),
 		),
-		func(in []wasm.TypeDef) wasm.Module {
-			return wasm.Module{
-				Typedefs: in,
+		func(in []tuple.Of4[
+			wasm.TypeDef,
+			wasm.Table,
+			[]wasm.TableElem,
+			int,
+		]) wasm.Module {
+			module := wasm.Module{}
+
+			for _, d := range in {
+				switch d.M4 {
+				case 1:
+					module.Typedefs = append(module.Typedefs, d.M1)
+
+				case 2:
+					module.Tables = append(module.Tables, d.M2)
+
+				case 3:
+					module.TableElems = append(module.TableElems, d.M3...)
+				}
 			}
+
+			panic("unreachable")
 		},
 	)
 
@@ -81,9 +103,9 @@ var (
 			matcher.Optional(id),
 			funcsignature,
 		)),
-		func(in tuple.Of2[wasm.ElementId, wasm.FuncSignature]) wasm.TypeDef {
+		func(in tuple.Of2[tuple.Of2[wasm.ElementId, bool], wasm.FuncSignature]) wasm.TypeDef {
 			return wasm.TypeDef{
-				Id:       in.M1,
+				Id:       in.M1.M1,
 				FuncType: in.M2,
 			}
 		},
@@ -97,13 +119,11 @@ var (
 		func(in tuple.Of2[*ast.Node, int]) wasm.ElementId {
 			if in.M2 == 0 {
 				return wasm.ElementId{
-					HasValue: true,
-					Name:     in.M1.StrValue,
+					Name: in.M1.StrValue,
 				}
 			}
 			return wasm.ElementId{
-				HasValue: true,
-				Index:    uint32(in.M1.IntValue),
+				Index: uint32(in.M1.IntValue),
 			}
 		},
 	)
@@ -227,6 +247,133 @@ var (
 				return in.M2
 			}
 			return in.M3
+		},
+	)
+
+	limits = matcher.Transform(
+		matcher.Sequence2(
+			matcher.Int(),
+			matcher.Optional(matcher.Int()),
+		),
+		func(in tuple.Of2[*ast.Node, tuple.Of2[*ast.Node, bool]]) (res wasm.Limits) {
+			res.Min = uint32(in.M1.IntValue)
+			res.HaveMax = in.M2.M2
+			if res.HaveMax {
+				res.Max = uint32(in.M2.M1.IntValue)
+			}
+			return
+		},
+	)
+
+	tableType = matcher.Transform(
+		matcher.Sequence2(
+			limits,
+			reftype,
+		),
+		func(in tuple.Of2[wasm.Limits, wasm.RefType]) wasm.TableType {
+			return wasm.TableType{
+				Limits:  in.M1,
+				Element: in.M2,
+			}
+		},
+	)
+
+	table = matcher.Transform(
+		matcher.NamedSubnode("table",
+			matcher.Sequence2(
+				matcher.Optional(id),
+				tableType,
+			),
+		),
+		func(in tuple.Of2[tuple.Of2[wasm.ElementId, bool], wasm.TableType]) wasm.Table {
+			return wasm.Table{
+				Id:        in.M1.M1,
+				TableType: in.M2,
+			}
+		},
+	)
+
+	elem = matcher.Transform(
+		matcher.NamedSubnode("elem",
+			matcher.OneOf3(
+				matcher.Sequence2(
+					matcher.Optional(id),
+					elemList,
+				),
+				matcher.Sequence4(
+					matcher.Optional(id),
+					tableUse,
+					matcher.NamedSubnode("offset",
+						expr,
+					),
+					elemList,
+				),
+				matcher.Sequence3(
+					matcher.Optional(id),
+					matcher.KeywordExact("declare"),
+					elemList,
+				),
+			),
+		),
+		func(in tuple.Of4[
+			tuple.Of2[tuple.Of2[wasm.ElementId, bool], []wasm.TableElem],
+			tuple.Of4[tuple.Of2[wasm.ElementId, bool], wasm.ElementId, wasm.Expression, []wasm.TableElem],
+			tuple.Of3[tuple.Of2[wasm.ElementId, bool], *ast.Node, []wasm.TableElem],
+			int,
+		]) []wasm.TableElem {
+			switch in.M4 {
+			case 1:
+				for i := range in.M1.M2 {
+					in.M1.M2[i].Id = in.M1.M1.M1
+				}
+
+				return in.M1.M2
+
+			case 2:
+				for i := range in.M2.M4 {
+					in.M2.M4[i].Id = in.M2.M1.M1
+					in.M2.M4[i].TableId = in.M2.M2
+					in.M2.M4[i].Offset = in.M2.M3
+				}
+
+				return in.M2.M4
+			}
+
+			for i := range in.M3.M3 {
+				in.M3.M3[i].Id = in.M3.M1.M1
+				in.M3.M3[i].IsDeclarative = true
+			}
+
+			return in.M3.M3
+		},
+	)
+
+	elemList = matcher.Transform(
+		matcher.Sequence2(
+			reftype,
+			matcher.NamedSubnode("item", matcher.Repeat(expr)),
+		),
+		func(in tuple.Of2[wasm.RefType, []wasm.Expression]) []wasm.TableElem {
+			return []wasm.TableElem{
+				{
+					RefType: in.M1,
+					Items:   in.M2,
+				},
+			}
+		},
+	)
+
+	tableUse = matcher.NamedSubnode("table", id)
+
+	expr = matcher.Transform(
+		matcher.OneOfSame(
+			matcher.KeywordExact("i32.const"),
+			matcher.KeywordExact("i64.const"),
+			matcher.KeywordExact("f32.const"),
+			matcher.KeywordExact("f64.const"),
+		),
+		func(in tuple.Of2[*ast.Node, int]) wasm.Expression {
+			return wasm.Expression{} // TODO
 		},
 	)
 )
