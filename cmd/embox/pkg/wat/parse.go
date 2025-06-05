@@ -31,12 +31,12 @@ func ParseModule(r io.Reader, opts *ParseOptions) (*wasm.Module, error) {
 		return nil, fmt.Errorf("failed parse wat: %w", err)
 	}
 
-	print("Restored AST: ")
-	_, err = astRoot.WriteTo(os.Stdout)
-	if err != nil {
-		panic(err)
-	}
-	println()
+	// print("Restored AST: ")
+	// _, err = astRoot.WriteTo(os.Stdout)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// println()
 
 	cursor := matcher.NewCursor(astRoot)
 
