@@ -55,10 +55,14 @@ type TypeDef struct {
 	FuncType FuncSignature
 }
 
-type Table struct {
-	Id      ElementId
+type TableType struct {
 	Limits  Limits
 	Element RefType
+}
+
+type Table struct {
+	TableType
+	Id ElementId
 }
 
 type TableElem struct {
