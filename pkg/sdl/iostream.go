@@ -1123,7 +1123,7 @@ var ReadS64BE func(src IOStream, value *int64) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteU8 func(IOStreamdst, value uint8) bool
+var WriteU8 func(dst IOStream, value uint8) bool
 
 /**
 * Use this function to write a signed byte to an SDL_IOStream.
@@ -1138,7 +1138,7 @@ var WriteU8 func(IOStreamdst, value uint8) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteS8 func(IOStreamdst, value int8) bool
+var WriteS8 func(dst IOStream, value int8) bool
 
 /**
 * Use this function to write 16 bits in native format to an SDL_IOStream as
@@ -1158,7 +1158,7 @@ var WriteS8 func(IOStreamdst, value int8) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteU16LE func(IOStreamdst, value uint16) bool
+var WriteU16LE func(dst IOStream, value uint16) bool
 
 /**
 * Use this function to write 16 bits in native format to an SDL_IOStream as
@@ -1178,7 +1178,7 @@ var WriteU16LE func(IOStreamdst, value uint16) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteS16LE func(IOStreamdst, value int16) bool
+var WriteS16LE func(dst IOStream, value int16) bool
 
 /**
 * Use this function to write 16 bits in native format to an SDL_IOStream as
@@ -1197,7 +1197,7 @@ var WriteS16LE func(IOStreamdst, value int16) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteU16BE func(IOStreamdst, value uint16) bool
+var WriteU16BE func(dst IOStream, value uint16) bool
 
 /**
 * Use this function to write 16 bits in native format to an SDL_IOStream as
@@ -1216,7 +1216,7 @@ var WriteU16BE func(IOStreamdst, value uint16) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteS16BE func(IOStreamdst, value int16) bool
+var WriteS16BE func(dst IOStream, value int16) bool
 
 /**
 * Use this function to write 32 bits in native format to an SDL_IOStream as
@@ -1236,7 +1236,7 @@ var WriteS16BE func(IOStreamdst, value int16) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteU32LE func(IOStreamdst, value uint32) bool
+var WriteU32LE func(dst IOStream, value uint32) bool
 
 /**
 * Use this function to write 32 bits in native format to an SDL_IOStream as
@@ -1256,7 +1256,7 @@ var WriteU32LE func(IOStreamdst, value uint32) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteS32LE func(IOStreamdst, value int32) bool
+var WriteS32LE func(dst IOStream, value int32) bool
 
 /**
 * Use this function to write 32 bits in native format to an SDL_IOStream as
@@ -1275,7 +1275,7 @@ var WriteS32LE func(IOStreamdst, value int32) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteU32BE func(IOStreamdst, value uint32) bool
+var WriteU32BE func(dst IOStream, value uint32) bool
 
 /**
 * Use this function to write 32 bits in native format to an SDL_IOStream as
@@ -1294,7 +1294,7 @@ var WriteU32BE func(IOStreamdst, value uint32) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteS32BE func(IOStreamdst, value int32) bool
+var WriteS32BE func(dst IOStream, value int32) bool
 
 /**
 * Use this function to write 64 bits in native format to an SDL_IOStream as
@@ -1314,7 +1314,7 @@ var WriteS32BE func(IOStreamdst, value int32) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteU64LE func(IOStreamdst, value uint64) bool
+var WriteU64LE func(dst IOStream, value uint64) bool
 
 /**
 * Use this function to write 64 bits in native format to an SDL_IOStream as
@@ -1334,7 +1334,7 @@ var WriteU64LE func(IOStreamdst, value uint64) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteS64LE func(IOStreamdst, value int64) bool
+var WriteS64LE func(dst IOStream, value int64) bool
 
 /**
 * Use this function to write 64 bits in native format to an SDL_IOStream as
@@ -1353,7 +1353,7 @@ var WriteS64LE func(IOStreamdst, value int64) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteU64BE func(IOStreamdst, value uint64) bool
+var WriteU64BE func(dst IOStream, value uint64) bool
 
 /**
 * Use this function to write 64 bits in native format to an SDL_IOStream as
@@ -1372,6 +1372,6 @@ var WriteU64BE func(IOStreamdst, value uint64) bool
 * \since This function is available since SDL 3.2.0.
  */
 //go:sdl3extern
-var WriteS64BE func(IOStreamdst, value int64) bool
+var WriteS64BE func(dst IOStream, value int64) bool
 
 /* @} */ /* Write endian functions */
