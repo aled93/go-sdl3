@@ -1,0 +1,22 @@
+{{- if .BuildTags}}//go:build wasm && {{.BuildTags}}{{else}}//go:build wasm{{end}}
+
+package {{.Pkg}}
+{{if .Uses}}
+import (
+{{range .Uses}}  "{{.}}"
+{{end}})
+{{end}}
+
+{{range .Sdl3Externs}}
+//go:wasmimport sdl3 {{.FuncOrigName}}
+func __{{.FuncOrigName}}{{.FuncSignature}}
+{{end}}
+
+{{range .Wrappers}}
+{{.}}
+{{end}}
+ 
+func init() {
+{{range .Sdl3Externs}}{{"\t"}}{{.FuncPath}} = __gowrap__{{.FuncOrigName}}
+{{end -}}
+}

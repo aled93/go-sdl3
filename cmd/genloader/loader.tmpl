@@ -1,6 +1,7 @@
-{{range .BuildTags}}
-{{- .}}
+{{if .BuildTags}}//go:build {{.BuildTags}}
+
 {{end -}}
+
 package {{.Pkg}}
 
 func init() {
