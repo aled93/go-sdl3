@@ -106,46 +106,46 @@ func __SDL_ReadU64BE(uintptr, uintptr) int32
 func __SDL_ReadS64BE(uintptr, uintptr) int32
 
 //go:wasmimport sdl3 SDL_WriteU8
-func __SDL_WriteU8(int32, int32) int32
+func __SDL_WriteU8(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteS8
-func __SDL_WriteS8(int32, int32) int32
+func __SDL_WriteS8(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteU16LE
-func __SDL_WriteU16LE(int32, int32) int32
+func __SDL_WriteU16LE(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteS16LE
-func __SDL_WriteS16LE(int32, int32) int32
+func __SDL_WriteS16LE(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteU16BE
-func __SDL_WriteU16BE(int32, int32) int32
+func __SDL_WriteU16BE(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteS16BE
-func __SDL_WriteS16BE(int32, int32) int32
+func __SDL_WriteS16BE(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteU32LE
-func __SDL_WriteU32LE(int32, int32) int32
+func __SDL_WriteU32LE(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteS32LE
-func __SDL_WriteS32LE(int32, int32) int32
+func __SDL_WriteS32LE(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteU32BE
-func __SDL_WriteU32BE(int32, int32) int32
+func __SDL_WriteU32BE(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteS32BE
-func __SDL_WriteS32BE(int32, int32) int32
+func __SDL_WriteS32BE(uintptr, int32) int32
 
 //go:wasmimport sdl3 SDL_WriteU64LE
-func __SDL_WriteU64LE(int64, int64) int32
+func __SDL_WriteU64LE(uintptr, int64) int32
 
 //go:wasmimport sdl3 SDL_WriteS64LE
-func __SDL_WriteS64LE(int64, int64) int32
+func __SDL_WriteS64LE(uintptr, int64) int32
 
 //go:wasmimport sdl3 SDL_WriteU64BE
-func __SDL_WriteU64BE(int64, int64) int32
+func __SDL_WriteU64BE(uintptr, int64) int32
 
 //go:wasmimport sdl3 SDL_WriteS64BE
-func __SDL_WriteS64BE(int64, int64) int32
+func __SDL_WriteS64BE(uintptr, int64) int32
 
 
 
@@ -319,73 +319,73 @@ func __gowrap__SDL_ReadS64BE(src IOStream, value *int64) (__result bool) {
 	return
 }
 
-func __gowrap__SDL_WriteU8(IOStreamdst uint8, value uint8) (__result bool) {
-	__result = (bool)(__SDL_WriteU8(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteU8(dst IOStream, value uint8) (__result bool) {
+	__result = (bool)(__SDL_WriteU8(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteS8(IOStreamdst int8, value int8) (__result bool) {
-	__result = (bool)(__SDL_WriteS8(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteS8(dst IOStream, value int8) (__result bool) {
+	__result = (bool)(__SDL_WriteS8(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteU16LE(IOStreamdst uint16, value uint16) (__result bool) {
-	__result = (bool)(__SDL_WriteU16LE(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteU16LE(dst IOStream, value uint16) (__result bool) {
+	__result = (bool)(__SDL_WriteU16LE(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteS16LE(IOStreamdst int16, value int16) (__result bool) {
-	__result = (bool)(__SDL_WriteS16LE(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteS16LE(dst IOStream, value int16) (__result bool) {
+	__result = (bool)(__SDL_WriteS16LE(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteU16BE(IOStreamdst uint16, value uint16) (__result bool) {
-	__result = (bool)(__SDL_WriteU16BE(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteU16BE(dst IOStream, value uint16) (__result bool) {
+	__result = (bool)(__SDL_WriteU16BE(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteS16BE(IOStreamdst int16, value int16) (__result bool) {
-	__result = (bool)(__SDL_WriteS16BE(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteS16BE(dst IOStream, value int16) (__result bool) {
+	__result = (bool)(__SDL_WriteS16BE(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteU32LE(IOStreamdst uint32, value uint32) (__result bool) {
-	__result = (bool)(__SDL_WriteU32LE(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteU32LE(dst IOStream, value uint32) (__result bool) {
+	__result = (bool)(__SDL_WriteU32LE(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteS32LE(IOStreamdst int32, value int32) (__result bool) {
-	__result = (bool)(__SDL_WriteS32LE(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteS32LE(dst IOStream, value int32) (__result bool) {
+	__result = (bool)(__SDL_WriteS32LE(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteU32BE(IOStreamdst uint32, value uint32) (__result bool) {
-	__result = (bool)(__SDL_WriteU32BE(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteU32BE(dst IOStream, value uint32) (__result bool) {
+	__result = (bool)(__SDL_WriteU32BE(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteS32BE(IOStreamdst int32, value int32) (__result bool) {
-	__result = (bool)(__SDL_WriteS32BE(*(*int32)(unsafe.Pointer(&IOStreamdst)), *(*int32)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteS32BE(dst IOStream, value int32) (__result bool) {
+	__result = (bool)(__SDL_WriteS32BE(uintptr(unsafe.Pointer(dst)), *(*int32)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteU64LE(IOStreamdst uint64, value uint64) (__result bool) {
-	__result = (bool)(__SDL_WriteU64LE(*(*int64)(unsafe.Pointer(&IOStreamdst)), *(*int64)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteU64LE(dst IOStream, value uint64) (__result bool) {
+	__result = (bool)(__SDL_WriteU64LE(uintptr(unsafe.Pointer(dst)), *(*int64)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteS64LE(IOStreamdst int64, value int64) (__result bool) {
-	__result = (bool)(__SDL_WriteS64LE(*(*int64)(unsafe.Pointer(&IOStreamdst)), *(*int64)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteS64LE(dst IOStream, value int64) (__result bool) {
+	__result = (bool)(__SDL_WriteS64LE(uintptr(unsafe.Pointer(dst)), *(*int64)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteU64BE(IOStreamdst uint64, value uint64) (__result bool) {
-	__result = (bool)(__SDL_WriteU64BE(*(*int64)(unsafe.Pointer(&IOStreamdst)), *(*int64)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteU64BE(dst IOStream, value uint64) (__result bool) {
+	__result = (bool)(__SDL_WriteU64BE(uintptr(unsafe.Pointer(dst)), *(*int64)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
-func __gowrap__SDL_WriteS64BE(IOStreamdst int64, value int64) (__result bool) {
-	__result = (bool)(__SDL_WriteS64BE(*(*int64)(unsafe.Pointer(&IOStreamdst)), *(*int64)(unsafe.Pointer(&value))) != 0)
+func __gowrap__SDL_WriteS64BE(dst IOStream, value int64) (__result bool) {
+	__result = (bool)(__SDL_WriteS64BE(uintptr(unsafe.Pointer(dst)), *(*int64)(unsafe.Pointer(&value))) != 0)
 	return
 }
 
