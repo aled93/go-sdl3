@@ -1,4 +1,5 @@
 //go:build windows || WINGDK
+
 package sdl
 
 func init() {

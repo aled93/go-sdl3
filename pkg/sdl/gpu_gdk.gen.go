@@ -1,4 +1,5 @@
 //go:build GDK
+
 package sdl
 
 func init() {
