@@ -47,7 +47,7 @@ package sdl
 
 type VkInstance uintptr
 type VkPhysicalDevice uintptr
-type VkSurfaceKHR uintptr
+type VkSurfaceKHR uint64
 type VkAllocationCallbacks uintptr
 
 /**

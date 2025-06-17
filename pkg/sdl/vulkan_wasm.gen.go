@@ -25,7 +25,7 @@ func __SDL_Vulkan_GetInstanceExtensions(uintptr) uintptr
 func __SDL_Vulkan_CreateSurface(uintptr, uintptr, uintptr, uintptr) int32
 
 //go:wasmimport sdl3 SDL_Vulkan_DestroySurface
-func __SDL_Vulkan_DestroySurface(uintptr, uintptr, uintptr)
+func __SDL_Vulkan_DestroySurface(uintptr, int64, uintptr)
 
 //go:wasmimport sdl3 SDL_Vulkan_GetPresentationSupport
 func __SDL_Vulkan_GetPresentationSupport(uintptr, uintptr, int32) int32
@@ -58,7 +58,7 @@ func __gowrap__SDL_Vulkan_CreateSurface(window Window, instance VkInstance, allo
 }
 
 func __gowrap__SDL_Vulkan_DestroySurface(instance VkInstance, surface VkSurfaceKHR, allocator VkAllocationCallbacks) {
-	__SDL_Vulkan_DestroySurface(uintptr(unsafe.Pointer(instance)), uintptr(unsafe.Pointer(surface)), 0 /* TODO: callbacks */)
+	__SDL_Vulkan_DestroySurface(uintptr(unsafe.Pointer(instance)), *(*int64)(unsafe.Pointer(&surface)), 0 /* TODO: callbacks */)
 }
 
 func __gowrap__SDL_Vulkan_GetPresentationSupport(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) (__result bool) {

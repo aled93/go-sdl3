@@ -648,7 +648,7 @@ var knownTypeMap = map[string]wasmType{
 	"VkAllocationCallbacks":             wasmType_Callback,
 	"VkInstance":                        wasmType_Ptr,
 	"VkPhysicalDevice":                  wasmType_Ptr,
-	"VkSurfaceKHR":                      wasmType_Ptr,
+	"VkSurfaceKHR":                      wasmType_i64,
 	"VSync":                             wasmType_i32,
 	"Window":                            wasmType_Ptr,
 	"WindowFlags":                       wasmType_i64,
