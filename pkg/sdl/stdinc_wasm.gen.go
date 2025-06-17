@@ -9,13 +9,13 @@ import (
 
 
 //go:wasmimport sdl3 SDL_malloc
-func __SDL_malloc(int64) uintptr
+func __SDL_malloc(uintptr) uintptr
 
 //go:wasmimport sdl3 SDL_calloc
-func __SDL_calloc(int64, int64) uintptr
+func __SDL_calloc(uintptr, uintptr) uintptr
 
 //go:wasmimport sdl3 SDL_realloc
-func __SDL_realloc(uintptr, int64) uintptr
+func __SDL_realloc(uintptr, uintptr) uintptr
 
 //go:wasmimport sdl3 SDL_free
 func __SDL_free(uintptr)
@@ -30,7 +30,7 @@ func __SDL_GetMemoryFunctions(uintptr, uintptr, uintptr, uintptr)
 func __SDL_SetMemoryFunctions(uintptr, uintptr, uintptr, uintptr) int32
 
 //go:wasmimport sdl3 SDL_aligned_alloc
-func __SDL_aligned_alloc(int64, int64) uintptr
+func __SDL_aligned_alloc(uintptr, uintptr) uintptr
 
 //go:wasmimport sdl3 SDL_aligned_free
 func __SDL_aligned_free(uintptr)
@@ -70,18 +70,18 @@ func __SDL_unsetenv_unsafe(uintptr) int32
 
 
 
-func __gowrap__SDL_malloc(size uint) (__result uintptr) {
-	__result = (uintptr)(unsafe.Pointer(__SDL_malloc(*(*int64)(unsafe.Pointer(&size)))))
+func __gowrap__SDL_malloc(size uintptr) (__result uintptr) {
+	__result = (uintptr)(unsafe.Pointer(__SDL_malloc(uintptr(unsafe.Pointer(size)))))
 	return
 }
 
-func __gowrap__SDL_calloc(nmemb uint, size uint) (__result uintptr) {
-	__result = (uintptr)(unsafe.Pointer(__SDL_calloc(*(*int64)(unsafe.Pointer(&nmemb)), *(*int64)(unsafe.Pointer(&size)))))
+func __gowrap__SDL_calloc(nmemb uintptr, size uintptr) (__result uintptr) {
+	__result = (uintptr)(unsafe.Pointer(__SDL_calloc(uintptr(unsafe.Pointer(nmemb)), uintptr(unsafe.Pointer(size)))))
 	return
 }
 
-func __gowrap__SDL_realloc(mem uintptr, size uint) (__result uintptr) {
-	__result = (uintptr)(unsafe.Pointer(__SDL_realloc(uintptr(unsafe.Pointer(mem)), *(*int64)(unsafe.Pointer(&size)))))
+func __gowrap__SDL_realloc(mem uintptr, size uintptr) (__result uintptr) {
+	__result = (uintptr)(unsafe.Pointer(__SDL_realloc(uintptr(unsafe.Pointer(mem)), uintptr(unsafe.Pointer(size)))))
 	return
 }
 
@@ -102,8 +102,8 @@ func __gowrap__SDL_SetMemoryFunctions(malloc_func MallocFunc, calloc_func Calloc
 	return
 }
 
-func __gowrap__SDL_aligned_alloc(alignment uint, size uint) (__result uintptr) {
-	__result = (uintptr)(unsafe.Pointer(__SDL_aligned_alloc(*(*int64)(unsafe.Pointer(&alignment)), *(*int64)(unsafe.Pointer(&size)))))
+func __gowrap__SDL_aligned_alloc(alignment uintptr, size uintptr) (__result uintptr) {
+	__result = (uintptr)(unsafe.Pointer(__SDL_aligned_alloc(uintptr(unsafe.Pointer(alignment)), uintptr(unsafe.Pointer(size)))))
 	return
 }
 

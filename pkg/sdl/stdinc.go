@@ -195,7 +195,7 @@ const FLT_EPSILON = 1.1920928955078125e-07 /* 0x0.000002p0 */
 * \sa SDL_aligned_alloc
  */
 //go:sdl3extern(malloc)
-var Malloc func(size uint) uintptr
+var Malloc func(size uintptr) uintptr
 
 /**
 * Allocate a zero-initialized array.
@@ -221,7 +221,7 @@ var Malloc func(size uint) uintptr
 * \sa SDL_realloc
  */
 //go:sdl3extern(calloc)
-var Calloc func(nmemb, size uint) uintptr
+var Calloc func(nmemb, size uintptr) uintptr
 
 /**
 * Change the size of allocated memory.
@@ -262,7 +262,7 @@ var Calloc func(nmemb, size uint) uintptr
 * \sa SDL_calloc
  */
 //go:sdl3extern(realloc)
-var Realloc func(mem uintptr, size uint) uintptr
+var Realloc func(mem, size uintptr) uintptr
 
 /**
 * Free allocated memory.
@@ -302,7 +302,7 @@ var Free func(mem uintptr)
 * \sa SDL_GetMemoryFunctions
 * \sa SDL_SetMemoryFunctions
  */
-type MallocFunc func(size uint) uintptr
+type MallocFunc func(size uintptr) uintptr
 
 /**
 * A callback used to implement SDL_calloc().
@@ -323,7 +323,7 @@ type MallocFunc func(size uint) uintptr
 * \sa SDL_GetMemoryFunctions
 * \sa SDL_SetMemoryFunctions
  */
-type CallocFunc func(nmemb, size uint) uintptr
+type CallocFunc func(nmemb, size uintptr) uintptr
 
 /**
 * A callback used to implement SDL_realloc().
@@ -344,7 +344,7 @@ type CallocFunc func(nmemb, size uint) uintptr
 * \sa SDL_GetMemoryFunctions
 * \sa SDL_SetMemoryFunctions
  */
-type ReallocFunc func(mem uintptr, size uint) uintptr
+type ReallocFunc func(mem, size uintptr) uintptr
 
 /**
 * A callback used to implement SDL_free().
@@ -465,7 +465,7 @@ var SetMemoryFunctions func(malloc_func MallocFunc,
 * \sa SDL_aligned_free
  */
 //go:sdl3extern(aligned_alloc)
-var AlignedAlloc func(alignment, size uint) uintptr
+var AlignedAlloc func(alignment, size uintptr) uintptr
 
 /**
 * Free memory allocated by SDL_aligned_alloc().
